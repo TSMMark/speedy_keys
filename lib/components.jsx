@@ -14,17 +14,22 @@ Components.Container = React.createClass({
 });
 
 Components.Game = React.createClass({
+
   getInitialState: function () {
     return {
-      currentWordIndex: 0
+      currentWordIndex: 0,
+      wordStatuses: []
     };
   },
 
   render: function () {
     var self = this
       , words = this.props.words.map(function (word, index) {
-          var classes = cx({
+          var satus = self.state.wordStatuses[index]
+            , classes = cx({
                 "game-word": true,
+                valid: satus === true,
+                invalid: satus === false,
                 active: index == self.state.currentWordIndex
               });
           return (<span className={classes} key={index}>{word}</span>);
@@ -40,23 +45,54 @@ Components.Game = React.createClass({
   },
 
   handleKeyDown: function (event) {
-    var SPACE = 32, RETURN = 13;
+    var SPACE = 32, RETURN = 13
+      , self = this
+      , currentWordIndex = self.state.currentWordIndex;
 
     switch (event.keyCode) {
       case SPACE:
       case RETURN:
         event.preventDefault();
-        this.submitWord();
+        self.submitWord();
         break;
+      default:
+        setTimeout(function () {
+          if (self.isCompleteMatch()) {
+            self.state.wordStatuses[currentWordIndex] = true;
+          }
+          else if (!self.isPartialMatch()) {
+            self.state.wordStatuses[currentWordIndex] = false;
+          }
+          else {
+            self.state.wordStatuses[currentWordIndex] = undefined;
+          }
+          self.setState({});
+        }, 0);
     }
+  },
+
+  isPartialMatch: function () {
+    var inputValue = this.refs["game-input"].getDOMNode().value.trim()
+      , currentWordIndex = this.state.currentWordIndex
+      , currentWord = this.props.words[currentWordIndex];
+
+    return currentWord.indexOf(inputValue) === 0;
+  },
+
+  isCompleteMatch: function () {
+    var inputValue = this.refs["game-input"].getDOMNode().value.trim()
+      , currentWordIndex = this.state.currentWordIndex
+      , currentWord = this.props.words[currentWordIndex];
+
+    return currentWord === inputValue;
   },
 
   submitWord: function () {
     var input = this.refs["game-input"].getDOMNode()
-      , currentWordIndex = this.state.currentWordIndex;
+      , currentWordIndex = this.state.currentWordIndex
+      , valid = this.isCompleteMatch()
 
-    value = input.value;
-    console.log("value", value);
+    this.state.wordStatuses[currentWordIndex] = valid;
     input.value = "";
 
     this.setState({

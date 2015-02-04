@@ -41,6 +41,4 @@ Meteor.startup(function () {
 
   updateDeps();
   Tracker.autorun(render);
-
-  $(window).resize(_.throttle(render, 600));
 });

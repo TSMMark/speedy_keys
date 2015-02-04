@@ -3,7 +3,7 @@
 @import "mixins.import.less";
 
 // TRANSITION EVERYTIHNG
-* { .transition(all 0.2s ease-in-out); }
+* { .transition(all 50ms ease-in-out); }
 
 .btn-facebook {
   .button-variant(@btn-facebook-color; @btn-facebook-bg; @btn-facebook-border);
@@ -25,10 +25,25 @@
   border: 1px solid transparent;
   border-radius: 3px;
 
+  &.valid {
+    color: @brand-success;
+  }
+
+  &.invalid {
+    color: @brand-danger;
+  }
+
   &.active {
     color: @text-color;
-    text-decoration: underline;
     border-color: @text-color;
+
+    &.valid {
+      color: @brand-success;
+    }
+
+    &.invalid {
+      color: @brand-warning;
+    }
   }
 }
 
