@@ -14,3 +14,28 @@
   .full-absolute();
   top: @navbar-height;
 }
+
+.game-word {
+  float: left;
+  font-size: 18px;
+  padding: 0 0.3ex;
+  margin-right: 0.3ex;
+  margin-bottom: 0.9em;
+  color: @gray;
+  border: 1px solid transparent;
+  border-radius: 3px;
+
+  &.active {
+    color: @text-color;
+    text-decoration: underline;
+    border-color: @text-color;
+  }
+}
+
+#game-input {
+  .full-absolute();
+  position: fixed;
+  top: auto;
+  text-align: center;
+  font-size: 24px;
+}

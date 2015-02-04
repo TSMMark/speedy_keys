@@ -1,3 +1,6 @@
+var words = "greater had gathering void were under let itself it you're a isn't darkness shall made rule forth blessed void said together void moved moving make itself don't so seasons divide may isn't sixth us years without sea moving a night living deep lights itself be seed beginning so they're doesn't you'll don't great winged creepeth creeping dominion there a forth in also land fruit give two fowl unto dominion second fruitful meat likeness upon bring creepeth first kind all together he fruit in created day image very first moving bearing rule make male give great bring give brought hath said gathered isn't blessed which air earth moved fifth whose us rule gathered is abundantly void seasons had waters fruit rule were life yielding days won't signs called shall lesser fowl for under itself day moving behold very beast rule was beast there kind sixth creepeth seasons void gathering his creeping they're female man let upon fill shall and you're air behold moving lesser place after darkness one dry firmament you're shall he hath creature moved own herb unto saw signs winged abundantly meat land yielding i land his morning void two set is fly place midst dominion green".split(" ");
+words = _.shuffle(words);
+
 Views = {};
 
 Views.App = React.createClass({
@@ -28,6 +31,40 @@ Views.Home = React.createClass({
   }
 });
 
+Views.PlayGame = React.createClass({
+  mixins: [Router.State, Router.Navigation],
+
+  render: function () {
+    var currentUser = Meteor.user()
+      , gameId = this.getParams().gameId
+      , game
+      , width
+      , height;
+
+    // try {
+    //   game = Models.Games.findById(gameId);
+    // } catch (e) {
+    // }
+
+    // if (!game) return (<Views.NotFound/>);
+
+    return (
+      <Components.Container>
+        <h1>Type Away! <small>(The text field is at the bottom)</small></h1>
+        <div className="row">
+          <div className="col-md-8 col-md-offset-2">
+            <Components.Game words={this.getWordsList()}/>
+          </div>
+        </div>
+      </Components.Container>
+    );
+  },
+
+  getWordsList: function () {
+    return words;
+  }
+});
+
 Views.NotFound = React.createClass({
   getDefaultProps: function () {
     return {
@@ -41,7 +78,7 @@ Views.NotFound = React.createClass({
       <Components.Container>
         <h1>{this.props.message}</h1>
         <h2>{this.props.submessage}</h2>
-        <Link to="home" className="btn btn-default">Go Back</Link>
+        <Link to="default" className="btn btn-default">Go Back</Link>
       </Components.Container>
     );
   }

@@ -13,6 +13,58 @@ Components.Container = React.createClass({
   }
 });
 
+Components.Game = React.createClass({
+  getInitialState: function () {
+    return {
+      currentWordIndex: 0
+    };
+  },
+
+  render: function () {
+    var self = this
+      , words = this.props.words.map(function (word, index) {
+          var classes = cx({
+                "game-word": true,
+                active: index == self.state.currentWordIndex
+              });
+          return (<span className={classes} key={index}>{word}</span>);
+        });
+
+    return (
+      <div className="game">
+        {words}
+        <input type="text" className="form-control"
+               id="game-input" ref="game-input"
+               onKeyDown={this.handleKeyDown} />
+      </div>);
+  },
+
+  handleKeyDown: function (event) {
+    var SPACE = 32, RETURN = 13;
+
+    switch (event.keyCode) {
+      case SPACE:
+      case RETURN:
+        event.preventDefault();
+        this.submitWord();
+        break;
+    }
+  },
+
+  submitWord: function () {
+    var input = this.refs["game-input"].getDOMNode()
+      , currentWordIndex = this.state.currentWordIndex;
+
+    value = input.value;
+    console.log("value", value);
+    input.value = "";
+
+    this.setState({
+      currentWordIndex: currentWordIndex + 1
+    })
+  }
+});
+
 Components.JoinGameButton = React.createClass({
   mixins: [Router.Navigation],
 
@@ -25,7 +77,7 @@ Components.JoinGameButton = React.createClass({
 
   joinGame: function (event) {
     event.preventDefault();
-    console.log("join");
+    this.transitionTo("playGame", { gameId: "whatever" });
   }
 });
 

@@ -16,6 +16,7 @@ Meteor.startup(function () {
 
       if (currentUser) {
         subRoutes = [
+          (<Route name="playGame" key="playGame" path="play/:gameId" handler={Views.PlayGame}/>),
           (<DefaultRoute name="default" key="default" handler={Views.Home}/>)
         ];
       }
