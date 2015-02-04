@@ -1,0 +1,2 @@
+Meteor-React Boilerplate
+------------------------

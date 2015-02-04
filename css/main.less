@@ -1,0 +1,16 @@
+@import "custom.bootstrap.import.less";
+@import "custom.bootstrap.mixins.import.less";
+@import "mixins.import.less";
+
+// TRANSITION EVERYTIHNG
+* { .transition(all 0.2s ease-in-out); }
+
+.btn-facebook {
+  .button-variant(@btn-facebook-color; @btn-facebook-bg; @btn-facebook-border);
+}
+
+// BEGIN MAIN
+#main-content {
+  .full-absolute();
+  top: @navbar-height;
+}
