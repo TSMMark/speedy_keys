@@ -11,46 +11,48 @@
 
 // BEGIN MAIN
 #main-content {
-  .full-absolute();
-  top: @navbar-height;
+  padding-top: @navbar-height;
+  padding-bottom: @navbar-height;
 }
 
-.game-word {
-  float: left;
-  font-size: 18px;
-  padding: 0 0.3ex;
-  margin-right: 0.3ex;
-  margin-bottom: 0.9em;
-  color: @gray;
-  border: 1px solid transparent;
-  border-radius: 3px;
-
-  &.valid {
-    color: @brand-success;
-  }
-
-  &.invalid {
-    color: @brand-danger;
-  }
-
-  &.active {
-    color: @text-color;
-    border-color: @text-color;
+.game {
+  .game-word {
+    float: left;
+    font-size: 18px;
+    padding: 0 0.3ex;
+    margin-right: 0.3ex;
+    margin-bottom: 0.9em;
+    color: @gray;
+    border: 1px solid transparent;
+    border-radius: 3px;
 
     &.valid {
       color: @brand-success;
     }
 
     &.invalid {
-      color: @brand-warning;
+      color: @brand-danger;
+    }
+
+    &.active {
+      color: @text-color;
+      border-color: @text-color;
+
+      &.valid {
+        color: @brand-success;
+      }
+
+      &.invalid {
+        color: @brand-warning;
+      }
     }
   }
-}
 
-#game-input {
-  .full-absolute();
-  position: fixed;
-  top: auto;
-  text-align: center;
-  font-size: 24px;
+  #game-input {
+    .full-absolute();
+    position: fixed;
+    top: auto;
+    text-align: center;
+    font-size: 24px;
+  }
 }

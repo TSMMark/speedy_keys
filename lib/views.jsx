@@ -23,7 +23,8 @@ Views.Home = React.createClass({
     return (
       <Components.Container>
         <h1>Welcome to Speedy Keys</h1>
-        <Components.JoinGameButton className="btn btn-primary">
+        <Components.JoinGameButton className="btn btn-primary"
+                                   currentUser={currentUser}>
           Join a Game!
         </Components.JoinGameButton>
       </Components.Container>
@@ -33,6 +34,7 @@ Views.Home = React.createClass({
 
 Views.PlayGame = React.createClass({
   mixins: [Router.State, Router.Navigation],
+  taunts: ["Your Worst Nightmare", "Dr. Smellypants", "Satan", "The Dude"],
 
   render: function () {
     var currentUser = Meteor.user()
@@ -41,18 +43,28 @@ Views.PlayGame = React.createClass({
       , width
       , height;
 
-    // try {
-    //   game = Models.Games.findById(gameId);
-    // } catch (e) {
-    // }
 
-    // if (!game) return (<Views.NotFound/>);
+    try {
+      game = Models.Games.findById(gameId);
+    } catch (e) {
+    }
+
+    console.log("gameId", gameId, game);
+
+    if (!game) return (<Views.NotFound/>);
+
+    console.log(game.props);
 
     return (
       <Components.Container>
-        <h1>Type Away! <small>(The text field is at the bottom)</small></h1>
+        <h1>v.s. {this.opponentName()} (aka {this.randomTaunt()})</h1>
         <div className="row">
-          <div className="col-md-8 col-md-offset-2">
+          <div className="col-sm-6 clearfix">
+            <h2>You</h2>
+            <Components.Game words={this.getWordsList()}/>
+          </div>
+          <div className="col-sm-6 clearfix">
+            <h2>{this.opponentName()}</h2>
             <Components.Game words={this.getWordsList()}/>
           </div>
         </div>
@@ -62,6 +74,14 @@ Views.PlayGame = React.createClass({
 
   getWordsList: function () {
     return words;
+  },
+
+  opponentName: function () {
+    return "Peter Jackson";
+  },
+
+  randomTaunt: function () {
+    return _.sample(this.taunts);
   }
 });
 

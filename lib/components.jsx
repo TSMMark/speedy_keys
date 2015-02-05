@@ -14,7 +14,6 @@ Components.Container = React.createClass({
 });
 
 Components.Game = React.createClass({
-
   getInitialState: function () {
     return {
       currentWordIndex: 0,
@@ -112,8 +111,11 @@ Components.JoinGameButton = React.createClass({
   },
 
   joinGame: function (event) {
+    var self = this;
     event.preventDefault();
-    this.transitionTo("playGame", { gameId: "whatever" });
+    Meteor.call("joinGame", self.props.currentUser, function (error, gameId) {
+      self.transitionTo("playGame", { gameId: gameId });
+    });
   }
 });
 

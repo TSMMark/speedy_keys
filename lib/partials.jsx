@@ -30,7 +30,7 @@ Partials.Navbar = React.createClass({
                   </Link>
                 </li>
                 <li>
-                  <Components.JoinGameButton>
+                  <Components.JoinGameButton currentUser={currentUser}>
                     Join a Game!
                   </Components.JoinGameButton>
                 </li>
