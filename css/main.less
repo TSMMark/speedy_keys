@@ -16,44 +16,50 @@
 }
 
 .game {
-  .clearfix();
+  .input-group {
+    width: 100%;
 
-  .game-word {
-    float: left;
+    #game-input {
+      text-align: center;
+    }
+  }
+
+  .game-words-container {
+    .clearfix();
+
     font-size: 18px;
-    padding: 0 0.3ex;
-    margin-right: 0.3ex;
-    margin-bottom: 0.9em;
-    color: @gray;
-    border: 1px solid transparent;
-    border-radius: 3px;
+    max-height: 9em;
+    overflow: auto;
 
-    &.valid {
-      color: @brand-success;
-    }
-
-    &.invalid {
-      color: @brand-danger;
-    }
-
-    &.active {
-      color: @text-color;
-      border-color: @text-color;
+    .game-word {
+      float: left;
+      padding: 0 0.3ex;
+      margin-right: 0.3ex;
+      margin-bottom: 0.9em;
+      color: @gray;
+      border: 1px solid transparent;
+      border-radius: 3px;
 
       &.valid {
         color: @brand-success;
       }
 
       &.invalid {
-        color: @brand-warning;
+        color: @brand-danger;
+      }
+
+      &.active {
+        color: @text-color;
+        border-color: @text-color;
+
+        &.valid {
+          color: @brand-success;
+        }
+
+        &.invalid {
+          color: @brand-warning;
+        }
       }
     }
-  }
-
-  #game-input {
-    .full-absolute();
-    position: fixed;
-    top: auto;
-    text-align: center;
   }
 }

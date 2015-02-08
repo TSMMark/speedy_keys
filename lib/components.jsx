@@ -36,10 +36,14 @@ Components.Game = React.createClass({
 
     return (
       <div className="game">
-        {words}
-        <input type="text" className="form-control"
-               id="game-input" ref="game-input"
-               onKeyDown={this.handleKeyDown} />
+        <div className="game-words-container">
+          {words}
+        </div>
+        <div className="input-group input-group-lg">
+          <input type="text" className="form-control"
+                 id="game-input" ref="game-input"
+                 onKeyDown={this.handleKeyDown} />
+        </div>
       </div>);
   },
 
