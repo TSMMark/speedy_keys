@@ -1,11 +1,5 @@
 Meteor.publish("games", function () {
-  if (this.userId) {
-    return Collections.Games.find();
-    // return Collections.Games.find({ "playersIds": this.userId });
-  }
-  else {
-    return [];
-  }
+  return Collections.Games.find();
 });
 
 Meteor.publish("users", function () {
@@ -13,18 +7,19 @@ Meteor.publish("users", function () {
 });
 
 Meteor.methods({
-  joinGame: function (playerData) {
-    var gameToJoin = Models.Game.findWaitingFor(playerData._id);
+  joinGame: function (playerId) {
+    var rawPlayer = Collections.Users.findOne(playerId)
+      , gameToJoin = Models.Game.findWaitingFor(playerId);
 
     if (gameToJoin) {
-      gameToJoin.addPlayer(playerData);
-      console.log("Joined a game", gameToJoin);
+      gameToJoin.addPlayerRaw(rawPlayer);
+      console.log("Joined a game", JSON.stringify(gameToJoin.props));
     }
     else {
       gameToJoin = Models.Game.createRaw({
-        "players": [playerData]
+        "players": [rawPlayer]
       });
-      console.log("Created game");
+      console.log("Created game", JSON.stringify(gameToJoin.props));
     }
 
     return gameToJoin.props._id;

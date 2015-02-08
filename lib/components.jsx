@@ -113,7 +113,8 @@ Components.JoinGameButton = React.createClass({
   joinGame: function (event) {
     var self = this;
     event.preventDefault();
-    Meteor.call("joinGame", self.props.currentUser, function (error, gameId) {
+    Meteor.call("joinGame", Meteor.userId(), function (error, gameId) {
+      console.log("Components.JoinGameButton gameId: " + gameId);
       self.transitionTo("playGame", { gameId: gameId });
     });
   }

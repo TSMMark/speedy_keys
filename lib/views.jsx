@@ -18,13 +18,10 @@ Views.App = React.createClass({
 
 Views.Home = React.createClass({
   render: function () {
-    var currentUser = Meteor.user();
-
     return (
       <Components.Container>
         <h1>Welcome to Speedy Keys</h1>
-        <Components.JoinGameButton className="btn btn-primary"
-                                   currentUser={currentUser}>
+        <Components.JoinGameButton className="btn btn-primary">
           Join a Game!
         </Components.JoinGameButton>
       </Components.Container>
@@ -43,17 +40,15 @@ Views.PlayGame = React.createClass({
       , width
       , height;
 
-
     try {
-      game = Models.Games.findById(gameId);
+      game = Models.Game.findById(gameId);
     } catch (e) {
+      if (!(e instanceof Models.MissingRecordError)) throw e;
+      console.log("Game not found: " + gameId, e);
     }
 
-    console.log("gameId", gameId, game);
-
     if (!game) return (<Views.NotFound/>);
-
-    console.log(game.props);
+    if (!game.opponentOf(currentUser._id)) return (<Views.WaitForOpponent/>);
 
     return (
       <Components.Container>
@@ -82,6 +77,49 @@ Views.PlayGame = React.createClass({
 
   randomTaunt: function () {
     return _.sample(this.taunts);
+  }
+});
+
+Views.WaitForOpponent = React.createClass({
+  getDefaultProps: function () {
+    return {
+      maxDots: 10,
+      minDots: 0
+    }
+  },
+
+  getInitialState: function () {
+    return {
+      dots: this.props.minDots
+    }
+  },
+
+  render: function () {
+    var dots = Array(this.state.dots + 1).join(".");
+
+    return (
+      <Components.Container>
+        <h1>
+          Waiting for opponent
+          {dots}
+        </h1>
+      </Components.Container>);
+  },
+
+  incrementDots: function () {
+    var dots = this.state.dots + 1;
+    this.setState({
+      dots: dots > this.props.maxDots ? this.props.minDots : dots
+    });
+  },
+
+  componentDidMount: function () {
+    this.interval = setInterval(this.incrementDots, 1000 / this.props.maxDots);
+  },
+
+  componentWillUnmount: function () {
+    clearInterval(this.interval);
+    this.interval = undefined;
   }
 });
 
