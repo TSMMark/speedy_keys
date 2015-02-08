@@ -1,3 +1,13 @@
+var createGameForPlayer = function (rawPlayer) {
+  var baseWords = "in the beginning were the words and the words made the world".split(" ")
+    , game;
+
+  return Models.Game.createRaw({
+    "players": [rawPlayer],
+    "baseWords": baseWords
+  });
+}
+
 Meteor.publish("games", function () {
   return Collections.Games.find();
 });
@@ -12,6 +22,7 @@ Meteor.methods({
       , gameToJoin = Models.Game.currentLobbyFor(playerId);
 
     if (gameToJoin) {
+      console.log("Already in lobby", JSON.stringify(gameToJoin.props));
       return gameToJoin.props._id;
     }
 
@@ -19,12 +30,12 @@ Meteor.methods({
 
     if (gameToJoin) {
       gameToJoin.addPlayerRaw(rawPlayer);
+      gameToJoin.initializeWords();
+      gameToJoin.save();
       console.log("Joined a game", JSON.stringify(gameToJoin.props));
     }
     else {
-      gameToJoin = Models.Game.createRaw({
-        "players": [rawPlayer]
-      });
+      gameToJoin = createGameForPlayer(rawPlayer);
       console.log("Created game", JSON.stringify(gameToJoin.props));
     }
 

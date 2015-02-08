@@ -20,35 +20,28 @@ Views.PlayGame = React.createClass({
     }
 
     if (!game) return (<Views.NotFound/>);
-    if (!game.opponentOf(currentUser._id)) return (<Views.WaitForOpponent/>);
+
+    var opponent = game.opponentOf(currentUser._id);
+    if (!opponent) return (<Views.WaitForOpponent/>);
 
     return (
       <Components.Container>
-        <h1>v.s. {this.opponentName()} (aka {this.randomTaunt()})</h1>
+        <h1>v.s. {opponent.props.profile.name} (aka Your Worst Nightmare)</h1>
         <div className="row">
           <div className="col-sm-6 clearfix">
             <h2>You</h2>
-            <Components.Game words={this.getWordsList()}/>
+            <Components.Game words={game.wordsFor(currentUser._id)}
+                             playable={true}
+                             onChange={this.userChange} />
           </div>
           <div className="col-sm-6 clearfix">
-            <h2>{this.opponentName()}</h2>
-            <Components.Game words={this.getWordsList()}/>
+            <h2>{opponent.props.profile.name}</h2>
+            <Components.Game words={game.wordsFor(currentUser._id)}
+                             playable={false} />
           </div>
         </div>
       </Components.Container>
     );
-  },
-
-  getWordsList: function () {
-    return words;
-  },
-
-  opponentName: function () {
-    return "Peter Jackson";
-  },
-
-  randomTaunt: function () {
-    return _.sample(this.taunts);
   }
 });
 
