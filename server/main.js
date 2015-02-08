@@ -9,7 +9,13 @@ Meteor.publish("users", function () {
 Meteor.methods({
   joinGame: function (playerId) {
     var rawPlayer = Collections.Users.findOne(playerId)
-      , gameToJoin = Models.Game.findWaitingFor(playerId);
+      , gameToJoin = Models.Game.currentLobbyFor(playerId);
+
+    if (gameToJoin) {
+      return gameToJoin.props._id;
+    }
+
+    gameToJoin = Models.Game.findWaitingFor(playerId);
 
     if (gameToJoin) {
       gameToJoin.addPlayerRaw(rawPlayer);
