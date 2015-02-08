@@ -17,25 +17,40 @@ Components.Game = React.createClass({
                 active: index == self.state.currentWordIndex
               });
           return (<span className={classes} key={index}>{word}</span>);
-        });
+        })
+      , form;
+
+    form = (
+      <div className="input-group input-group-lg">
+        <input type="text" className="form-control"
+               id="game-input" ref="game-input"
+               readOnly={!this.canType()}
+               onKeyDown={this.handleKeyDown} />
+      </div>);
 
     return (
       <div className="game">
         <div className="game-words-container">
           {words}
         </div>
-        <div className="input-group input-group-lg">
-          <input type="text" className="form-control"
-                 id="game-input" ref="game-input"
-                 onKeyDown={this.handleKeyDown} />
-        </div>
+        {form}
       </div>);
+  },
+
+  canType: function () {
+    return this.props.playable &&
+           this.state.currentWordIndex < this.props.words.length;
   },
 
   handleKeyDown: function (event) {
     var SPACE = 32, RETURN = 13
       , self = this
       , currentWordIndex = self.state.currentWordIndex;
+
+    if (!this.canType()) {
+      event.preventDefault();
+      return;
+    }
 
     switch (event.keyCode) {
       case SPACE:
