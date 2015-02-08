@@ -1,6 +1,4 @@
-console.log("Facebook Keys:", ServiceConfiguration.configurations.findOne({
-  service: "facebook"
-}));
+Config = {}
 
 if (process.env.FB_APP_ID && process.env.FB_APP_SECRET) {
   ServiceConfiguration.configurations.remove({

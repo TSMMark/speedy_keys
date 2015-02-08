@@ -3,26 +3,38 @@ words = _.shuffle(words);
 
 Views.PlayGame = React.createClass({
   mixins: [Router.State, Router.Navigation],
-  taunts: ["Your Worst Nightmare", "Dr. Smellypants", "Satan", "The Dude"],
 
   render: function () {
     var currentUser = Meteor.user()
       , gameId = this.getParams().gameId
       , game
-      , width
-      , height;
+      , opponent;
 
     try {
       game = Models.Game.findById(gameId);
     } catch (e) {
       if (!(e instanceof Models.MissingRecordError)) throw e;
-      console.log("Game not found: " + gameId, e);
     }
 
     if (!game) return (<Views.NotFound/>);
 
-    var opponent = game.opponentOf(currentUser._id);
+    opponent = game.opponentOf(currentUser._id);
     if (!opponent) return (<Views.WaitForOpponent/>);
+
+    return (
+      <Views.Game currentUser={Models.User.initRaw(currentUser)}
+                  opponent={opponent}
+                  game={game}/>);
+  }
+});
+
+Views.Game = React.createClass({
+  render: function () {
+    var currentUser = this.props.currentUser
+      , currentUserId = currentUser.props._id
+      , opponent = this.props.opponent
+      , opponentId = opponent.props._id
+      , game = this.props.game;
 
     return (
       <Components.Container>
@@ -30,18 +42,35 @@ Views.PlayGame = React.createClass({
         <div className="row">
           <div className="col-sm-6 clearfix">
             <h2>You</h2>
-            <Components.Game words={game.wordsFor(currentUser._id)}
+            <Components.Game words={game.wordsFor(currentUserId)}
+                             key="currentUserGame"
                              playable={true}
-                             onChange={this.userChange} />
+                             ref="current-user-input"
+                             onChange={this.userChange}
+                             inputValue={game.getInputValueFor(currentUserId)}
+                             currentWordIndex={game.getWordIndexFor(currentUserId)}
+                             wordStatuses={game.getWordStatusesFor(currentUserId)} />
           </div>
           <div className="col-sm-6 clearfix">
             <h2>{opponent.props.profile.name}</h2>
-            <Components.Game words={game.wordsFor(currentUser._id)}
-                             playable={false} />
+            <Components.Game words={game.wordsFor(opponentId)}
+                             key="opponentGame"
+                             playable={false}
+                             inputValue={game.getInputValueFor(opponentId)}
+                             currentWordIndex={game.getWordIndexFor(opponentId)}
+                             wordStatuses={game.getWordStatusesFor(opponentId)} />
           </div>
         </div>
       </Components.Container>
     );
+  },
+
+  userChange: function (value, wordIndex, wordStatuses) {
+    var currentUserId = this.props.currentUser.props._id;
+    this.props.game.setInputValueFor(currentUserId, value);
+    this.props.game.setWordIndexFor(currentUserId, wordIndex);
+    this.props.game.setWordStatusesFor(currentUserId, wordStatuses);
+    this.props.game.save();
   }
 });
 

@@ -1,5 +1,5 @@
 var createGameForPlayer = function (rawPlayer) {
-  var baseWords = "in the beginning were the words and the words made the world".split(" ")
+  var baseWords = _.shuffle(Config.allWords)
     , game;
 
   return Models.Game.createRaw({
