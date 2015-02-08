@@ -33,7 +33,7 @@ Meteor.startup(function () {
       // }
 
       routes = (
-        <Route name="app" path="/" handler={Views.App}>
+        <Route name="app" path="/" handler={Layouts.App}>
           {subRoutes}
         </Route>
       );
