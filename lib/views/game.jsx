@@ -41,7 +41,7 @@ Views.Game = React.createClass({
         <h1>v.s. {opponent.props.profile.name} (aka Your Worst Nightmare)</h1>
         <div className="row">
           <div className="col-sm-6 clearfix">
-            <h2>You</h2>
+            <h2 onClick={this.mockOpponent}>You</h2>
             <Components.Game words={game.wordsFor(currentUserId)}
                              key="currentUserGame"
                              playable={true}
@@ -65,12 +65,19 @@ Views.Game = React.createClass({
     );
   },
 
+  mockOpponent: function (event) {
+    if (confirm("Really mock opponent? (Refresh page to stop)")) {
+      var self = this;
+      setInterval(function () {
+        self.userChange(Math.random(), 0, []);
+      }, 100);
+    }
+  },
+
   userChange: function (value, wordIndex, wordStatuses) {
     var currentUserId = this.props.currentUser.props._id;
-    this.props.game.setInputValueFor(currentUserId, value);
-    this.props.game.setWordIndexFor(currentUserId, wordIndex);
-    this.props.game.setWordStatusesFor(currentUserId, wordStatuses);
-    this.props.game.save();
+    this.props.game.updateGameStateFor(currentUserId,
+      value, wordIndex, wordStatuses);
   }
 });
 

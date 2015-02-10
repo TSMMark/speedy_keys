@@ -19,22 +19,15 @@ var hasModifier = function (event) {
 }
 
 Components.Game = React.createClass({
-  getInitialState: function () {
-    return {
-      currentWordIndex: this.props.currentWordIndex,
-      wordStatuses: this.props.wordStatuses
-    };
-  },
-
   render: function () {
     var self = this
       , words = this.props.words.map(function (word, index) {
-          var satus = self.state.wordStatuses[index]
+          var satus = self.props.wordStatuses[index]
             , classes = cx({
                 "game-word": true,
                 valid: satus === true,
                 invalid: satus === false,
-                active: index == self.state.currentWordIndex
+                active: index == self.props.currentWordIndex
               });
           return (<span className={classes} key={index}>{word}</span>);
         })
@@ -42,8 +35,8 @@ Components.Game = React.createClass({
 
     form = (
       <div className="input-group input-group-lg">
-        <input type="text" className="form-control"
-               id="game-input" ref="game-input"
+        <input type="text" className="form-control game-input"
+               ref="game-input"
                key="game-input"
                readOnly={!this.canType()}
                onKeyDown={this.handleKeyDown}
@@ -72,18 +65,17 @@ Components.Game = React.createClass({
 
   canType: function () {
     return this.props.playable &&
-           this.state.currentWordIndex < this.props.words.length;
+           this.props.currentWordIndex < this.props.words.length;
   },
 
   handleKeyDown: function (event) {
     var self = this
-      , currentWordIndex = self.state.currentWordIndex;
+      , currentWordIndex = self.props.currentWordIndex;
 
     if (!this.canType()) {
       event.preventDefault();
       return;
     }
-
 
     if (isStopKeyCode(event.keyCode)) {
       event.preventDefault();
@@ -94,13 +86,13 @@ Components.Game = React.createClass({
     if (isTypingEvent(event)) {
       setTimeout(function () {
         if (self.isCompleteMatch()) {
-          self.state.wordStatuses[currentWordIndex] = true;
+          self.props.wordStatuses[currentWordIndex] = true;
         }
         else if (!self.isPartialMatch()) {
-          self.state.wordStatuses[currentWordIndex] = false;
+          self.props.wordStatuses[currentWordIndex] = false;
         }
         else {
-          self.state.wordStatuses[currentWordIndex] = undefined;
+          self.props.wordStatuses[currentWordIndex] = undefined;
         }
 
         self.issueChange(currentWordIndex);
@@ -112,7 +104,7 @@ Components.Game = React.createClass({
 
   isPartialMatch: function () {
     var inputValue = this.refs["game-input"].getDOMNode().value.trim()
-      , currentWordIndex = this.state.currentWordIndex
+      , currentWordIndex = this.props.currentWordIndex
       , currentWord = this.props.words[currentWordIndex];
 
     return currentWord.indexOf(inputValue) === 0;
@@ -120,7 +112,7 @@ Components.Game = React.createClass({
 
   isCompleteMatch: function () {
     var inputValue = this.refs["game-input"].getDOMNode().value.trim()
-      , currentWordIndex = this.state.currentWordIndex
+      , currentWordIndex = this.props.currentWordIndex
       , currentWord = this.props.words[currentWordIndex];
 
     return currentWord === inputValue;
@@ -128,23 +120,22 @@ Components.Game = React.createClass({
 
   submitWord: function () {
     var input = this.refs["game-input"].getDOMNode()
-      , currentWordIndex = this.state.currentWordIndex
+      , currentWordIndex = this.props.currentWordIndex
       , valid = this.isCompleteMatch()
 
-    this.state.wordStatuses[currentWordIndex] = valid;
+    this.props.wordStatuses[currentWordIndex] = valid;
     input.value = "";
 
     this.issueChange(currentWordIndex + 1);
   },
 
   issueChange: function (wordIndex) {
-    var value;
     if (this.props.onChange) {
-      value = this.refs["game-input"].getDOMNode().value.trim();
+      var value = this.refs["game-input"].getDOMNode().value.trim();
       this.props.onChange(
         value,
         wordIndex,
-        this.state.wordStatuses
+        this.props.wordStatuses
       );
     }
   }

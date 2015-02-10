@@ -1,5 +1,5 @@
 var createGameForPlayer = function (rawPlayer) {
-  var length = 12
+  var length = 80
     , baseWords = _.first(_.shuffle(Config.allWords), length)
     , game;
 
