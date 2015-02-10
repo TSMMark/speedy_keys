@@ -1,5 +1,6 @@
 var createGameForPlayer = function (rawPlayer) {
-  var baseWords = _.shuffle(Config.allWords)
+  var length = 12
+    , baseWords = _.first(_.shuffle(Config.allWords), length)
     , game;
 
   return Models.Game.createRaw({
