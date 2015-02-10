@@ -1,10 +1,7 @@
 Meteor.startup(function () {
   updateDeps = function () {
-    Collections.Users.find().fetch();
-    Collections.Games.find().fetch();
-
-    Meteor.subscribe("games");
     Meteor.subscribe("users");
+    Meteor.user();
   }
 
   render = function () {
@@ -14,27 +11,11 @@ Meteor.startup(function () {
 
       updateDeps();
 
-      // subRoutes = [
-      //   (<Route name="playGame" key="playGame" path="play/:gameId" handler={Views.PlayGame}/>),
-      //   (<DefaultRoute name="default" key="default" handler={Views.Home}/>)
-      // ];
-
-      if (currentUser) {
-        subRoutes = [
-          (<Route name="playGame" key="playGame" path="play/:gameId" handler={Views.PlayGame}/>),
-          (<DefaultRoute name="default" key="default" handler={Views.Home}/>)
-        ];
-      }
-      else if (missingServiceConfig()) {
-        subRoutes = (<DefaultRoute name="default" key="default" handler={Views.ConfigureServices}/>);
-      }
-      else {
-        subRoutes = (<DefaultRoute name="default" key="default" handler={Views.SignIn}/>);
-      }
-
       routes = (
         <Route name="app" path="/" handler={Layouts.App}>
-          {subRoutes}
+          <Route name="playGame" key="playGame" handler={Views.PlayGame}
+                 path="play/:gameId" />
+          <DefaultRoute name="default" key="default" handler={Views.Home}/>
         </Route>
       );
 
@@ -45,5 +26,6 @@ Meteor.startup(function () {
   }
 
   updateDeps();
+  render();
   Tracker.autorun(render);
 });

@@ -31,6 +31,7 @@ Components.Game = React.createClass({
               });
           return (<span className={classes} key={index}>{word}</span>);
         })
+      , canType = this.canType()
       , form;
 
     form = (
@@ -38,9 +39,10 @@ Components.Game = React.createClass({
         <input type="text" className="form-control game-input"
                ref="game-input"
                key="game-input"
-               readOnly={!this.canType()}
-               onKeyDown={this.handleKeyDown}
-               defaultValue={this.props.inputValue} />
+               readOnly={!canType}
+               onKeyDown={canType ? this.handleKeyDown : undefined}
+               defaultValue={canType ? this.props.inputValue : undefined}
+               value={!canType ? this.props.inputValue : undefined} />
       </div>);
 
     return (
