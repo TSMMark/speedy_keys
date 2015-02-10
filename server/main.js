@@ -1,3 +1,13 @@
+Meteor.publish("games", function () {
+  return Collections.Games.find({
+    playersIds: { $in: [this.userId] }
+  });
+});
+
+Meteor.publish("users", function () {
+  return Collections.Users.find({ _id: this.userId });
+});
+
 var createGameForPlayer = function (rawPlayer) {
   var length = 80
     , baseWords = _.first(_.shuffle(Config.allWords), length)
@@ -8,14 +18,6 @@ var createGameForPlayer = function (rawPlayer) {
     "baseWords": baseWords
   });
 }
-
-Meteor.publish("games", function () {
-  return Collections.Games.find();
-});
-
-Meteor.publish("users", function () {
-  return Collections.Users.find();
-});
 
 Meteor.methods({
   joinGame: function (playerId) {
