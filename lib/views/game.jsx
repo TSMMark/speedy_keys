@@ -18,7 +18,6 @@ Views.Game = React.createClass({
                              ref="current-user-input"
                              onChange={this.userChange}
                              inputValue={game.getInputValueFor(currentUserId)}
-                             currentWordIndex={game.getWordIndexFor(currentUserId)}
                              enteredWords={game.getEnteredWordsFor(currentUserId)} />
           </div>
           <div className="col-sm-6 clearfix">
@@ -27,7 +26,6 @@ Views.Game = React.createClass({
                              key="opponentGame"
                              playable={false}
                              inputValue={game.getInputValueFor(opponentId)}
-                             currentWordIndex={game.getWordIndexFor(opponentId)}
                              enteredWords={game.getEnteredWordsFor(opponentId)} />
           </div>
         </div>
@@ -44,10 +42,10 @@ Views.Game = React.createClass({
     }
   },
 
-  userChange: function (value, wordIndex, enteredWords) {
+  userChange: function (value, enteredWords) {
     var currentUserId = this.props.currentUser.props._id;
     this.props.game.updateGameStateFor(currentUserId,
-      value, wordIndex, enteredWords);
+      value, enteredWords);
   }
 });
 

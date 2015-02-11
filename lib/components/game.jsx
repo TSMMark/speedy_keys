@@ -32,7 +32,7 @@ Components.Game = React.createClass({
   render: function () {
     var self = this
       , inputValue = self.props.inputValue
-      , currentWordIndex = self.props.currentWordIndex
+      , currentWordIndex = self.currentWordIndex()
       , words = this.props.words.map(function (word, index) {
           var active = index === currentWordIndex
             , pending = index > currentWordIndex
@@ -83,43 +83,42 @@ Components.Game = React.createClass({
 
   canType: function () {
     return this.props.playable &&
-           this.props.currentWordIndex < this.props.words.length;
+           this.currentWordIndex() < this.props.words.length;
   },
 
   handleKeyDown: function (event) {
     var self = this
-      , currentWordIndex = self.props.currentWordIndex;
+      , currentWordIndex = self.currentWordIndex();
 
     if (!this.canType()) {
       event.preventDefault();
       return;
     }
 
+    var value = this.inputNode().value.trim();
+
     if (isStopKeyCode(event.keyCode)) {
       event.preventDefault();
-      self.submitWord();
+      if (value) {
+        self.submitWord();
+      }
       return;
     }
 
     if (isTypingEvent(event)) {
-      var newValue = this.inputNode().value.trim();
-
-      if (newValue === this.state.lastInputValue) {
+      if (value === this.state.lastInputValue) {
         return;
       }
 
-      lastInputValue = newValue;
+      lastInputValue = value;
 
-      setTimeout(function () {
-        self.props.enteredWords[currentWordIndex] = newValue;
-        self.issueChange(currentWordIndex);
-      }, 0);
+      setTimeout(this.issueChange, 0);
     }
   },
 
   isPartialMatch: function () {
     var inputValue = this.inputNode().value.trim()
-      , currentWordIndex = this.props.currentWordIndex
+      , currentWordIndex = this.currentWordIndex()
       , currentWord = this.props.words[currentWordIndex];
 
     return isPartialMatch(currentWord, inputValue);
@@ -127,7 +126,7 @@ Components.Game = React.createClass({
 
   isCompleteMatch: function () {
     var inputValue = this.inputNode().value.trim()
-      , currentWordIndex = this.props.currentWordIndex
+      , currentWordIndex = this.currentWordIndex()
       , currentWord = this.props.words[currentWordIndex];
 
     return currentWord === inputValue;
@@ -135,23 +134,26 @@ Components.Game = React.createClass({
 
   submitWord: function () {
     var input = this.inputNode()
-      , currentWordIndex = this.props.currentWordIndex;
+      , currentWordIndex = this.currentWordIndex();
 
     this.props.enteredWords[currentWordIndex] = input.value;
     input.value = "";
 
-    this.issueChange(currentWordIndex + 1);
+    this.issueChange();
   },
 
-  issueChange: function (wordIndex) {
+  issueChange: function () {
     if (this.props.onChange) {
       var value = this.inputNode().value.trim();
       this.props.onChange(
         value,
-        wordIndex,
         this.props.enteredWords
       );
     }
+  },
+
+  currentWordIndex: function () {
+    return this.props.enteredWords.length;
   },
 
   inputNode: function () {
