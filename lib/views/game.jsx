@@ -51,13 +51,7 @@ Views.Game = React.createClass({
         self.handleInputValueChange(Math.random());
       }, 100);
     }
-  },
-
-  // userChange: function (value, enteredWords) {
-  //   var currentUserId = this.props.currentUser.props._id;
-  //   this.props.game.updateGameStateFor(currentUserId,
-  //     value, enteredWords);
-  // }
+  }
 });
 
 Views.WaitForOpponent = React.createClass({

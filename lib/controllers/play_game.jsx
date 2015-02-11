@@ -36,6 +36,6 @@ Controllers.PlayGame = React.createClass({
       <Views.Game currentUser={Models.User.initRaw(currentUser)}
                   opponent={this.state.opponent}
                   game={game}
-                  key="game"/>);
+                  key={"game:" + gameId}/>);
   }
 });
