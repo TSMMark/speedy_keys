@@ -18,16 +18,32 @@ var hasModifier = function (event) {
   return event.ctrlKey || event.altKey || event.metaKey;
 }
 
+var isPartialMatch = function (wholeWord, partialWord) {
+  return wholeWord.indexOf(partialWord) === 0;
+}
+
 Components.Game = React.createClass({
+  getInitialState: function () {
+    return {
+      lastInputValue: undefined
+    }
+  },
+
   render: function () {
     var self = this
+      , inputValue = self.props.inputValue
+      , currentWordIndex = self.currentWordIndex()
       , words = this.props.words.map(function (word, index) {
-          var satus = self.props.wordStatuses[index]
+          var active = index === currentWordIndex
+            , pending = index > currentWordIndex
+            , enteredWord = active ? inputValue : self.props.enteredWords[index]
+            , fullMatch = enteredWord === word
+            , invalid = active ? !isPartialMatch(word, enteredWord) : !fullMatch
             , classes = cx({
                 "game-word": true,
-                valid: satus === true,
-                invalid: satus === false,
-                active: index == self.props.currentWordIndex
+                valid: fullMatch === true,
+                invalid: !pending && invalid,
+                active: active
               });
           return (<span className={classes} key={index}>{word}</span>);
         })
@@ -48,7 +64,9 @@ Components.Game = React.createClass({
     return (
       <div className="game">
         <div className="game-words-container">
-          {words}
+          <ReactCSSTransitionGroup transitionName="game-word">
+            {words}
+          </ReactCSSTransitionGroup>
         </div>
         {form}
       </div>);
@@ -67,79 +85,85 @@ Components.Game = React.createClass({
 
   canType: function () {
     return this.props.playable &&
-           this.props.currentWordIndex < this.props.words.length;
+           this.currentWordIndex() < this.props.words.length;
   },
 
   handleKeyDown: function (event) {
     var self = this
-      , currentWordIndex = self.props.currentWordIndex;
+      , currentWordIndex = self.currentWordIndex();
 
     if (!this.canType()) {
       event.preventDefault();
       return;
     }
 
+    var value = this.inputNode().value.trim();
+
     if (isStopKeyCode(event.keyCode)) {
       event.preventDefault();
-      self.submitWord();
+      if (value) {
+        self.submitWord();
+      }
       return;
     }
 
     if (isTypingEvent(event)) {
-      setTimeout(function () {
-        if (self.isCompleteMatch()) {
-          self.props.wordStatuses[currentWordIndex] = true;
-        }
-        else if (!self.isPartialMatch()) {
-          self.props.wordStatuses[currentWordIndex] = false;
-        }
-        else {
-          self.props.wordStatuses[currentWordIndex] = undefined;
-        }
+      if (value === this.state.lastInputValue) {
+        return;
+      }
 
-        self.issueChange(currentWordIndex);
-      }, 0);
+      lastInputValue = value;
 
-      return;
+      setTimeout(this.handleInputValueChange, 0);
     }
   },
 
   isPartialMatch: function () {
     var inputValue = this.inputNode().value.trim()
-      , currentWordIndex = this.props.currentWordIndex
+      , currentWordIndex = this.currentWordIndex()
       , currentWord = this.props.words[currentWordIndex];
 
-    return currentWord.indexOf(inputValue) === 0;
+    return isPartialMatch(currentWord, inputValue);
   },
 
   isCompleteMatch: function () {
     var inputValue = this.inputNode().value.trim()
-      , currentWordIndex = this.props.currentWordIndex
+      , currentWordIndex = this.currentWordIndex()
       , currentWord = this.props.words[currentWordIndex];
 
     return currentWord === inputValue;
   },
 
-  submitWord: function () {
-    var input = this.inputNode()
-      , currentWordIndex = this.props.currentWordIndex
-      , valid = this.isCompleteMatch();
+  handleInputValueChange: function () {
+    if (!this.props.onInputValueChange) return;
 
-    this.props.wordStatuses[currentWordIndex] = valid;
-    input.value = "";
-
-    this.issueChange(currentWordIndex + 1);
+    var value = this.inputNode().value.trim();
+    this.props.onInputValueChange(value);
   },
 
-  issueChange: function (wordIndex) {
+  submitWord: function () {
+    if (!this.props.onSubmitWord) return;
+
+    var input = this.inputNode()
+      , value = input.value.trim();
+
+    input.value = "";
+
+    this.props.onSubmitWord(value);
+  },
+
+  issueChange: function () {
     if (this.props.onChange) {
       var value = this.inputNode().value.trim();
       this.props.onChange(
         value,
-        wordIndex,
-        this.props.wordStatuses
+        this.props.enteredWords
       );
     }
+  },
+
+  currentWordIndex: function () {
+    return this.props.enteredWords.length;
   },
 
   inputNode: function () {

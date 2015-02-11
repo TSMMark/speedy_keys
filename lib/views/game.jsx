@@ -16,10 +16,10 @@ Views.Game = React.createClass({
                              key="currentUserGame"
                              playable={true}
                              ref="current-user-input"
-                             onChange={this.userChange}
+                             onInputValueChange={this.handleInputValueChange}
+                             onSubmitWord={this.handleSubmitWord}
                              inputValue={game.getInputValueFor(currentUserId)}
-                             currentWordIndex={game.getWordIndexFor(currentUserId)}
-                             wordStatuses={game.getWordStatusesFor(currentUserId)} />
+                             enteredWords={game.getEnteredWordsFor(currentUserId)} />
           </div>
           <div className="col-sm-6 clearfix">
             <h2>{opponent.props.profile.name}</h2>
@@ -27,28 +27,37 @@ Views.Game = React.createClass({
                              key="opponentGame"
                              playable={false}
                              inputValue={game.getInputValueFor(opponentId)}
-                             currentWordIndex={game.getWordIndexFor(opponentId)}
-                             wordStatuses={game.getWordStatusesFor(opponentId)} />
+                             enteredWords={game.getEnteredWordsFor(opponentId)} />
           </div>
         </div>
       </Components.Container>
     );
   },
 
+  handleInputValueChange: function (value) {
+    var currentUserId = this.props.currentUser.props._id;
+    this.props.game.setInputValueFor(currentUserId, value);
+  },
+
+  handleSubmitWord: function (value) {
+    var currentUserId = this.props.currentUser.props._id;
+    this.props.game.submitWordFor(currentUserId, value);
+  },
+
   mockOpponent: function (event) {
     if (confirm("Really mock opponent? (Refresh page to stop)")) {
       var self = this;
       setInterval(function () {
-        self.userChange(Math.random(), 0, []);
+        self.handleInputValueChange(Math.random());
       }, 100);
     }
   },
 
-  userChange: function (value, wordIndex, wordStatuses) {
-    var currentUserId = this.props.currentUser.props._id;
-    this.props.game.updateGameStateFor(currentUserId,
-      value, wordIndex, wordStatuses);
-  }
+  // userChange: function (value, enteredWords) {
+  //   var currentUserId = this.props.currentUser.props._id;
+  //   this.props.game.updateGameStateFor(currentUserId,
+  //     value, enteredWords);
+  // }
 });
 
 Views.WaitForOpponent = React.createClass({

@@ -9,8 +9,8 @@ Meteor.publish("users", function () {
 });
 
 var createGameForPlayer = function (rawPlayer) {
-  var length = 42
-    , baseWords = _.first(_.shuffle(Config.allWords), length)
+  var count = 42
+    , baseWords = Models.Game.getRandomWords(count)
     , game;
 
   return Models.Game.createRaw({
