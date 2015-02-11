@@ -18,16 +18,32 @@ var hasModifier = function (event) {
   return event.ctrlKey || event.altKey || event.metaKey;
 }
 
+var isPartialMatch = function (wholeWord, partialWord) {
+  return wholeWord.indexOf(partialWord) === 0;
+}
+
 Components.Game = React.createClass({
+  getInitialState: function () {
+    return {
+      lastInputValue: undefined
+    }
+  },
+
   render: function () {
     var self = this
+      , inputValue = self.props.inputValue
+      , currentWordIndex = self.props.currentWordIndex
       , words = this.props.words.map(function (word, index) {
-          var satus = self.props.wordStatuses[index]
+          var active = index === currentWordIndex
+            , pending = index > currentWordIndex
+            , enteredWord = active ? inputValue : self.props.enteredWords[index]
+            , fullMatch = enteredWord === word
+            , invalid = active ? !isPartialMatch(word, enteredWord) : !fullMatch
             , classes = cx({
                 "game-word": true,
-                valid: satus === true,
-                invalid: satus === false,
-                active: index == self.props.currentWordIndex
+                valid: fullMatch === true,
+                invalid: !pending && invalid,
+                active: active
               });
           return (<span className={classes} key={index}>{word}</span>);
         })
@@ -86,21 +102,18 @@ Components.Game = React.createClass({
     }
 
     if (isTypingEvent(event)) {
-      setTimeout(function () {
-        if (self.isCompleteMatch()) {
-          self.props.wordStatuses[currentWordIndex] = true;
-        }
-        else if (!self.isPartialMatch()) {
-          self.props.wordStatuses[currentWordIndex] = false;
-        }
-        else {
-          self.props.wordStatuses[currentWordIndex] = undefined;
-        }
+      var newValue = this.inputNode().value.trim();
 
+      if (newValue === this.state.lastInputValue) {
+        return;
+      }
+
+      lastInputValue = newValue;
+
+      setTimeout(function () {
+        self.props.enteredWords[currentWordIndex] = newValue;
         self.issueChange(currentWordIndex);
       }, 0);
-
-      return;
     }
   },
 
@@ -109,7 +122,7 @@ Components.Game = React.createClass({
       , currentWordIndex = this.props.currentWordIndex
       , currentWord = this.props.words[currentWordIndex];
 
-    return currentWord.indexOf(inputValue) === 0;
+    return isPartialMatch(currentWord, inputValue);
   },
 
   isCompleteMatch: function () {
@@ -122,10 +135,9 @@ Components.Game = React.createClass({
 
   submitWord: function () {
     var input = this.inputNode()
-      , currentWordIndex = this.props.currentWordIndex
-      , valid = this.isCompleteMatch();
+      , currentWordIndex = this.props.currentWordIndex;
 
-    this.props.wordStatuses[currentWordIndex] = valid;
+    this.props.enteredWords[currentWordIndex] = input.value;
     input.value = "";
 
     this.issueChange(currentWordIndex + 1);
@@ -137,7 +149,7 @@ Components.Game = React.createClass({
       this.props.onChange(
         value,
         wordIndex,
-        this.props.wordStatuses
+        this.props.enteredWords
       );
     }
   },
