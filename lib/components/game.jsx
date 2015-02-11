@@ -112,7 +112,7 @@ Components.Game = React.createClass({
 
       lastInputValue = value;
 
-      setTimeout(this.issueChange, 0);
+      setTimeout(this.handleInputValueChange, 0);
     }
   },
 
@@ -132,14 +132,22 @@ Components.Game = React.createClass({
     return currentWord === inputValue;
   },
 
-  submitWord: function () {
-    var input = this.inputNode()
-      , currentWordIndex = this.currentWordIndex();
+  handleInputValueChange: function () {
+    if (!this.props.onInputValueChange) return;
 
-    this.props.enteredWords[currentWordIndex] = input.value;
+    var value = this.inputNode().value.trim();
+    this.props.onInputValueChange(value);
+  },
+
+  submitWord: function () {
+    if (!this.props.onSubmitWord) return;
+
+    var input = this.inputNode()
+      , value = input.value.trim();
+
     input.value = "";
 
-    this.issueChange();
+    this.props.onSubmitWord(value);
   },
 
   issueChange: function () {
