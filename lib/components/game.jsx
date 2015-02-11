@@ -45,7 +45,12 @@ Components.Game = React.createClass({
                 invalid: !pending && invalid,
                 active: active
               });
-          return (<span className={classes} key={index}>{word}</span>);
+
+          return (
+            <span className={classes} key={index}
+                  ref={active ? "active-word" : undefined}>
+              {word}
+            </span>);
         })
       , canType = this.canType()
       , form;
@@ -63,7 +68,7 @@ Components.Game = React.createClass({
 
     return (
       <div className="game">
-        <div className="game-words-container">
+        <div className="game-words-container" ref="container">
           <ReactCSSTransitionGroup transitionName="game-word">
             {words}
           </ReactCSSTransitionGroup>
@@ -73,6 +78,12 @@ Components.Game = React.createClass({
   },
 
   componentDidMount: function () {
+    this.scrollText();
+
+    if (!this.props.playable) {
+      this.interval = setInterval(this.scrollText, 400);
+    }
+
     if (!this.canType()) return;
 
     var input = this.inputNode()
@@ -81,6 +92,31 @@ Components.Game = React.createClass({
     input.focus();
     input.value = "";
     input.value = value;
+  },
+
+  componentWillUnmount: function () {
+    clearInterval(this.interval);
+    this.stopScrollAnimation();
+  },
+
+  scrollText: function () {
+    var $activeWord = $(this.refs["active-word"].getDOMNode())
+      , $container = $(this.refs["container"].getDOMNode())
+      , currentScrollTop = $container.scrollTop()
+      , wordTop = $activeWord.position().top
+      , lineHeight = $activeWord.outerHeight(true)
+      , newScrollTop = currentScrollTop + wordTop - lineHeight;
+
+    if (Math.abs(newScrollTop - currentScrollTop) < 1) return;
+
+    this.stopScrollAnimation();
+    this.scrollAnimation = $container.animate({ scrollTop: newScrollTop }, 400);
+  },
+
+  stopScrollAnimation: function () {
+    if (this.scrollAnimation) {
+      this.scrollAnimation.stop(true, false);
+    }
   },
 
   canType: function () {
@@ -150,6 +186,8 @@ Components.Game = React.createClass({
     input.value = "";
 
     this.props.onSubmitWord(value);
+
+    setTimeout(this.scrollText, 0);
   },
 
   issueChange: function () {
