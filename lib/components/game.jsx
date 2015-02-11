@@ -64,7 +64,9 @@ Components.Game = React.createClass({
     return (
       <div className="game">
         <div className="game-words-container">
-          {words}
+          <ReactCSSTransitionGroup transitionName="game-word">
+            {words}
+          </ReactCSSTransitionGroup>
         </div>
         {form}
       </div>);

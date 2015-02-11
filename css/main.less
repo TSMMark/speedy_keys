@@ -3,7 +3,7 @@
 @import "mixins.import.less";
 
 // TRANSITION EVERYTIHNG
-* { .transition(all 50ms ease-in-out); }
+* { .transition(all 175ms ease-in-out); }
 
 .btn-facebook {
   .button-variant(@btn-facebook-color; @btn-facebook-bg; @btn-facebook-border);
@@ -58,6 +58,15 @@
 
         &.invalid {
           color: @brand-warning;
+        }
+      }
+
+      &.game-word-enter {
+        opacity: 0.01;
+        .transition(opacity 250ms ease-in);
+
+        &.game-word-enter-active {
+          opacity: 1;
         }
       }
     }
