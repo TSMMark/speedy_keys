@@ -9,7 +9,7 @@ Meteor.publish("users", function () {
 });
 
 var createGameForPlayer = function (rawPlayer) {
-  var length = 80
+  var length = 42
     , baseWords = _.first(_.shuffle(Config.allWords), length)
     , game;
 
@@ -25,7 +25,6 @@ Meteor.methods({
       , gameToJoin = Models.Game.currentLobbyFor(playerId);
 
     if (gameToJoin) {
-      console.log("Already in lobby", JSON.stringify(gameToJoin.props));
       return gameToJoin.props._id;
     }
 
@@ -35,11 +34,9 @@ Meteor.methods({
       gameToJoin.addPlayerRaw(rawPlayer);
       gameToJoin.initializeWords();
       gameToJoin.save();
-      console.log("Joined a game", JSON.stringify(gameToJoin.props));
     }
     else {
       gameToJoin = createGameForPlayer(rawPlayer);
-      console.log("Created game", JSON.stringify(gameToJoin.props));
     }
 
     return gameToJoin.props._id;

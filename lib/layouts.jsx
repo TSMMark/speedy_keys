@@ -4,8 +4,8 @@ Layouts.App = React.createClass({
   render: function () {
     var content;
 
-    if (Meteor.user()) {
-      content = <RouteHandler/>;
+    if (this.props.currentUser) {
+      content = <RouteHandler currentUser={this.props.currentUser}/>;
     }
     else if (missingServiceConfig()) {
       content = <Views.ConfigureServices/>;
