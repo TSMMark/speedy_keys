@@ -57,7 +57,7 @@ Components.Game = React.createClass({
   componentDidMount: function () {
     if (!this.canType()) return;
 
-    var input = this.refs["game-input"].getDOMNode()
+    var input = this.inputNode()
       , value = input.value;
 
     input.focus();
@@ -105,7 +105,7 @@ Components.Game = React.createClass({
   },
 
   isPartialMatch: function () {
-    var inputValue = this.refs["game-input"].getDOMNode().value.trim()
+    var inputValue = this.inputNode().value.trim()
       , currentWordIndex = this.props.currentWordIndex
       , currentWord = this.props.words[currentWordIndex];
 
@@ -113,7 +113,7 @@ Components.Game = React.createClass({
   },
 
   isCompleteMatch: function () {
-    var inputValue = this.refs["game-input"].getDOMNode().value.trim()
+    var inputValue = this.inputNode().value.trim()
       , currentWordIndex = this.props.currentWordIndex
       , currentWord = this.props.words[currentWordIndex];
 
@@ -121,9 +121,9 @@ Components.Game = React.createClass({
   },
 
   submitWord: function () {
-    var input = this.refs["game-input"].getDOMNode()
+    var input = this.inputNode()
       , currentWordIndex = this.props.currentWordIndex
-      , valid = this.isCompleteMatch()
+      , valid = this.isCompleteMatch();
 
     this.props.wordStatuses[currentWordIndex] = valid;
     input.value = "";
@@ -133,12 +133,16 @@ Components.Game = React.createClass({
 
   issueChange: function (wordIndex) {
     if (this.props.onChange) {
-      var value = this.refs["game-input"].getDOMNode().value.trim();
+      var value = this.inputNode().value.trim();
       this.props.onChange(
         value,
         wordIndex,
         this.props.wordStatuses
       );
     }
+  },
+
+  inputNode: function () {
+    return this.refs["game-input"].getDOMNode();
   }
 });
