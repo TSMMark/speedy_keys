@@ -100,7 +100,11 @@ Components.Game = React.createClass({
   },
 
   scrollText: function () {
-    var $activeWord = $(this.refs["active-word"].getDOMNode())
+    var activeWordRef = this.refs["active-word"];
+
+    if (!activeWordRef) return;
+
+    var $activeWord = $(activeWordRef.getDOMNode())
       , $container = $(this.refs["container"].getDOMNode())
       , currentScrollTop = $container.scrollTop()
       , wordTop = $activeWord.position().top

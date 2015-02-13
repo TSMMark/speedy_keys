@@ -1,6 +1,12 @@
 Components.Container = React.createClass({
   render: function () {
-    return (<div className="container">
+    var classes = {
+      "container": true
+    }
+
+    classes[this.props.className] = true;
+
+    return (<div className={cx(classes)}>
               {this.props.children}
             </div>);
   }

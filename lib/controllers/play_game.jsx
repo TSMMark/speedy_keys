@@ -55,6 +55,7 @@ Controllers.PlayGame = React.createClass({
         <Views.Game currentUser={Models.User.initRaw(currentUser)}
                     opponent={this.state.opponent}
                     game={game}
+                    mobile={this.props.mobile}
                     key={"game:" + gameId}/>
         {overlay}
       </div>);

@@ -78,6 +78,12 @@
   }
 }
 
+.game-container {
+  > h1 {
+    white-space: nowrap;
+  }
+}
+
 .game {
   .input-group {
     width: 100%;
@@ -88,11 +94,15 @@
   }
 
   .game-words-container {
+    @line-height: 44px;
+
     .clearfix();
     position: relative;
     font-size: 18px;
-    max-height: 21em;
+    max-height: @line-height * 4;
     overflow: auto;
+
+    border-top: 1px solid @well-border;
 
     .game-word {
       float: left;
