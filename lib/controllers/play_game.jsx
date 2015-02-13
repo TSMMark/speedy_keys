@@ -12,10 +12,14 @@ Controllers.PlayGame = React.createClass({
       , game = Models.Game.findById(gameId)
       , currentUserId = this.props.currentUser._id;
 
+    var countdown = game ? game.props.countdownSeconds
+                         : Models.Game.STARTING_COUNTDOWN
+
     return {
       gameId: gameId,
       game: game,
-      opponent: game && game.opponentOf(currentUserId)
+      opponent: game && game.opponentOf(currentUserId),
+      countdown: countdown
     };
   },
 
@@ -32,10 +36,27 @@ Controllers.PlayGame = React.createClass({
       return (<Views.WaitForOpponent key="waiting"/>);
     }
 
+    var maxCount = Models.Game.STARTING_COUNTDOWN
+      , maxTransparency = 0.7
+      , rate = maxTransparency / maxCount
+      , overlayAlpha = 1 - ((maxCount - this.state.countdown) * rate)
+      , overlay;
+
+    if (this.state.countdown > 0) {
+      overlay = (
+        <Components.Overlay className="countdown-overlay"
+                            alpha={overlayAlpha}>
+          {this.state.countdown}
+        </Components.Overlay>);
+    }
+
     return (
-      <Views.Game currentUser={Models.User.initRaw(currentUser)}
-                  opponent={this.state.opponent}
-                  game={game}
-                  key={"game:" + gameId}/>);
+      <div>
+        <Views.Game currentUser={Models.User.initRaw(currentUser)}
+                    opponent={this.state.opponent}
+                    game={game}
+                    key={"game:" + gameId}/>
+        {overlay}
+      </div>);
   }
 });

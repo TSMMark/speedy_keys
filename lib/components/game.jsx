@@ -29,6 +29,28 @@ Components.Game = React.createClass({
     }
   },
 
+  componentDidMount: function () {
+    this.scrollText();
+
+    if (!this.props.playable) {
+      this.interval = setInterval(this.scrollText, 400);
+    }
+
+    if (!this.canType()) return;
+
+    var input = this.inputNode()
+      , value = input.value;
+
+    input.focus();
+    input.value = "";
+    input.value = value;
+  },
+
+  componentWillUnmount: function () {
+    clearInterval(this.interval);
+    this.stopScrollAnimation();
+  },
+
   render: function () {
     var self = this
       , inputValue = self.props.inputValue
@@ -75,28 +97,6 @@ Components.Game = React.createClass({
         </div>
         {form}
       </div>);
-  },
-
-  componentDidMount: function () {
-    this.scrollText();
-
-    if (!this.props.playable) {
-      this.interval = setInterval(this.scrollText, 400);
-    }
-
-    if (!this.canType()) return;
-
-    var input = this.inputNode()
-      , value = input.value;
-
-    input.focus();
-    input.value = "";
-    input.value = value;
-  },
-
-  componentWillUnmount: function () {
-    clearInterval(this.interval);
-    this.stopScrollAnimation();
   },
 
   scrollText: function () {

@@ -19,6 +19,17 @@ var createGameForPlayer = function (rawPlayer) {
   });
 }
 
+var beginCountdown = function (game) {
+  var countdown = Models.Game.STARTING_COUNTDOWN
+    , callback = Meteor.bindEnvironment(function () {
+        countdown -= 1;
+        console.log("countdownSeconds:", countdown)
+        game.setCountdownSeconds(countdown);
+        if (countdown == 0) clearInterval(interval);
+      })
+    , interval = setInterval(callback, 1000);
+}
+
 Meteor.methods({
   joinGame: function (playerId) {
     var rawPlayer = Collections.Users.findOne(playerId)
@@ -34,6 +45,7 @@ Meteor.methods({
       gameToJoin.addPlayerRaw(rawPlayer);
       gameToJoin.initializeWords();
       gameToJoin.save();
+      beginCountdown(gameToJoin);
     }
     else {
       gameToJoin = createGameForPlayer(rawPlayer);
