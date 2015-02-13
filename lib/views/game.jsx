@@ -75,8 +75,10 @@ Views.WaitForOpponent = React.createClass({
       <Components.Container>
         <h1>
           Waiting for opponent
-          {dots}
         </h1>
+        <div className="game-of-life-wrapper">
+          <GameOfLife begin={true}/>
+        </div>
       </Components.Container>);
   },
 
