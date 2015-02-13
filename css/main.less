@@ -46,7 +46,7 @@
 
 .overlay-container {
   position: fixed;
-  z-index: 999;
+  z-index: 999999;
   top: 0;
   right: 0;
   bottom: 0;
@@ -66,15 +66,31 @@
   .transition(background 1s linear);
 
   .overlay-content {
-    @font-size: 300px;
-    font-size: @font-size;
-    height: @font-size;
-    margin-top: -@font-size;
-
     position: absolute;
     right: 0;
     left: 0;
     top: 50%;
+    @header-size: 230px;
+    height: @header-size;
+    margin-top: -@header-size / 2;
+
+    h1, h2 {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: @header-size;
+    }
+  }
+}
+
+.game-container {
+  > h1 {
+    .text-overflow();
+
+    .mobile & {
+      font-size: @font-size-h2;
+    }
   }
 }
 
@@ -88,11 +104,20 @@
   }
 
   .game-words-container {
+    @line-height: 42px;
+
     .clearfix();
     position: relative;
     font-size: 18px;
-    max-height: 21em;
+    border-top: 1px solid @well-border;
+
+    max-height: @line-height * 6;
     overflow: auto;
+
+    .mobile & {
+      max-height: @line-height * 3;
+      overflow: hidden;
+    }
 
     .game-word {
       float: left;
@@ -134,4 +159,9 @@
       }
     }
   }
+}
+
+// mobile
+@media (max-width: @screen-sm) {
+
 }

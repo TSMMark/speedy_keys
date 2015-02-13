@@ -23,6 +23,12 @@ var isPartialMatch = function (wholeWord, partialWord) {
 }
 
 Components.Game = React.createClass({
+  getDefaultProps: function () {
+    return {
+      ready: false
+    }
+  },
+
   getInitialState: function () {
     return {
       lastInputValue: undefined
@@ -36,6 +42,20 @@ Components.Game = React.createClass({
       this.interval = setInterval(this.scrollText, 400);
     }
 
+    this.focusInput();
+  },
+
+  componentDidUpdate: function () {
+    this.focusInput();
+  },
+
+  componentWillUnmount: function () {
+    clearInterval(this.interval);
+    this.stopScrollText();
+    this.stopScrollScreen();
+  },
+
+  focusInput: _.throttle(function () {
     if (!this.canType()) return;
 
     var input = this.inputNode()
@@ -44,12 +64,9 @@ Components.Game = React.createClass({
     input.focus();
     input.value = "";
     input.value = value;
-  },
 
-  componentWillUnmount: function () {
-    clearInterval(this.interval);
-    this.stopScrollAnimation();
-  },
+    this.scrollScreen();
+  }, 200),
 
   render: function () {
     var self = this
@@ -84,12 +101,13 @@ Components.Game = React.createClass({
                key="game-input"
                readOnly={!canType}
                onKeyDown={canType ? this.handleKeyDown : undefined}
+               onFocus={canType ? this.scrollScreen : undefined}
                defaultValue={canType ? this.props.inputValue : undefined}
                value={!canType ? this.props.inputValue : undefined} />
       </div>);
 
     return (
-      <div className="game">
+      <div className="game" ref="game">
         <div className="game-words-container" ref="container">
           <ReactCSSTransitionGroup transitionName="game-word">
             {words}
@@ -100,7 +118,11 @@ Components.Game = React.createClass({
   },
 
   scrollText: function () {
-    var $activeWord = $(this.refs["active-word"].getDOMNode())
+    var activeWordRef = this.refs["active-word"];
+
+    if (!activeWordRef) return;
+
+    var $activeWord = $(activeWordRef.getDOMNode())
       , $container = $(this.refs["container"].getDOMNode())
       , currentScrollTop = $container.scrollTop()
       , wordTop = $activeWord.position().top
@@ -109,18 +131,41 @@ Components.Game = React.createClass({
 
     if (Math.abs(newScrollTop - currentScrollTop) < 1) return;
 
-    this.stopScrollAnimation();
-    this.scrollAnimation = $container.animate({ scrollTop: newScrollTop }, 400);
+    this.stopScrollText();
+    this.scrollTextAnimation = $container.animate({ scrollTop: newScrollTop }, 400);
   },
 
-  stopScrollAnimation: function () {
-    if (this.scrollAnimation) {
-      this.scrollAnimation.stop(true, false);
+  stopScrollText: function () {
+    if (this.scrollTextAnimation) {
+      this.scrollTextAnimation.stop(true, false);
+    }
+  },
+
+  scrollScreen: function () {
+    var $window = $(window)
+      , $htmlBody = $("html, body")
+      , currentScrollTop = $window.scrollTop()
+      , $game = $(this.refs["game"].getDOMNode())
+      , gameTop = $game.offset().top
+      , gameBottom = gameTop + $game.outerHeight(true)
+      , windowHeight = window.innerHeight
+      , newScrollTop = gameBottom - windowHeight + 3;
+
+    if (Math.abs(newScrollTop - currentScrollTop) < 1) return;
+
+    this.stopScrollScreen();
+    this.scrollScreenAnimation = $htmlBody.animate({ scrollTop: newScrollTop }, 400);
+  },
+
+  stopScrollScreen: function () {
+    if (this.scrollScreenAnimation) {
+      this.scrollScreenAnimation.stop(true, false);
     }
   },
 
   canType: function () {
-    return this.props.playable &&
+    return this.props.ready &&
+           this.props.playable &&
            this.currentWordIndex() < this.props.words.length;
   },
 
