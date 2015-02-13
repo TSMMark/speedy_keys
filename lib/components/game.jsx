@@ -51,10 +51,11 @@ Components.Game = React.createClass({
 
   componentWillUnmount: function () {
     clearInterval(this.interval);
-    this.stopScrollAnimation();
+    this.stopScrollText();
+    this.stopScrollScreen();
   },
 
-  focusInput: function () {
+  focusInput: _.throttle(function () {
     if (!this.canType()) return;
 
     var input = this.inputNode()
@@ -63,7 +64,9 @@ Components.Game = React.createClass({
     input.focus();
     input.value = "";
     input.value = value;
-  },
+
+    this.scrollScreen();
+  }, 200),
 
   render: function () {
     var self = this
@@ -127,13 +130,33 @@ Components.Game = React.createClass({
 
     if (Math.abs(newScrollTop - currentScrollTop) < 1) return;
 
-    this.stopScrollAnimation();
-    this.scrollAnimation = $container.animate({ scrollTop: newScrollTop }, 400);
+    this.stopScrollText();
+    this.scrollTextAnimation = $container.animate({ scrollTop: newScrollTop }, 400);
   },
 
-  stopScrollAnimation: function () {
-    if (this.scrollAnimation) {
-      this.scrollAnimation.stop(true, false);
+  stopScrollText: function () {
+    if (this.scrollTextAnimation) {
+      this.scrollTextAnimation.stop(true, false);
+    }
+  },
+
+  scrollScreen: function () {
+    var $window = $(window)
+      , $htmlBody = $("html, body")
+      , $container = $(this.refs["container"].getDOMNode())
+      , currentScrollTop = $window.scrollTop()
+      , containerTop = $container.offset().top
+      , newScrollTop = containerTop;
+
+    if (Math.abs(newScrollTop - currentScrollTop) < 1) return;
+
+    this.stopScrollScreen();
+    this.scrollScreenAnimation = $htmlBody.animate({ scrollTop: newScrollTop }, 400);
+  },
+
+  stopScrollScreen: function () {
+    if (this.scrollScreenAnimation) {
+      this.scrollScreenAnimation.stop(true, false);
     }
   },
 
