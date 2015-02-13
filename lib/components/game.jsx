@@ -107,7 +107,7 @@ Components.Game = React.createClass({
       </div>);
 
     return (
-      <div className="game">
+      <div className="game" ref="game">
         <div className="game-words-container" ref="container">
           <ReactCSSTransitionGroup transitionName="game-word">
             {words}
@@ -144,10 +144,12 @@ Components.Game = React.createClass({
   scrollScreen: function () {
     var $window = $(window)
       , $htmlBody = $("html, body")
-      , $container = $(this.refs["container"].getDOMNode())
       , currentScrollTop = $window.scrollTop()
-      , containerTop = $container.offset().top
-      , newScrollTop = containerTop;
+      , $game = $(this.refs["game"].getDOMNode())
+      , gameTop = $game.offset().top
+      , gameBottom = gameTop + $game.outerHeight(true)
+      , windowHeight = window.innerHeight
+      , newScrollTop = gameBottom - windowHeight + 3;
 
     if (Math.abs(newScrollTop - currentScrollTop) < 1) return;
 
