@@ -8,7 +8,10 @@ Layouts.App = React.createClass({
   },
 
   render: function () {
-    var content;
+    var content
+      , classes = {
+          mobile: this.state.mobile
+        };
 
     if (this.props.currentUser) {
       content = <RouteHandler currentUser={this.props.currentUser}
@@ -22,7 +25,7 @@ Layouts.App = React.createClass({
     }
 
     return (
-      <div>
+      <div id="app-container" className={cx(classes)}>
         <Partials.Navbar/>
         <div id="main-content">
           {content}
@@ -32,6 +35,7 @@ Layouts.App = React.createClass({
   },
 
   handleResize: function () {
+    // TODO: include window innerHeight and innerWidth in state
     this.setState({
       mobile: this.isMobile()
     })
@@ -45,10 +49,10 @@ Layouts.App = React.createClass({
   },
 
   componentDidMount: function () {
-    $(window).on("resize", _.throttle(this.handleResize, 500));
+    $(window).on("resize.layout", _.throttle(this.handleResize, 500));
   },
 
   componentWillUnmount: function () {
-    $(window).off("resize");
+    $(window).off("resize.layout");
   }
 });

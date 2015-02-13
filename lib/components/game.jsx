@@ -23,6 +23,12 @@ var isPartialMatch = function (wholeWord, partialWord) {
 }
 
 Components.Game = React.createClass({
+  getDefaultProps: function () {
+    return {
+      ready: false
+    }
+  },
+
   getInitialState: function () {
     return {
       lastInputValue: undefined
@@ -36,6 +42,19 @@ Components.Game = React.createClass({
       this.interval = setInterval(this.scrollText, 400);
     }
 
+    this.focusInput();
+  },
+
+  componentDidUpdate: function () {
+    this.focusInput();
+  },
+
+  componentWillUnmount: function () {
+    clearInterval(this.interval);
+    this.stopScrollAnimation();
+  },
+
+  focusInput: function () {
     if (!this.canType()) return;
 
     var input = this.inputNode()
@@ -44,11 +63,6 @@ Components.Game = React.createClass({
     input.focus();
     input.value = "";
     input.value = value;
-  },
-
-  componentWillUnmount: function () {
-    clearInterval(this.interval);
-    this.stopScrollAnimation();
   },
 
   render: function () {
@@ -124,7 +138,8 @@ Components.Game = React.createClass({
   },
 
   canType: function () {
-    return this.props.playable &&
+    return this.props.ready &&
+           this.props.playable &&
            this.currentWordIndex() < this.props.words.length;
   },
 

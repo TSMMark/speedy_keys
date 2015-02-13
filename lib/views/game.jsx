@@ -1,7 +1,8 @@
 Views.Game = React.createClass({
   getDefaultProps: function () {
     return {
-      mobile: false
+      mobile: false,
+      ready: true
     }
   },
 
@@ -49,6 +50,7 @@ Views.Game = React.createClass({
                              key="currentUserGame"
                              playable={true}
                              ref="current-user-input"
+                             ready={this.props.ready}
                              onInputValueChange={this.handleInputValueChange}
                              onSubmitWord={this.handleSubmitWord}
                              inputValue={game.getInputValueFor(currentUserId)}

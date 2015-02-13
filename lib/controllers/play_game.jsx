@@ -40,13 +40,15 @@ Controllers.PlayGame = React.createClass({
       , maxTransparency = 0.7
       , rate = maxTransparency / maxCount
       , overlayAlpha = 1 - ((maxCount - this.state.countdown) * rate)
-      , overlay;
+      , overlay
+      , opponentName = this.state.opponent.props.profile.name;
 
     if (this.state.countdown > 0) {
       overlay = (
         <Components.Overlay className="countdown-overlay"
                             alpha={overlayAlpha}>
-          {this.state.countdown}
+          <h2>v.s. {opponentName}</h2>
+          <h1>{this.state.countdown}</h1>
         </Components.Overlay>);
     }
 
@@ -56,6 +58,7 @@ Controllers.PlayGame = React.createClass({
                     opponent={this.state.opponent}
                     game={game}
                     mobile={this.props.mobile}
+                    ready={this.state.countdown == 0}
                     key={"game:" + gameId}/>
         {overlay}
       </div>);
