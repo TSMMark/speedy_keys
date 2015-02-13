@@ -101,6 +101,7 @@ Components.Game = React.createClass({
                key="game-input"
                readOnly={!canType}
                onKeyDown={canType ? this.handleKeyDown : undefined}
+               onFocus={canType ? this.scrollScreen : undefined}
                defaultValue={canType ? this.props.inputValue : undefined}
                value={!canType ? this.props.inputValue : undefined} />
       </div>);
