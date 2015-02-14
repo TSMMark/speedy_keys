@@ -30,20 +30,6 @@ Views.NotFound = React.createClass({
   }
 });
 
-Views.SignIn = React.createClass({
-  render: function () {
-    return (
-      <Components.Container>
-        <div className="jumbotron">
-          <h1>Speedy Keys</h1>
-          <h2>Play the new addicting speed-typing game with your friends.</h2>
-          <Components.FacebookLogin/>
-        </div>
-      </Components.Container>
-    );
-  }
-});
-
 Views.ConfigureServices = React.createClass({
   mixins: [Router.State, Router.Navigation],
 

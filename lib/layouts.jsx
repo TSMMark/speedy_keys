@@ -1,10 +1,16 @@
 Layouts = {};
 
 Layouts.App = React.createClass({
-  getInitialState: function () {
+  mixins: [ReactMeteor.Mixin],
+
+  getMeteorState: function () {
+    Meteor.subscribe("users");
+
     return {
-      mobile: this.isMobile()
-    }
+      currentUser: Meteor.user(),
+      mobile: this.isMobile(),
+      missingServiceConfig: missingServiceConfig()
+    };
   },
 
   render: function () {
@@ -13,11 +19,11 @@ Layouts.App = React.createClass({
           mobile: this.state.mobile
         };
 
-    if (this.props.currentUser) {
-      content = <RouteHandler currentUser={this.props.currentUser}
+    if (this.state.currentUser) {
+      content = <RouteHandler currentUser={this.state.currentUser}
                               mobile={this.state.mobile}/>;
     }
-    else if (missingServiceConfig()) {
+    else if (this.state.missingServiceConfig) {
       content = <Views.ConfigureServices/>;
     }
     else {

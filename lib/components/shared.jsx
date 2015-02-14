@@ -31,38 +31,24 @@ Components.JoinGameButton = React.createClass({
   }
 });
 
-Components.FacebookLogin = React.createClass({
+Components.SignOutButton = React.createClass({
   mixins: [Router.Navigation],
 
-  render: function () {
-    if (this.props.currentUser) {
-      return (
-        <button onClick={this.signOut}
-                className="btn btn-default">
-          <span className="fa fa-power-off"></span>
-        </button>);
-    }
-    else {
-      return (
-        <button onClick={this.signIn}
-           className="btn btn-facebook">
-          Sign in with Facebook
-        </button>);
-    }
+  getDefaultProps: function () {
+    return {};
   },
 
-  signIn: function (event) {
-    var self = this;
-    event.preventDefault();
+  render: function () {
+    var classes = {
+      "btn": true,
+      "btn-default": true
+    };
 
-    Meteor.loginWithFacebook({
-      requestPermissions: ['email']
-    }, function (error) {
-      Meteor._debug("FacebookLogin", error);
-      if (error) throw error;
-
-      self.transitionTo("default");
-    });
+    return (
+      <button onClick={this.signOut}
+              className={cx(classes)}>
+        <span className="fa fa-power-off"></span> Sign Out
+      </button>);
   },
 
   signOut: function (event) {
@@ -71,6 +57,44 @@ Components.FacebookLogin = React.createClass({
 
     Meteor.logout(function (error) {
       Meteor._debug("Logout", error);
+      if (error) throw error;
+
+      self.transitionTo("default");
+    });
+  }
+});
+
+Components.FacebookLogin = React.createClass({
+  mixins: [Router.Navigation],
+
+  getDefaultProps: function () {
+    return {};
+  },
+
+  render: function () {
+    var classes = {
+      "btn": true,
+      "btn-facebook": true
+    };
+
+    if (this.props.className) {
+      classes[this.props.className] = true
+    }
+
+    return (
+      <button onClick={this.signIn}
+         className={cx(classes)}>
+        Sign up with Facebook
+      </button>);
+  },
+
+  signIn: function (event) {
+    var self = this;
+    event.preventDefault();
+
+    Meteor.loginWithFacebook({
+      requestPermissions: ["email"]
+    }, function (error) {
       if (error) throw error;
 
       self.transitionTo("default");

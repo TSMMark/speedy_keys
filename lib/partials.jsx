@@ -31,9 +31,12 @@ Partials.Navbar = React.createClass({
                 </li>
               </ul>
             : null}
-            <form className="navbar-form navbar-right">
-              <Components.FacebookLogin currentUser={currentUser}/>
-            </form>
+            {currentUser ?
+              <form className="navbar-form navbar-right">
+                <Components.SignOutButton/>
+              </form>
+            : null
+            }
             <ul className="nav navbar-nav navbar-right">
               {currentUser ?
                 <li>
