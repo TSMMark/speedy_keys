@@ -53,5 +53,18 @@ Meteor.methods({
     }
 
     return gameToJoin.props._id;
+  },
+
+  // TODO: Leave game whenever the user leaves the game route.
+  leaveGame: function (playerId) {
+    var currentLobby = Models.Game.currentLobbyFor(playerId);
+
+    if (!currentLobby ||
+        currentLobby.props.playersIds.length > 1) {
+      return false;
+    }
+
+    currentLobby.destroy();
+    return true;
   }
 });
