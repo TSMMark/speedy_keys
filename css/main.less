@@ -93,19 +93,33 @@
   }
 }
 
-.game {
+// PROGRESS BARS
+.progress {
+  position: relative;
+
+  .center-indicator {
+    border-right: 1px solid @input-border;
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    top: 0;
+    bottom: 0;
+  }
+
   .player-progress,
   .opponent-progress {
   }
 
   .player-progress {
+    // Flip horizontal so the stripes face right.
     .scaleX(-1);
   }
 
   .opponent-progress {
-
   }
+}
 
+.game {
   .input-group {
     width: 100%;
 

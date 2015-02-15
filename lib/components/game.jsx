@@ -270,6 +270,7 @@ Components.PlayersProgress = React.createClass({
 
     return (
       <div className="progress">
+        <div className="center-indicator" />
         <div className="player-progress progress-bar progress-bar-info progress-bar-striped active"
              style={playerStyle} />
         <div className="opponent-progress progress-bar progress-bar-danger progress-bar-striped active"
