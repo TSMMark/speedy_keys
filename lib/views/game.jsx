@@ -7,7 +7,8 @@ Views.Game = React.createClass({
   },
 
   render: function () {
-    var currentUser = this.props.currentUser
+    var mobile = !!this.props.mobile
+      , currentUser = this.props.currentUser
       , currentUserId = currentUser.props._id
       , opponent = this.props.opponent
       , opponentId = opponent.props._id
@@ -21,7 +22,7 @@ Views.Game = React.createClass({
           "mobile": this.props.mobile
         };
 
-    if (!this.props.mobile) {
+    if (!mobile) {
       opponentGameComponent = (
         <div className="col-sm-6 clearfix">
           <h2>{opponent.props.profile.name}</h2>
@@ -30,8 +31,9 @@ Views.Game = React.createClass({
                            playable={false}
                            inputValue={game.getInputValueFor(opponentId)}
                            enteredWords={game.getEnteredWordsFor(opponentId)}
-                           playerProgress={opponentProgress}
-                           opponentProgress={currentUserProgress} />
+                           dual={mobile}
+                           playerProgress={undefined}
+                           opponentProgress={opponentProgress} />
         </div>);
 
       opponentName += " (aka Your Worst Nightmare)";
@@ -45,7 +47,7 @@ Views.Game = React.createClass({
         <div className="row">
           <div className="col-sm-6 clearfix">
             {
-              !this.props.mobile
+              !mobile
               ? <h2 onClick={this.mockOpponent}>You</h2>
               : null
             }
@@ -58,8 +60,9 @@ Views.Game = React.createClass({
                              onSubmitWord={this.handleSubmitWord}
                              inputValue={game.getInputValueFor(currentUserId)}
                              enteredWords={game.getEnteredWordsFor(currentUserId)}
+                             dual={mobile}
                              playerProgress={currentUserProgress}
-                             opponentProgress={opponentProgress} />
+                             opponentProgress={mobile ? opponentProgress : undefined} />
           </div>
           {opponentGameComponent}
         </div>

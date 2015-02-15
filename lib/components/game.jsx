@@ -116,7 +116,8 @@ Components.Game = React.createClass({
           </ReactCSSTransitionGroup>
         </div>
         {form}
-        <Components.PlayersProgress playerProgress={playerProgress}
+        <Components.PlayersProgress dual={this.props.dual}
+                                    playerProgress={playerProgress}
                                     opponentProgress={opponentProgress} />
       </div>);
   },
@@ -258,31 +259,74 @@ Components.Game = React.createClass({
   }
 });
 
-Components.PlayersProgress = React.createClass({
-  render: function () {
-    var playerStyle = this.cssStyleFromProgress(
-          this.props.playerProgress
-        )
-      , opponentStyle = this.cssStyleFromProgress(
-          this.props.opponentProgress,
-          { float: "right" }
-        );
-
-    return (
-      <div className="progress">
-        <div className="center-indicator" />
-        <div className="player-progress progress-bar progress-bar-info progress-bar-striped active"
-             style={playerStyle} />
-        <div className="opponent-progress progress-bar progress-bar-danger progress-bar-striped active"
-             style={opponentStyle} />
-      </div>);
+Components.ProgressBar = React.createClass({
+  getDefaultProps: function () {
+    return {
+      modifier: 1.0
+    }
   },
 
-  cssStyleFromProgress: function (percent, additionalStyles) {
+  render: function () {
+    var style = this.styleFromPercent(
+          this.props.progress * 100,
+          this.props.style
+        )
+      , classes = {
+          "progress-bar": true,
+          "progress-bar-striped": true,
+          "active": true
+        };
+
+    if (this.props.className) {
+      classes[this.props.className] = true;
+    }
+
+    return (
+      <div className={cx(classes)}
+           style={style} />);
+  },
+
+  styleFromPercent: function (percent, additionalStyles) {
     additionalStyles = (additionalStyles || {});
 
     return _.extend({
-      width: (percent * 50) + "%"
+      width: (percent * this.props.modifier) + "%"
     }, additionalStyles);
+  }
+});
+
+Components.PlayersProgress = React.createClass({
+  render: function () {
+    var dual = this.props.dual
+      , playerProgressBar
+      , opponentProgressBar
+      , centerIndicator
+      , modifier = dual ? 0.5 : 1.0;
+
+    if (this.props.playerProgress) {
+      playerProgressBar = (
+        <Components.ProgressBar progress={this.props.playerProgress}
+                                className="progress-bar-info player-progress"
+                                modifier={modifier} />);
+    }
+
+    if (this.props.opponentProgress) {
+      opponentProgressBar = (
+        <Components.ProgressBar progress={this.props.opponentProgress}
+                                className="progress-bar-danger opponent-progress"
+                                style={{float: "right"}}
+                                modifier={modifier} />);
+    }
+
+    if (dual) {
+      centerIndicator = (<div className="center-indicator" />);
+    }
+
+    return (
+      <div className="progress">
+        {centerIndicator}
+        {playerProgressBar}
+        {opponentProgressBar}
+      </div>);
   }
 });
