@@ -33,7 +33,8 @@ Controllers.PlayGame = React.createClass({
     }
 
     if (!this.state.opponent) {
-      return <Views.WaitForOpponent key="waiting"/>;
+      return <Views.WaitForOpponent key="waiting"
+                                    mobile={this.props.mobile} />;
     }
 
     var maxCount = Models.Game.STARTING_COUNTDOWN

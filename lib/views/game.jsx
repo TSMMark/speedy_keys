@@ -92,14 +92,23 @@ Views.Game = React.createClass({
 
 Views.WaitForOpponent = React.createClass({
   render: function () {
+    var size = this.props.mobile ? 25 : 50
+      , lifeClasses = {
+          "game-of-life-wrapper": true
+        };
+
+    lifeClasses["size-" + size] = true;
+
     return (
-      <Components.Container>
-        <h1>
-          Waiting for opponent
-        </h1>
-        <div className="game-of-life-wrapper">
-          <GameOfLife begin={true}/>
+      <div>
+        <Components.Container>
+          <h1>
+            Waiting for opponent
+          </h1>
+        </Components.Container>
+        <div className={cx(lifeClasses)}>
+          <GameOfLife begin={true} size={size} />
         </div>
-      </Components.Container>);
+      </div>);
   }
 });
