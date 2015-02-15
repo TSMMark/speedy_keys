@@ -93,11 +93,17 @@ Views.Game = React.createClass({
 Views.WaitForOpponent = React.createClass({
   render: function () {
     var size = this.props.mobile ? 25 : 50
+      , cancelButton
       , lifeClasses = {
           "game-of-life-wrapper": true
         };
 
     lifeClasses["size-" + size] = true;
+
+    cancelButton = (
+      <Components.LeaveGameButton className="btn btn-default">
+        Cancel
+      </Components.LeaveGameButton>);
 
     return (
       <div>
@@ -105,6 +111,7 @@ Views.WaitForOpponent = React.createClass({
           <h1>
             Waiting for opponent
           </h1>
+          {cancelButton}
         </Components.Container>
         <div className={cx(lifeClasses)}>
           <GameOfLife begin={true} size={size} />

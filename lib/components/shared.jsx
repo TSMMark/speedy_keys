@@ -4,7 +4,7 @@ Components.Container = React.createClass({
       "container": true
     }
 
-    classes[this.props.className] = true;
+    classes[cx(this.props.className)] = true;
 
     return (<div className={cx(classes)}>
               {this.props.children}
@@ -58,7 +58,8 @@ Components.JoinGameButton = React.createClass({
 
   render: function () {
     return (
-      <a href="#" onClick={this.joinGame} className={this.props.className}>
+      <a href="#join-game" onClick={this.joinGame}
+                           className={cx(this.props.className)}>
         {this.props.children}
       </a>);
   },
@@ -69,6 +70,34 @@ Components.JoinGameButton = React.createClass({
     Meteor.call("joinGame", Meteor.userId(), function (error, gameId) {
       self.transitionTo("playGame", { gameId: gameId });
     });
+  }
+});
+
+Components.LeaveGameButton = React.createClass({
+  mixins: [Router.Navigation],
+
+  render: function () {
+    return (
+      <a href="#leave-game" onClick={this.leaveGame}
+                            className={cx(this.props.className)}>
+        {this.props.children}
+      </a>);
+  },
+
+  leaveGame: function (event) {
+    event.preventDefault();
+    this.transitionTo("default");
+
+    // Note:
+    //   We don't NEED this as long as `leaveGame` is called on
+    //     PlayGame controller unmount...
+    //   However, I think we should verify leaveGame is
+    //     successful before navigating.
+    Meteor.call("leaveGame", Meteor.userId(), function (error, wasSuccessful) {
+      if (wasSuccessful) {
+        this.transitionTo("default");
+      }
+    }.bind(this));
   }
 });
 
