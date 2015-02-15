@@ -6,7 +6,7 @@ Views.SignIn = React.createClass({
           <div className="row">
             <div className="col-md-6 col-md-offset-0">
               <h1>Speedy Keys</h1>
-              <h2>Play the new addicting speed-typing game with your friends.</h2>
+              <h2>Play the addicting new speed-typing game with your friends.</h2>
             </div>
             <div className="col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
               <div className="panel panel-primary">

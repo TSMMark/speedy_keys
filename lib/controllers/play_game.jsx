@@ -29,11 +29,11 @@ Controllers.PlayGame = React.createClass({
       , game = this.state.game;
 
     if (!game) {
-      return (<Views.NotFound key="not-found"/>);
+      return <Views.NotFound key="not-found"/>;
     }
 
     if (!this.state.opponent) {
-      return (<Views.WaitForOpponent key="waiting"/>);
+      return <Views.WaitForOpponent key="waiting"/>;
     }
 
     var maxCount = Models.Game.STARTING_COUNTDOWN

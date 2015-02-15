@@ -92,7 +92,9 @@ Components.Game = React.createClass({
             </span>);
         })
       , canType = this.canType()
-      , form;
+      , form
+      , playerProgress = this.props.playerProgress
+      , opponentProgress = this.props.opponentProgress;
 
     form = (
       <div className="input-group input-group-lg">
@@ -114,6 +116,8 @@ Components.Game = React.createClass({
           </ReactCSSTransitionGroup>
         </div>
         {form}
+        <Components.PlayersProgress playerProgress={playerProgress}
+                                    opponentProgress={opponentProgress} />
       </div>);
   },
 
@@ -251,5 +255,33 @@ Components.Game = React.createClass({
 
   inputNode: function () {
     return this.refs["game-input"].getDOMNode();
+  }
+});
+
+Components.PlayersProgress = React.createClass({
+  render: function () {
+    var playerStyle = this.cssStyleFromProgress(
+          this.props.playerProgress
+        )
+      , opponentStyle = this.cssStyleFromProgress(
+          this.props.opponentProgress,
+          { float: "right" }
+        );
+
+    return (
+      <div className="progress">
+        <div className="player-progress progress-bar progress-bar-info progress-bar-striped active"
+             style={playerStyle} />
+        <div className="opponent-progress progress-bar progress-bar-danger progress-bar-striped active"
+             style={opponentStyle} />
+      </div>);
+  },
+
+  cssStyleFromProgress: function (percent, additionalStyles) {
+    additionalStyles = (additionalStyles || {});
+
+    return _.extend({
+      width: (percent * 50) + "%"
+    }, additionalStyles);
   }
 });

@@ -1,5 +1,4 @@
 @import "custom.bootstrap.import.less";
-@import "custom.bootstrap.mixins.import.less";
 @import "mixins.import.less";
 
 // TRANSITION EVERYTIHNG
@@ -95,6 +94,18 @@
 }
 
 .game {
+  .player-progress,
+  .opponent-progress {
+  }
+
+  .player-progress {
+    .scaleX(-1);
+  }
+
+  .opponent-progress {
+
+  }
+
   .input-group {
     width: 100%;
 

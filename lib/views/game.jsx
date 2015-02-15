@@ -14,9 +14,11 @@ Views.Game = React.createClass({
       , game = this.props.game
       , opponentGameComponent
       , opponentName = opponent.props.profile.name
+      , currentUserProgress = game.getProgressFor(currentUserId)
+      , opponentProgress = game.getProgressFor(opponentId)
       , classes = {
           "game-container": true,
-          "mobile": true
+          "mobile": this.props.mobile
         };
 
     if (!this.props.mobile) {
@@ -27,11 +29,12 @@ Views.Game = React.createClass({
                            key="opponentGame"
                            playable={false}
                            inputValue={game.getInputValueFor(opponentId)}
-                           enteredWords={game.getEnteredWordsFor(opponentId)} />
+                           enteredWords={game.getEnteredWordsFor(opponentId)}
+                           playerProgress={opponentProgress}
+                           opponentProgress={currentUserProgress} />
         </div>);
 
       opponentName += " (aka Your Worst Nightmare)";
-      classes["mobile"] = false;
     }
 
     return (
@@ -54,7 +57,9 @@ Views.Game = React.createClass({
                              onInputValueChange={this.handleInputValueChange}
                              onSubmitWord={this.handleSubmitWord}
                              inputValue={game.getInputValueFor(currentUserId)}
-                             enteredWords={game.getEnteredWordsFor(currentUserId)} />
+                             enteredWords={game.getEnteredWordsFor(currentUserId)}
+                             playerProgress={currentUserProgress}
+                             opponentProgress={opponentProgress} />
           </div>
           {opponentGameComponent}
         </div>
