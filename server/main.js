@@ -26,7 +26,10 @@ var beginCountdown = function (game) {
         countdown -= 1;
         console.log("Countdown: ", countdown);
         game.setCountdownSeconds(countdown);
-        if (countdown == 0) clearInterval(interval);
+
+        if (countdown === 0) {
+          clearInterval(interval);
+        }
       })
     , interval = setInterval(callback, 1000);
 }
