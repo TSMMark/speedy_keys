@@ -286,11 +286,15 @@ Components.ProgressBar = React.createClass({
   },
 
   styleFromPercent: function (percent, additionalStyles) {
-    additionalStyles = (additionalStyles || {});
-
-    return _.extend({
+    var widthStyle = {
       width: (percent * this.props.modifier) + "%"
-    }, additionalStyles);
+    }
+
+    if (additionalStyles) {
+     _.extend(widthStyle, additionalStyles);
+    }
+
+    return widthStyle;
   }
 });
 
