@@ -101,7 +101,7 @@ Components.Game = React.createClass({
                autoCorrect="off" autoCapitalize="off"
                ref="game-input" key="game-input"
                readOnly={!canType}
-               onKeyDown={typeEvent} onKeyUp={typeEvent} onChange={typeEvent}
+               onKeyDown={typeEvent}
                onFocus={canType ? this.scrollScreen : undefined}
                defaultValue={canType ? this.props.inputValue : undefined}
                value={!canType ? this.props.inputValue : undefined} />

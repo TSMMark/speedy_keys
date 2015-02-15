@@ -26,42 +26,76 @@ Controllers.PlayGame = React.createClass({
   render: function () {
     var currentUser = this.props.currentUser
       , gameId = this.state.gameId
-      , game = this.state.game;
-
-    if (!game) {
-      return <Views.NotFound key="not-found"/>;
-    }
-
-    if (!this.state.opponent) {
-      return <Views.WaitForOpponent key="waiting"
-                                    mobile={this.props.mobile} />;
-    }
-
-    var maxCount = Models.Game.STARTING_COUNTDOWN
+      , game = this.state.game
+      , maxCount = Models.Game.STARTING_COUNTDOWN
       , maxTransparency = 0.7
       , rate = maxTransparency / maxCount
       , overlayAlpha = 1 - ((maxCount - this.state.countdown) * rate)
       , overlay
-      , opponentName = this.state.opponent.props.profile.name;
+      , main;
 
-    if (this.state.countdown > 0) {
-      overlay = (
-        <Components.Overlay className="countdown-overlay"
-                            alpha={overlayAlpha}>
-          <h2>v.s. {opponentName}</h2>
-          <h1>{this.state.countdown}</h1>
-        </Components.Overlay>);
+    if (!game) {
+      main = <Views.NotFound key="not-found"/>;
     }
+    else if (!this.state.opponent) {
+      main = <Views.WaitForOpponent key="waiting"
+                                    mobile={this.props.mobile} />;
+    }
+    else {
+      var player = Models.User.initRaw(currentUser)
+        , opponent = this.state.opponent;
 
-    return (
-      <div>
-        <Views.Game currentUser={Models.User.initRaw(currentUser)}
+      if (this.state.countdown > 0) {
+        overlay = (
+          <Components.Overlay className="countdown-overlay"
+                              key="countdown-overlay"
+                              alpha={overlayAlpha}>
+            <h2>v.s. {opponent.props.profile.name}</h2>
+            <h1>{this.state.countdown}</h1>
+          </Components.Overlay>);
+      }
+      else if (game.props.winnerId) {
+        var winnerIsMe = game.props.winnerId === currentUser._id
+          , winner = winnerIsMe ? player : opponent;
+
+        overlay = (
+          <Components.Overlay className="winner-overlay"
+                              key="winner-overlay"
+                              alpha={maxTransparency}>
+            <Components.Panel heading={winnerIsMe ? "Congratulations" : "Not this time"}>
+              <div className="form-group">
+                <h2 className={winnerIsMe ? "text-primary" : "text-danger"}>
+                  {winner.props.profile.name} wins!
+                </h2>
+              </div>
+              <div className="form-group">
+                <Components.JoinGameButton className="btn btn-lg btn-primary">
+                  Play Again
+                </Components.JoinGameButton>
+              </div>
+            </Components.Panel>
+          </Components.Overlay>);
+      }
+
+      main = (
+        <Views.Game currentUser={player}
                     opponent={this.state.opponent}
                     game={game}
                     mobile={this.props.mobile}
                     ready={this.state.countdown == 0}
-                    key={"game:" + gameId}/>
-        {overlay}
+                    key={"game:" + gameId} />);
+    }
+
+    return (
+      <div>
+        {main}
+        <TimeoutTransitionGroup transitionName="overlay"
+                                enterTimeout={500}
+                                leaveTimeout={0}
+                                transitionEnter={true}
+                                transitionLeave={false}>
+          {overlay}
+        </TimeoutTransitionGroup>
       </div>);
   }
 });
