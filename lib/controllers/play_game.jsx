@@ -3,6 +3,8 @@ Controllers.PlayGame = React.createClass({
 
   getMeteorState: function () {
     // This is the only fucking way I could get it to autorun:
+    // TODO: Use meteor session for currentGameId
+    //       Use /play/:id route for observing.
     Session.set("gameId", this.getParams().gameId);
     Session.get("gameId");
 
@@ -23,6 +25,10 @@ Controllers.PlayGame = React.createClass({
     };
   },
 
+  componentWillUnmount: function () {
+    Meteor.call("leaveGame", this.props.currentUser._id);
+  },
+
   render: function () {
     var currentUser = this.props.currentUser
       , gameId = this.state.gameId
@@ -35,7 +41,7 @@ Controllers.PlayGame = React.createClass({
       , main;
 
     if (!game) {
-      main = <Views.NotFound key="not-found"/>;
+      main = <Views.NotFound key="not-found" />;
     }
     else if (!this.state.opponent) {
       main = <Views.WaitForOpponent key="waiting"

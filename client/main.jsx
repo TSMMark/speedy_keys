@@ -12,4 +12,9 @@ Meteor.startup(function () {
     React.render(<Handler/>,
                  document.getElementById("main-app"));
   });
+
+  window.addEventListener("beforeunload", function (e) {
+    Meteor.call("leaveGame", Meteor.userId());
+  });
+
 });

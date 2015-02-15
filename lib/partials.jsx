@@ -26,7 +26,7 @@ Partials.Navbar = React.createClass({
               <ul className="nav navbar-nav navbar-left">
                 <li>
                   <Components.JoinGameButton>
-                    Join a Game!
+                    Find a Game
                   </Components.JoinGameButton>
                 </li>
               </ul>
