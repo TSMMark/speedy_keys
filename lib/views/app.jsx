@@ -3,7 +3,7 @@ Views.Home = React.createClass({
     return (
       <Components.Container>
         <h1>Welcome to Speedy Keys</h1>
-        <Components.JoinGameButton className="btn btn-primary">
+        <Components.JoinGameButton className="btn btn-primary btn-lg">
           Find a Game
         </Components.JoinGameButton>
       </Components.Container>

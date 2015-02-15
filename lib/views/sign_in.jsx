@@ -7,6 +7,14 @@ Views.SignIn = React.createClass({
             <div className="col-md-6 col-md-offset-0">
               <h1>Speedy Keys</h1>
               <h2>Play the addicting new speed-typing game with your friends.</h2>
+              <p>
+                Put your typing skills to the test
+                by battling against your friends or randos.
+              </p>
+              <p>
+                Compare your words-per-minute on
+                the global leaderboards.
+              </p>
             </div>
             <div className="col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
               <div className="panel panel-primary">
@@ -42,6 +50,9 @@ Views.SignIn = React.createClass({
             </div>
           </div>
         </div>
+        <footer className="pull-right">
+          Copyright Mark Allen 2015
+        </footer>
       </Components.Container>
     );
   },
