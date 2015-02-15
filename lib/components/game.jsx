@@ -30,9 +30,7 @@ Components.Game = React.createClass({
   },
 
   getInitialState: function () {
-    return {
-      lastInputValue: undefined
-    }
+    return {};
   },
 
   componentDidMount: function () {
@@ -94,15 +92,16 @@ Components.Game = React.createClass({
       , canType = this.canType()
       , form
       , playerProgress = this.props.playerProgress
-      , opponentProgress = this.props.opponentProgress;
+      , opponentProgress = this.props.opponentProgress
+      , typeEvent = canType ? this.handleKeyDown : undefined;
 
     form = (
       <div className="input-group input-group-lg">
         <input type="text" className="form-control game-input"
-               ref="game-input"
-               key="game-input"
+               autoCorrect="off" autoCapitalize="off"
+               ref="game-input" key="game-input"
                readOnly={!canType}
-               onKeyDown={canType ? this.handleKeyDown : undefined}
+               onKeyDown={typeEvent} onKeyUp={typeEvent} onChange={typeEvent}
                onFocus={canType ? this.scrollScreen : undefined}
                defaultValue={canType ? this.props.inputValue : undefined}
                value={!canType ? this.props.inputValue : undefined} />
@@ -194,11 +193,9 @@ Components.Game = React.createClass({
     }
 
     if (isTypingEvent(event)) {
-      if (value === this.state.lastInputValue) {
+      if (value === this.lastInputValue) {
         return;
       }
-
-      lastInputValue = value;
 
       setTimeout(this.handleInputValueChange, 0);
     }
@@ -224,6 +221,8 @@ Components.Game = React.createClass({
     if (!this.props.onInputValueChange) return;
 
     var value = this.inputNode().value.trim();
+
+    this.lastInputValue = value;
     this.props.onInputValueChange(value);
   },
 
