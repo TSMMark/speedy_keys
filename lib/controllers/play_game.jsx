@@ -62,18 +62,25 @@ Controllers.PlayGame = React.createClass({
       }
       else if (game.props.winnerId) {
         var winnerIsMe = game.props.winnerId === currentUser._id
-          , winner = winnerIsMe ? player : opponent;
+          , winner = winnerIsMe ? player : opponent
+          , heading = (winnerIsMe ? "Great job, " : "Sorry, ") + player.props.profile.name;
 
         overlay = (
           <Components.Overlay className="winner-overlay"
                               key="winner-overlay"
                               alpha={maxTransparency}>
-            <Components.Panel heading={winnerIsMe ? "Congratulations" : "Not this time"}>
+            <Components.Panel heading={heading}>
               <div className="form-group">
                 <h2 className={winnerIsMe ? "text-primary" : "text-danger"}>
                   {winner.props.profile.name} wins!
                 </h2>
               </div>
+
+              <div className="form-group">
+                <Components.GameStatsTable game={game}
+                                           currentUserId={this.props.currentUser._id} />
+              </div>
+
               <div className="form-group">
                 <Components.JoinGameButton className="btn btn-lg btn-primary">
                   Play Again

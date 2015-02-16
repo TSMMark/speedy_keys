@@ -50,7 +50,6 @@
 // BEGIN MAIN
 #main-content {
   padding-top: @navbar-height;
-  padding-bottom: @navbar-height;
 }
 
 .overlay-container {
@@ -67,6 +66,15 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+
+    .container {
+      max-height: 100%;
+      overflow: auto;
+
+      > .panel {
+        margin: 0;
+      }
+    }
   }
 
   &.overlay-enter {
@@ -95,21 +103,12 @@
   }
 }
 
-.countdown-overlay,
-.winner-overlay {
-  .transition(background 1s linear);
-
+.countdown-overlay {
   .overlay-content {
     .container {
       position: absolute;
-      right: 0;
       left: 0;
-      top: 50%;
-      @header-size: 230px;
-      height: @header-size;
-      margin-top: -@header-size / 2;
-      .make-md-column(6);
-      .make-md-column-offset(3);
+      right: 0;
 
       > h1,
       > h2 {
@@ -119,12 +118,24 @@
       }
 
       > h1 {
-        font-size: @header-size;
+        font-size: 230px;
       }
 
       .panel-body {
         text-align: center;
       }
+    }
+  }
+}
+
+.countdown-overlay,
+.winner-overlay {
+  .transition(background 1s linear);
+
+  .overlay-content {
+    .container {
+      .make-md-column(6);
+      .make-md-column-offset(3);
     }
   }
 }
@@ -231,6 +242,19 @@
         }
       }
     }
+  }
+}
+
+.game-stats-table {
+  td,
+  th {
+    &.winner {
+      background-color: @state-success-bg;
+    }
+  }
+
+  td.my-stats {
+    font-weight: bold;
   }
 }
 
