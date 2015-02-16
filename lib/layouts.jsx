@@ -51,7 +51,7 @@ Layouts.App = React.createClass({
     var width = $(window).width()
       , cuttoff = 768;
 
-    return width <= cuttoff;
+    return width < cuttoff;
   },
 
   componentDidMount: function () {
