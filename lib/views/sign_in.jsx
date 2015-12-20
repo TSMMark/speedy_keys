@@ -1,73 +1,69 @@
-var getRandomEmoji = function () {
-  return _.sample(_.keys(emojione.emojioneList));
-}
-
 Views.SignIn = React.createClass({
+
   getDefaultProps: function () {
     return {
-      includePassword: true
+      includePassword: true,
+      mobile: false
     }
+  },
+
+  renderSignInForm: function () {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="username"><h3>Make up a name:</h3></label>
+          <input type="text" id="username" ref="username"
+                 className="form-control input-lg"
+                 placeholder="Marty McFly" />
+        </div>
+
+        {
+          this.props.includePassword
+          ? (
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" ref="password"
+                       className="form-control input-lg"
+                       placeholder="Flux Capacitor" />
+              </div>
+            )
+          : null
+        }
+
+        <div className="form-group">
+          <input type="submit" value="Play!"
+                 className="btn btn-primary btn-lg btn-block" />
+        </div>
+
+        <div className="form-group text-right">
+          {"or "}
+          <Components.FacebookLogin btn={false}>
+            use Facebook name
+          </Components.FacebookLogin>
+        </div>
+      </form>
+    );
   },
 
   render: function () {
     return (
       <Components.Container>
-        <div className="jumbotron">
+        <div className={cx({ jumbotron: !this.props.mobile })}>
           <div className="row">
 
             <div className="col-md-6 col-md-offset-0">
-              <h1>Speedy Keys</h1>
-              <h2>Play the addicting new speed-typing game with your friends.</h2>
-              <p>
-                Put your typing skills to the test
-                by battling against your friends or randos.
-              </p>
-              <p>
-                Compare your words-per-minute on
-                the global leaderboards.
-              </p>
+              { this.props.mobile? null : <h1>Speedy Keys</h1> }
+              <h2>Can you text faster than your friends?</h2>
             </div>
 
-            <div className="col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-              <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="username"><h2>Make up a name:</h2></label>
-                  <input type="text" id="username" ref="username"
-                         className="form-control input-lg"
-                         placeholder="Marty McFly" />
-                </div>
-
-                {
-                  this.props.includePassword
-                  ? (
-                      <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" id="password" ref="password"
-                               className="form-control input-lg"
-                               placeholder="Flux Capacitor" />
-                      </div>
-                    )
-                  : null
-                }
-
-                <div className="form-group">
-                  <input type="submit" value="Play!"
-                         className="btn btn-primary btn-lg btn-block" />
-                </div>
-
-                <div className="form-group text-right">
-                  {"or "}
-                  <Components.FacebookLogin btn={false}>
-                    use Facebook name
-                  </Components.FacebookLogin>
-                </div>
-              </form>
+            <div className="col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2">
+              { this.renderSignInForm() }
             </div>
 
           </div>
         </div>
-        <footer className="pull-right">
-          Copyright Mark Allen 2015
+        <footer className="footer text-right">
+          <Components.Container>A game by Mark Allen - Copyright 2015</Components.Container>
         </footer>
       </Components.Container>
     );
@@ -96,13 +92,12 @@ Views.SignIn = React.createClass({
     var user = { username: username };
 
     Meteor.loginWithPassword(user, password, function (error) {
-      if (error) {
+      if (error) { // Is this right? why create user on error?
         Accounts.createUser({
           username: username,
           password: password,
           profile: {
-            name: username,
-            emoji: getRandomEmoji()
+            name: username
           }
         }, callback);
         return;
@@ -111,4 +106,5 @@ Views.SignIn = React.createClass({
       callback();
     });
   }
+
 });

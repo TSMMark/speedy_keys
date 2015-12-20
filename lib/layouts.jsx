@@ -20,14 +20,13 @@ Layouts.App = React.createClass({
         };
 
     if (this.state.currentUser) {
-      content = <RouteHandler currentUser={this.state.currentUser}
-                              mobile={this.state.mobile}/>;
+      content = <RouteHandler {...this.state} />;
     }
     else if (this.state.missingServiceConfig) {
-      content = <Views.ConfigureServices/>;
+      content = <Views.ConfigureServices {...this.state}/>;
     }
     else {
-      content = <Views.SignIn includePassword={false} />;
+      content = <Views.SignIn {...this.state} includePassword={false} />;
     }
 
     return (

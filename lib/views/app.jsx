@@ -38,7 +38,11 @@ Views.NotFound = React.createClass({
       <Components.Container>
         <h1>{this.props.message}</h1>
         <h2>{this.props.submessage}</h2>
-        <Link to="default" className="btn btn-default">Go Back</Link>
+        <footer className="footer">
+          <Components.Container>
+            <Link to="default" className="btn btn-default btn-block">Go Back</Link>
+          </Components.Container>
+        </footer>
       </Components.Container>
     );
   }

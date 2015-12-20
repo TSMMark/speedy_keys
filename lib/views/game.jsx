@@ -1,4 +1,5 @@
 Views.Game = React.createClass({
+
   getDefaultProps: function () {
     return {
       mobile: false,
@@ -99,9 +100,11 @@ Views.Game = React.createClass({
       }, 10);
     }
   }
+
 });
 
 Views.WaitForOpponent = React.createClass({
+
   render: function () {
     var size = this.props.mobile ? 25 : 50
       , cancelButton
@@ -112,21 +115,27 @@ Views.WaitForOpponent = React.createClass({
     lifeClasses["size-" + size] = true;
 
     cancelButton = (
-      <Components.LeaveGameButton className="btn btn-default">
+      <Components.LeaveGameButton className="btn btn-default btn-block">
         Cancel
-      </Components.LeaveGameButton>);
+      </Components.LeaveGameButton>
+    );
 
     return (
       <div>
         <Components.Container>
-          <h1>
-            Finding a worthy opponent
-          </h1>
-          {cancelButton}
+          <h2>Get ready to type as fast as you can!</h2>
+          <h6>Finding a worthy opponent...</h6>
         </Components.Container>
         <div className={cx(lifeClasses)}>
           <GameOfLife begin={true} size={size} />
         </div>
-      </div>);
+        <footer className="footer">
+          <Components.Container>
+            {cancelButton}
+          </Components.Container>
+        </footer>
+      </div>
+    );
   }
+
 });
