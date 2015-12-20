@@ -29,12 +29,14 @@ var beginCountdown = function (game) {
 
         if (countdown === 0) {
           clearInterval(interval);
+          // startAI(game); // TODO
         }
       })
     , interval = setInterval(callback, 1000);
 }
 
 Meteor.methods({
+
   joinGame: function (playerId) {
     var rawPlayer = Collections.Users.findOne(playerId)
       , gameToJoin = Models.Game.currentLobbyFor(playerId);
@@ -70,4 +72,5 @@ Meteor.methods({
     currentLobby.destroy();
     return true;
   }
+
 });
