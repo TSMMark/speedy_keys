@@ -41,7 +41,7 @@ Partials.Navbar = React.createClass({
               {currentUser ?
                 <li>
                   <a>
-                    Hi, {currentUser.profile.name}.
+                    Hi, {currentUser.profile.name}! <Components.Emoji emoji={currentUser.profile.emoji}/>
                   </a>
                 </li>
               : null}

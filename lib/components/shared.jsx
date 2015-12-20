@@ -138,13 +138,16 @@ Components.FacebookLogin = React.createClass({
   mixins: [Router.Navigation],
 
   getDefaultProps: function () {
-    return {};
+    return {
+      children: ["Sign up with Facebook"],
+      btn: true
+    };
   },
 
   render: function () {
     var classes = {
-      "btn": true,
-      "btn-facebook": true
+      "btn": this.props.btn,
+      "btn-facebook": this.props.btn
     };
 
     if (this.props.className) {
@@ -152,10 +155,10 @@ Components.FacebookLogin = React.createClass({
     }
 
     return (
-      <button onClick={this.signIn}
+      <a href="#!" onClick={this.signIn}
          className={cx(classes)}>
-        Sign up with Facebook
-      </button>);
+        {this.props.children}
+      </a>);
   },
 
   signIn: function (event) {
@@ -163,6 +166,7 @@ Components.FacebookLogin = React.createClass({
     event.preventDefault();
 
     Meteor.loginWithFacebook({
+      loginStyle: "redirect",
       requestPermissions: ["email"]
     }, function (error) {
       if (error) throw error;

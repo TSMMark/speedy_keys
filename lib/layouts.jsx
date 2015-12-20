@@ -27,7 +27,7 @@ Layouts.App = React.createClass({
       content = <Views.ConfigureServices/>;
     }
     else {
-      content = <Views.SignIn/>;
+      content = <Views.SignIn includePassword={false} />;
     }
 
     return (

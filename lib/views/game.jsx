@@ -25,7 +25,7 @@ Views.Game = React.createClass({
     if (!mobile) {
       opponentGameComponent = (
         <div className="col-sm-6 clearfix">
-          <h2>{opponent.props.profile.name}</h2>
+          <h2>{opponent.props.profile.name} <Components.Emoji emoji={opponent.props.profile.emoji}/></h2>
           <Components.Game words={game.wordsFor(opponentId)}
                            key="opponentGame"
                            playable={false}
@@ -35,20 +35,18 @@ Views.Game = React.createClass({
                            playerProgress={undefined}
                            opponentProgress={opponentProgress} />
         </div>);
-
-      opponentName += " (aka Your Worst Nightmare)";
     }
 
     return (
       <Components.Container className={cx(classes)}>
         <h1>
-          v.s. {opponentName}
+          v.s. {opponentName} <Components.Emoji emoji={opponent.props.profile.emoji}/>
         </h1>
         <div className="row">
           <div className="col-sm-6 clearfix">
             {
               !mobile
-              ? <h2 onClick={this.mockOpponent}>You</h2>
+              ? <h2 onClick={this.mockOpponent}>You <Components.Emoji emoji={currentUser.props.profile.emoji}/></h2>
               : null
             }
             <Components.Game words={game.wordsFor(currentUserId)}
@@ -109,7 +107,7 @@ Views.WaitForOpponent = React.createClass({
       <div>
         <Components.Container>
           <h1>
-            Waiting for opponent
+            Finding a worthy opponent
           </h1>
           {cancelButton}
         </Components.Container>

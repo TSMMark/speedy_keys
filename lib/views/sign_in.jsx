@@ -1,9 +1,20 @@
+var getRandomEmoji = function () {
+  return _.sample(_.keys(emojione.emojioneList));
+}
+
 Views.SignIn = React.createClass({
+  getDefaultProps: function () {
+    return {
+      includePassword: true
+    }
+  },
+
   render: function () {
     return (
       <Components.Container>
         <div className="jumbotron">
           <div className="row">
+
             <div className="col-md-6 col-md-offset-0">
               <h1>Speedy Keys</h1>
               <h2>Play the addicting new speed-typing game with your friends.</h2>
@@ -16,38 +27,43 @@ Views.SignIn = React.createClass({
                 the global leaderboards.
               </p>
             </div>
+
             <div className="col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-              <div className="panel panel-primary">
-                <div className="panel-heading">
-                  <div className="panel-title">Sign Up or Sign In</div>
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="username"><h2>Make up a name:</h2></label>
+                  <input type="text" id="username" ref="username"
+                         className="form-control input-lg"
+                         placeholder="Marty McFly" />
                 </div>
-                <div className="panel-body">
-                  <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                      <label htmlFor="username">Username</label>
-                      <input type="text" id="username" ref="username"
-                             className="form-control input-lg"
-                             placeholder="Marty McFly" />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="password">Password</label>
-                      <input type="password" id="password" ref="password"
-                             className="form-control input-lg"
-                             placeholder="Flux Capacitor" />
-                    </div>
 
-                    <div className="form-group">
-                      <input type="submit" value="Submit"
-                             className="btn btn-primary btn-lg btn-block" />
-                    </div>
+                {
+                  this.props.includePassword
+                  ? (
+                      <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input type="password" id="password" ref="password"
+                               className="form-control input-lg"
+                               placeholder="Flux Capacitor" />
+                      </div>
+                    )
+                  : null
+                }
 
-                    <div className="form-group">
-                      <Components.FacebookLogin className="btn-lg btn-block" />
-                    </div>
-                  </form>
+                <div className="form-group">
+                  <input type="submit" value="Play!"
+                         className="btn btn-primary btn-lg btn-block" />
                 </div>
-              </div>
+
+                <div className="form-group text-right">
+                  {"or "}
+                  <Components.FacebookLogin btn={false}>
+                    use Facebook name
+                  </Components.FacebookLogin>
+                </div>
+              </form>
             </div>
+
           </div>
         </div>
         <footer className="pull-right">
@@ -60,7 +76,7 @@ Views.SignIn = React.createClass({
   handleSubmit: function (event) {
     event.preventDefault();
     var username = this.refs["username"].getDOMNode().value
-      , password = this.refs["password"].getDOMNode().value;
+      , password = this.refs["password"] ? this.refs["password"].getDOMNode().value : Math.random(9999999).toString();
 
     if (!username) {
       return alert("Username required");
@@ -85,7 +101,8 @@ Views.SignIn = React.createClass({
           username: username,
           password: password,
           profile: {
-            name: username
+            name: username,
+            emoji: getRandomEmoji()
           }
         }, callback);
         return;

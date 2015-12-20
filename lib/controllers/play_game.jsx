@@ -56,7 +56,7 @@ Controllers.PlayGame = React.createClass({
           <Components.Overlay className="countdown-overlay"
                               key="countdown-overlay"
                               alpha={overlayAlpha}>
-            <h2>v.s. {opponent.props.profile.name}</h2>
+            <h2>v.s. {opponent.props.profile.name} <Components.Emoji emoji={opponent.props.profile.emoji}/></h2>
             <h1>{this.state.countdown}</h1>
           </Components.Overlay>);
       }
