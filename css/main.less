@@ -155,15 +155,6 @@
 .progress {
   position: relative;
 
-  .center-indicator {
-    border-right: 1px solid @input-border;
-    position: absolute;
-    left: 50%;
-    right: 50%;
-    top: 0;
-    bottom: 0;
-  }
-
   .player-progress,
   .opponent-progress {
   }
@@ -174,6 +165,58 @@
   }
 
   .opponent-progress {
+  }
+
+  .player-icon-container,
+  .opponent-icon-container {
+    display: block;
+    .full-absolute();
+    text-align: center;
+
+    .emoji-wrapper {
+      position: absolute;
+      .transition(~"left .6s ease, right .6s ease");
+    }
+  }
+
+  .player-icon-container {
+    left: @line-height-computed;
+
+    .emoji-wrapper {
+      margin-left: -@line-height-computed;
+    }
+  }
+
+  .opponent-icon-container {
+    right: @line-height-computed;
+
+    .emoji-wrapper {
+      margin-right: -@line-height-computed;
+    }
+  }
+
+  &.dual-progress {
+    .center-indicator {
+      border-right: 1px solid @input-border;
+      position: absolute;
+      left: 50%;
+      right: 50%;
+      top: 0;
+      bottom: 0;
+    }
+
+    .player-icon-container,
+    .opponent-icon-container {
+      width: 50%;
+    }
+
+    .player-icon-container {
+      right: 50%;
+    }
+
+    .opponent-icon-container {
+      left: 50%;
+    }
   }
 }
 

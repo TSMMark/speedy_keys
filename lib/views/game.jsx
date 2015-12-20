@@ -13,6 +13,7 @@ Views.Game = React.createClass({
       , opponent = this.props.opponent
       , opponentId = opponent.props._id
       , game = this.props.game
+      , currentUserGameComponent
       , opponentGameComponent
       , opponentName = opponent.props.profile.name
       , currentUserProgress = game.getProgressFor(currentUserId)
@@ -21,6 +22,34 @@ Views.Game = React.createClass({
           "game-container": true,
           "mobile": this.props.mobile
         };
+
+    var sharedGameProps = {
+      dual: mobile
+    }
+
+    currentUserGameComponent = (
+      <div className="col-sm-6 clearfix">
+        {
+          !mobile
+          ? <h2 onClick={this.mockOpponent}>You <Components.Emoji emoji={currentUser.props.profile.emoji}/></h2>
+          : null
+        }
+        <Components.Game words={game.wordsFor(currentUserId)}
+                         key="currentUserGame"
+                         playable={true}
+                         ref="current-user-input"
+                         ready={this.props.ready}
+                         onInputValueChange={this.handleInputValueChange}
+                         onSubmitWord={this.handleSubmitWord}
+                         inputValue={game.getInputValueFor(currentUserId)}
+                         enteredWords={game.getEnteredWordsFor(currentUserId)}
+                         playerProgress={currentUserProgress}
+                         opponentProgress={mobile ? opponentProgress : undefined}
+                         player={currentUser}
+                         opponent={opponent}
+                         {...sharedGameProps} />
+      </div>
+    );
 
     if (!mobile) {
       opponentGameComponent = (
@@ -31,9 +60,11 @@ Views.Game = React.createClass({
                            playable={false}
                            inputValue={game.getInputValueFor(opponentId)}
                            enteredWords={game.getEnteredWordsFor(opponentId)}
-                           dual={mobile}
                            playerProgress={undefined}
-                           opponentProgress={opponentProgress} />
+                           opponentProgress={opponentProgress}
+                           player={currentUser}
+                           opponent={opponent}
+                           {...sharedGameProps} />
         </div>);
     }
 
@@ -43,25 +74,7 @@ Views.Game = React.createClass({
           v.s. {opponentName} <Components.Emoji emoji={opponent.props.profile.emoji}/>
         </h1>
         <div className="row">
-          <div className="col-sm-6 clearfix">
-            {
-              !mobile
-              ? <h2 onClick={this.mockOpponent}>You <Components.Emoji emoji={currentUser.props.profile.emoji}/></h2>
-              : null
-            }
-            <Components.Game words={game.wordsFor(currentUserId)}
-                             key="currentUserGame"
-                             playable={true}
-                             ref="current-user-input"
-                             ready={this.props.ready}
-                             onInputValueChange={this.handleInputValueChange}
-                             onSubmitWord={this.handleSubmitWord}
-                             inputValue={game.getInputValueFor(currentUserId)}
-                             enteredWords={game.getEnteredWordsFor(currentUserId)}
-                             dual={mobile}
-                             playerProgress={currentUserProgress}
-                             opponentProgress={mobile ? opponentProgress : undefined} />
-          </div>
+          {currentUserGameComponent}
           {opponentGameComponent}
         </div>
       </Components.Container>
