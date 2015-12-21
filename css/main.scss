@@ -161,19 +161,15 @@
 }
 
 // PROGRESS BARS
-.progress {
+.players-progress {
   position: relative;
 
   .player-progress,
   .opponent-progress {
-  }
-
-  .player-progress {
-    // Flip horizontal so the stripes face right.
-    @include scaleX(-1);
-  }
-
-  .opponent-progress {
+    display: block;
+    position: relative;
+    font-size: 18px;
+    height: 24px;
   }
 
   .player-icon-container,
@@ -185,41 +181,6 @@
     .emoji-wrapper {
       position: absolute;
       @include transition((left .6s ease, right .6s ease));
-    }
-  }
-
-  .player-icon-container {
-    left: 1em; // TODO: This might not be right. We were using BS computed-line-height.
-
-    .emoji-wrapper {
-      margin-left: -1em; // TODO: This might not be right. We were using BS computed-line-height.
-    }
-  }
-
-  .opponent-icon-container {
-    right: 1em; // TODO: This might not be right. We were using BS computed-line-height.
-
-    .emoji-wrapper {
-      margin-right: -1em; // TODO: This might not be right. We were using BS computed-line-height.
-    }
-  }
-
-  &.dual-progress {
-    .center-indicator {
-      border-right: 1px solid $input-border-color;
-      position: absolute;
-      left: 50%;
-      right: 50%;
-      top: 0;
-      bottom: 0;
-    }
-
-    .player-icon-container {
-      right: 50%;
-    }
-
-    .opponent-icon-container {
-      left: 50%;
     }
   }
 }

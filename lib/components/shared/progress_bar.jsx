@@ -23,19 +23,29 @@ Components.ProgressBar = React.createClass({
           this.props.progress * 100,
           this.props.style
         )
+      , wrapperClasses = {
+          "progress": true
+        }
       , classes = {
-          "progress-bar": true,
-          "progress-bar-striped": true,
-          "active": true
+          "determinate": true
         };
 
     if (this.props.className) {
       classes[this.props.className] = true;
     }
 
+    if (this.props.mainColor) {
+      classes[this.props.mainColor] = true;
+    }
+
+    if (this.props.backgroundColor) {
+      wrapperClasses[this.props.backgroundColor] = true;
+    }
+
     return (
-      <div className={cx(classes)}
-           style={style} />
+      <div className={cx(wrapperClasses)}>
+        <div className={cx(classes)} style={style} />
+      </div>
     );
   }
 
