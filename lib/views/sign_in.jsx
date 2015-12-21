@@ -98,12 +98,12 @@ Views.SignIn = React.createClass({
         <div className={cx({ jumbotron: !this.props.mobile })}>
           <div className="row">
 
-            <div className="col-md-6 col-md-offset-0">
+            <div className="col m6 offset-m0">
               { this.props.mobile? null : <h1>Speedy Keys</h1> }
               <h2>Can you text faster than your friends?</h2>
             </div>
 
-            <div className="col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2">
+            <div className="col m6 offset-m0 s8 offset-s2">
               { this.renderSignInForm() }
             </div>
 

@@ -48,7 +48,7 @@ Views.Game = React.createClass({
     }
 
     currentUserGameComponent = (
-      <div className="col-sm-6 clearfix">
+      <div className="col m6">
         {
           !mobile
           ? <h2 onClick={this.mockOpponent}>You <Components.Emoji emoji={currentUser.props.profile.emoji}/></h2>
@@ -73,7 +73,7 @@ Views.Game = React.createClass({
 
     if (!mobile) {
       opponentGameComponent = (
-        <div className="col-sm-6 clearfix">
+        <div className="col m6">
           <h2>{opponent.props.profile.name} <Components.Emoji emoji={opponent.props.profile.emoji}/></h2>
           <Components.Game words={game.wordsFor(opponentId)}
                            key="opponentGame"

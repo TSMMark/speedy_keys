@@ -47,7 +47,7 @@ Layouts.App = React.createClass({
 
   isMobile: function () {
     var width = $(window).width()
-      , cuttoff = 768;
+      , cuttoff = 601;
 
     return width < cuttoff;
   },
