@@ -38,6 +38,8 @@ Components.Utils.AutoFitText = React.createClass({
   },
 
   _enforceStyles: function () {
+    if (!this.isMounted()) return;
+
     var el = ReactDOM.findDOMNode(this);
 
     if (this.props.fontFamily) {
@@ -51,6 +53,8 @@ Components.Utils.AutoFitText = React.createClass({
   },
 
   _centerVertically: function (fontSize) {
+    if (!this.isMounted()) return;
+
     var el = ReactDOM.findDOMNode(this);
 
     el.style.position = "absolute";

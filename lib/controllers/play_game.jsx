@@ -39,7 +39,9 @@ Controllers.PlayGame = React.createClass({
   },
 
   componentWillUnmount: function () {
-    Meteor.call("leaveGame", Meteor.user()._id);
+    if (Meteor.user()) {
+      Meteor.call("leaveGame", Meteor.user()._id);
+    }
   },
 
   render: function () {
@@ -96,7 +98,7 @@ Controllers.PlayGame = React.createClass({
               </div>
 
               <div className="form-group">
-                <Components.JoinGameButton className="btn btn-lg btn-primary">
+                <Components.JoinGameButton className="btn btn-large btn-primary">
                   Play Again
                 </Components.JoinGameButton>
               </div>

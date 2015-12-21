@@ -24,10 +24,10 @@ Components.SignOutButton = React.createClass({
     };
 
     return (
-      <button onClick={this.signOut}
+      <a onClick={this.signOut}
               className={cx(classes)}>
         <span className="fa fa-power-off"></span> Sign Out
-      </button>
+      </a>
     );
   }
 
