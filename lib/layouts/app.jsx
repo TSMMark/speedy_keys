@@ -1,7 +1,5 @@
-Layouts = {};
-
 Layouts.App = React.createClass({
-  mixins: [ReactRouter.State, ReactMeteorData], // , ReactMeteor.Mixin
+  mixins: [ReactRouter.State, ReactMeteorData],
 
   getInitialState: function() {
     return {
@@ -39,6 +37,28 @@ Layouts.App = React.createClass({
     };
   },
 
+  componentDidMount: function () {
+    $(window).on("resize.layout", _.throttle(this.handleResize, 500));
+  },
+
+  componentWillUnmount: function () {
+    $(window).off("resize.layout");
+  },
+
+  isMobile: function () {
+    var width = $(window).width()
+      , cuttoff = 768;
+
+    return width < cuttoff;
+  },
+
+  handleResize: function () {
+    // TODO: include window innerHeight and innerWidth in state
+    this.setState({
+      mobile: this.isMobile()
+    })
+  },
+
   render: function () {
     var content
       , classes = {
@@ -63,27 +83,6 @@ Layouts.App = React.createClass({
         </div>
       </div>
     );
-  },
-
-  handleResize: function () {
-    // TODO: include window innerHeight and innerWidth in state
-    this.setState({
-      mobile: this.isMobile()
-    })
-  },
-
-  isMobile: function () {
-    var width = $(window).width()
-      , cuttoff = 768;
-
-    return width < cuttoff;
-  },
-
-  componentDidMount: function () {
-    $(window).on("resize.layout", _.throttle(this.handleResize, 500));
-  },
-
-  componentWillUnmount: function () {
-    $(window).off("resize.layout");
   }
+
 });

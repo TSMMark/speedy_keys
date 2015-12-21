@@ -1,4 +1,5 @@
 Components.GameStatsTable = React.createClass({
+
   render: function () {
     var currentUserId = this.props.currentUserId
       , game = this.props.game
@@ -65,6 +66,8 @@ Components.GameStatsTable = React.createClass({
             {completedWords}
           </tr>
         </tbody>
-      </table>);
+      </table>
+    );
   }
+
 });

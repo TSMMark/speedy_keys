@@ -12,6 +12,48 @@ Views.SignIn = React.createClass({
     }
   },
 
+  handleSubmit: function (event) {
+    event.preventDefault();
+    var username = this.refs["username"].value
+      , password = this.refs["password"] ? this.refs["password"].value : Math.random(9999999).toString();
+
+    if (!username) {
+      return alert("Username required");
+    }
+
+    if (!password) {
+      return alert("Password required");
+    }
+
+    var callback = function () {
+      Meteor.user();
+    }
+
+    var user = { username: username };
+
+    var self = this;
+    Meteor.loginWithPassword(user, password, function (error) {
+      if (error) { // If no user existed.
+        Accounts.createUser({
+          username: username,
+          password: password,
+          profile: {
+            name: username
+          }
+        }, function (error) {
+          if (error) {
+            return alert(error.reason + " Incorrect password?");
+          }
+          callback();
+          self.currentUserJoinGame();
+        });
+        return;
+      }
+
+      callback();
+    });
+  },
+
   renderSignInForm: function () {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -72,48 +114,6 @@ Views.SignIn = React.createClass({
         </footer>
       </Components.Container>
     );
-  },
-
-  handleSubmit: function (event) {
-    event.preventDefault();
-    var username = this.refs["username"].value
-      , password = this.refs["password"] ? this.refs["password"].value : Math.random(9999999).toString();
-
-    if (!username) {
-      return alert("Username required");
-    }
-
-    if (!password) {
-      return alert("Password required");
-    }
-
-    var callback = function () {
-      Meteor.user();
-    }
-
-    var user = { username: username };
-
-    var self = this;
-    Meteor.loginWithPassword(user, password, function (error) {
-      if (error) { // If no user existed.
-        Accounts.createUser({
-          username: username,
-          password: password,
-          profile: {
-            name: username
-          }
-        }, function (error) {
-          if (error) {
-            return alert(error.reason + " Incorrect password?");
-          }
-          callback();
-          self.currentUserJoinGame();
-        });
-        return;
-      }
-
-      callback();
-    });
   }
 
 });

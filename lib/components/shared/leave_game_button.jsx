@@ -1,14 +1,6 @@
 Components.LeaveGameButton = React.createClass({
   mixins: [Mixins.RoutingHelpers],
 
-  render: function () {
-    return (
-      <a href="#leave-game" onClick={this.handleClick}
-                            className={cx(this.props.className)}>
-        {this.props.children}
-      </a>);
-  },
-
   handleClick: function (event) {
     event.preventDefault();
     this.navigateToPath("/");
@@ -23,6 +15,14 @@ Components.LeaveGameButton = React.createClass({
         this.navigateToPath("/");
       }
     }.bind(this));
+  },
+
+  render: function () {
+    return (
+      <a href="#leave-game" onClick={this.handleClick}
+                            className={cx(this.props.className)}>
+        {this.props.children}
+      </a>);
   }
 
 });

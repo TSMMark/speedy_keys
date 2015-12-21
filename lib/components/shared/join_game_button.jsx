@@ -1,6 +1,11 @@
 Components.JoinGameButton = React.createClass({
   mixins: [Mixins.RoutingHelpers, Mixins.Games],
 
+  handleClick: function (event) {
+    event.preventDefault();
+    this.currentUserJoinGame();
+  },
+
   render: function () {
     return (
       <a href="#join-game"
@@ -9,11 +14,6 @@ Components.JoinGameButton = React.createClass({
         {this.props.children}
       </a>
     );
-  },
-
-  handleClick: function (event) {
-    event.preventDefault();
-    this.currentUserJoinGame();
   }
 
 });

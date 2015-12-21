@@ -8,24 +8,7 @@ Components.FacebookLogin = React.createClass({
     };
   },
 
-  render: function () {
-    var classes = {
-      "btn": this.props.btn,
-      "btn-facebook": this.props.btn
-    };
-
-    if (this.props.className) {
-      classes[this.props.className] = true
-    }
-
-    return (
-      <a href="#!" onClick={this.signIn}
-         className={cx(classes)}>
-        {this.props.children}
-      </a>);
-  },
-
-  signIn: function (event) {
+  handleClick: function (event) {
     var self = this;
     event.preventDefault();
 
@@ -37,6 +20,23 @@ Components.FacebookLogin = React.createClass({
 
       self.navigateToPath("/");
     });
+  },
+
+  render: function () {
+    var classes = {
+      "btn": this.props.btn,
+      "btn-facebook": this.props.btn
+    };
+
+    if (this.props.className) {
+      classes[this.props.className] = true
+    }
+
+    return (
+      <a href="#!" onClick={this.handleClick}
+         className={cx(classes)}>
+        {this.props.children}
+      </a>);
   }
 
 });

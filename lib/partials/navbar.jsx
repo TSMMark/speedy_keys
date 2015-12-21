@@ -1,5 +1,3 @@
-Partials = {};
-
 Partials.Navbar = React.createClass({
 
   render: function () {
@@ -54,7 +52,8 @@ Partials.Navbar = React.createClass({
             </ul>
           </div>
         </div>
-      </nav>);
+      </nav>
+    );
   }
 
 });

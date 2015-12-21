@@ -1,5 +1,5 @@
 Controllers.PlayGame = React.createClass({
-  mixins: [ReactRouter.State, ReactRouter.Navigation, ReactMeteorData], // , ReactMeteor.Mixin
+  mixins: [ReactRouter.State, ReactRouter.Navigation, ReactMeteorData],
 
   contextTypes: {
     mobile: React.PropTypes.bool.isRequired
@@ -58,8 +58,7 @@ Controllers.PlayGame = React.createClass({
       main = <Views.NotFound key="not-found" />;
     }
     else if (!this.data.opponent) {
-      main = <Views.WaitForOpponent key="waiting"
-                                    mobile={this.context.mobile} />;
+      main = <Views.WaitForOpponent key="waiting" mobile={this.context.mobile}/>;
     }
     else {
       var player = Models.User.initRaw(currentUser)
@@ -72,7 +71,8 @@ Controllers.PlayGame = React.createClass({
                               alpha={overlayAlpha}>
             <h2>v.s. {opponent.props.profile.name} <Components.Emoji emoji={opponent.props.profile.emoji}/></h2>
             <h1>{this.data.countdown}</h1>
-          </Components.Overlay>);
+          </Components.Overlay>
+        );
       }
       else if (game.props.winnerId) {
         var winnerIsMe = game.props.winnerId === currentUser._id
@@ -101,7 +101,8 @@ Controllers.PlayGame = React.createClass({
                 </Components.JoinGameButton>
               </div>
             </Components.Panel>
-          </Components.Overlay>);
+          </Components.Overlay>
+        );
       }
 
       main = (
@@ -110,7 +111,8 @@ Controllers.PlayGame = React.createClass({
                     game={game}
                     mobile={this.context.mobile}
                     ready={this.data.countdown == 0}
-                    key={"game:" + gameId} />);
+                    key={"game:" + gameId} />
+      );
     }
 
     return (
@@ -123,6 +125,7 @@ Controllers.PlayGame = React.createClass({
                                  transitionLeave={false}>
           {overlay}
         </ReactCSSTransitionGroup>
-      </div>);
+      </div>
+    );
   }
 });
