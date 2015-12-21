@@ -22,12 +22,9 @@ const router = (
 );
 
 Meteor.startup(function () {
-  var routes;
-
   ReactDOM.render(router, document.getElementById("main-app"));
 
   window.addEventListener("beforeunload", function (_error) {
     Meteor.call("leaveGame", Meteor.userId());
   });
-
 });
