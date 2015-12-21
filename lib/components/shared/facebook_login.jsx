@@ -33,10 +33,10 @@ Components.FacebookLogin = React.createClass({
     }
 
     return (
-      <a href="#!" onClick={this.handleClick}
-         className={cx(classes)}>
+      <a href="#" onClick={this.handleClick} className={cx(classes)}>
         {this.props.children}
-      </a>);
+      </a>
+    );
   }
 
 });

@@ -64,6 +64,8 @@ Components.Utils.AutoFitText = React.createClass({
 
   // TODO: Maybe throttle this?
   _calculateSize: function () {
+    if (!this.isMounted()) return;
+
     var el = ReactDOM.findDOMNode(this);
     var $el = $(el);
     var parentWidth = $el.parent().innerWidth();

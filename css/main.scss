@@ -10,9 +10,24 @@
 @import "{poetic:materialize-scss}/sass/materialize.scss";
 @import "footer.import.scss";
 
+.clearfix {
+  @include clearfix();
+}
+
 .btn-facebook {
   // TODO
   // @include button-variant($btn-facebook-color; $btn-facebook-bg; $btn-facebook-border);
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+ul.vertical-buttons-list {
+  > li {
+    margin-bottom: $card-padding / 2;
+  }
 }
 
 // GAME OF LIFE

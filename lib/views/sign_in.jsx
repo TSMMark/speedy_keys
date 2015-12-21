@@ -56,38 +56,53 @@ Views.SignIn = React.createClass({
 
   renderSignInForm: function () {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username"><h3>Make up a name:</h3></label>
+      <form onSubmit={this.handleSubmit} className="card-panel">
+        <div className="input-field">
+          <h3>Make up a name:</h3>
           <input type="text" id="username" ref="username"
-                 className="form-control input-lg"
                  placeholder="Marty McFly" />
         </div>
 
         {
           this.props.includePassword
           ? (
-              <div className="form-group">
+              <div className="input-field">
                 <label htmlFor="password">Password</label>
                 <input type="password" id="password" ref="password"
-                       className="form-control input-lg"
                        placeholder="Flux Capacitor" />
               </div>
             )
           : null
         }
 
-        <div className="form-group">
-          <input type="submit" value="Play!"
-                 className="btn btn-primary btn-large btn-block" />
-        </div>
-
-        <div className="form-group text-right">
-          {"or "}
-          <Components.FacebookLogin btn={false}>
-            use Facebook name
-          </Components.FacebookLogin>
-        </div>
+        { this.props.mobile ? (
+            <ul className="vertical-buttons-list">
+              <li>
+                <input type="submit" value="Play!" className="btn btn-large btn-block" />
+              </li>
+              <li>
+                <Components.FacebookLogin btn={true} className="btn-block white black-text">
+                  Use my Facebook name
+                </Components.FacebookLogin>
+              </li>
+            </ul>
+          ) : (
+            <nav className="white z-depth-0">
+              <div className="nav-wrapper">
+                <ul className="right">
+                  <li>
+                    <Components.FacebookLogin btn={false} className="black-text">
+                      Use my Facebook name
+                    </Components.FacebookLogin>
+                  </li>
+                  <li>
+                    <input type="submit" value="Play!" className="btn btn-large" />
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          )
+        }
       </form>
     );
   },
@@ -95,21 +110,17 @@ Views.SignIn = React.createClass({
   render: function () {
     return (
       <Components.Container>
-        <div className={cx({ jumbotron: !this.props.mobile })}>
-          <div className="row">
-
-            <div className="col m6 offset-m0">
-              { this.props.mobile? null : <h1>Speedy Keys</h1> }
-              <h2>Can you text faster than your friends?</h2>
-            </div>
-
-            <div className="col m6 offset-m0 s8 offset-s2">
-              { this.renderSignInForm() }
-            </div>
-
+        <div className={cx("row", { "valign-wrapper": !this.props.mobile })}>
+          <div className={cx("col m6", { "valign": !this.props.mobile })}>
+            { this.props.mobile? null : <h1>Speedy Keys</h1> }
+            <h2>Can you text faster than your friends?</h2>
+          </div>
+          <div className="col m6 valign">
+            { this.renderSignInForm() }
           </div>
         </div>
-        <footer className="footer text-right">
+
+        <footer className="footer right-align">
           <Components.Container>A game by Mark Allen - Copyright 2015</Components.Container>
         </footer>
       </Components.Container>
