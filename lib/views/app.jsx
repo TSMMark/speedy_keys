@@ -1,17 +1,31 @@
 Views.Home = React.createClass({
+
+  componentDidMount: function () {
+    // TODO: count down and auto-join game.
+  },
+
   render: function () {
     return (
-      <Components.Container>
-        <h1>Welcome to Speedy Keys</h1>
-        <Components.JoinGameButton className="btn btn-primary btn-lg">
-          Find a Game
-        </Components.JoinGameButton>
-      </Components.Container>
+      <div>
+        <Components.Container>
+          <h1>Welcome to Speedy Keys</h1>
+          <h3>Get ready to type as fast as you can!</h3>
+        </Components.Container>
+        <footer className="footer">
+          <Components.Container>
+            <Components.JoinGameButton className="btn btn-primary btn-lg btn-block">
+              Play
+            </Components.JoinGameButton>
+          </Components.Container>
+        </footer>
+      </div>
     );
   }
+
 });
 
 Views.NotFound = React.createClass({
+
   getDefaultProps: function () {
     return {
       message: "Oops! Something went wrong.",
@@ -24,10 +38,15 @@ Views.NotFound = React.createClass({
       <Components.Container>
         <h1>{this.props.message}</h1>
         <h2>{this.props.submessage}</h2>
-        <Link to="default" className="btn btn-default">Go Back</Link>
+        <footer className="footer">
+          <Components.Container>
+            <Link to="default" className="btn btn-default btn-block">Go Back</Link>
+          </Components.Container>
+        </footer>
       </Components.Container>
     );
   }
+
 });
 
 Views.ConfigureServices = React.createClass({
@@ -58,4 +77,5 @@ Views.ConfigureServices = React.createClass({
       secret: app_secret
     });
   }
+
 });

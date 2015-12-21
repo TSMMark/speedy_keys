@@ -54,23 +54,21 @@ Components.Panel = React.createClass({
 });
 
 Components.JoinGameButton = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, Mixins.Games],
 
   render: function () {
     return (
-      <a href="#join-game" onClick={this.joinGame}
+      <a href="#join-game" onClick={this.handleClick}
                            className={cx(this.props.className)}>
         {this.props.children}
       </a>);
   },
 
-  joinGame: function (event) {
-    var self = this;
+  handleClick: function (event) {
     event.preventDefault();
-    Meteor.call("joinGame", Meteor.userId(), function (error, gameId) {
-      self.transitionTo("playGame", { gameId: gameId });
-    });
+    this.currentUserJoinGame();
   }
+
 });
 
 Components.LeaveGameButton = React.createClass({
@@ -78,13 +76,13 @@ Components.LeaveGameButton = React.createClass({
 
   render: function () {
     return (
-      <a href="#leave-game" onClick={this.leaveGame}
+      <a href="#leave-game" onClick={this.handleClick}
                             className={cx(this.props.className)}>
         {this.props.children}
       </a>);
   },
 
-  leaveGame: function (event) {
+  handleClick: function (event) {
     event.preventDefault();
     this.transitionTo("default");
 
@@ -99,6 +97,7 @@ Components.LeaveGameButton = React.createClass({
       }
     }.bind(this));
   }
+
 });
 
 Components.SignOutButton = React.createClass({
@@ -132,19 +131,23 @@ Components.SignOutButton = React.createClass({
       self.transitionTo("default");
     });
   }
+
 });
 
 Components.FacebookLogin = React.createClass({
   mixins: [Router.Navigation],
 
   getDefaultProps: function () {
-    return {};
+    return {
+      children: ["Sign up with Facebook"],
+      btn: true
+    };
   },
 
   render: function () {
     var classes = {
-      "btn": true,
-      "btn-facebook": true
+      "btn": this.props.btn,
+      "btn-facebook": this.props.btn
     };
 
     if (this.props.className) {
@@ -152,10 +155,10 @@ Components.FacebookLogin = React.createClass({
     }
 
     return (
-      <button onClick={this.signIn}
+      <a href="#!" onClick={this.signIn}
          className={cx(classes)}>
-        Sign up with Facebook
-      </button>);
+        {this.props.children}
+      </a>);
   },
 
   signIn: function (event) {
@@ -163,6 +166,7 @@ Components.FacebookLogin = React.createClass({
     event.preventDefault();
 
     Meteor.loginWithFacebook({
+      loginStyle: "redirect",
       requestPermissions: ["email"]
     }, function (error) {
       if (error) throw error;
@@ -170,5 +174,6 @@ Components.FacebookLogin = React.createClass({
       self.transitionTo("default");
     });
   }
+
 });
 

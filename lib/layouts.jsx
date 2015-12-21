@@ -1,7 +1,7 @@
 Layouts = {};
 
 Layouts.App = React.createClass({
-  mixins: [ReactMeteor.Mixin],
+  mixins: [Router.State, ReactMeteor.Mixin],
 
   getMeteorState: function () {
     Meteor.subscribe("users");
@@ -20,19 +20,18 @@ Layouts.App = React.createClass({
         };
 
     if (this.state.currentUser) {
-      content = <RouteHandler currentUser={this.state.currentUser}
-                              mobile={this.state.mobile}/>;
+      content = <RouteHandler {...this.state} />;
     }
     else if (this.state.missingServiceConfig) {
-      content = <Views.ConfigureServices/>;
+      content = <Views.ConfigureServices {...this.state}/>;
     }
     else {
-      content = <Views.SignIn/>;
+      content = <Views.SignIn {...this.state} includePassword={false} />;
     }
 
     return (
       <div id="app-container" className={cx(classes)}>
-        <Partials.Navbar/>
+        <Partials.Navbar currentPath={this.getPath()} />
         <div id="main-content">
           {content}
         </div>

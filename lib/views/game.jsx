@@ -1,4 +1,5 @@
 Views.Game = React.createClass({
+
   getDefaultProps: function () {
     return {
       mobile: false,
@@ -13,6 +14,7 @@ Views.Game = React.createClass({
       , opponent = this.props.opponent
       , opponentId = opponent.props._id
       , game = this.props.game
+      , currentUserGameComponent
       , opponentGameComponent
       , opponentName = opponent.props.profile.name
       , currentUserProgress = game.getProgressFor(currentUserId)
@@ -22,48 +24,58 @@ Views.Game = React.createClass({
           "mobile": this.props.mobile
         };
 
+    var sharedGameProps = {
+      dual: mobile
+    }
+
+    currentUserGameComponent = (
+      <div className="col-sm-6 clearfix">
+        {
+          !mobile
+          ? <h2 onClick={this.mockOpponent}>You <Components.Emoji emoji={currentUser.props.profile.emoji}/></h2>
+          : null
+        }
+        <Components.Game words={game.wordsFor(currentUserId)}
+                         key="currentUserGame"
+                         playable={true}
+                         ref="current-user-input"
+                         ready={this.props.ready}
+                         onInputValueChange={this.handleInputValueChange}
+                         onSubmitWord={this.handleSubmitWord}
+                         inputValue={game.getInputValueFor(currentUserId)}
+                         enteredWords={game.getEnteredWordsFor(currentUserId)}
+                         playerProgress={currentUserProgress}
+                         opponentProgress={mobile ? opponentProgress : undefined}
+                         player={currentUser}
+                         opponent={opponent}
+                         {...sharedGameProps} />
+      </div>
+    );
+
     if (!mobile) {
       opponentGameComponent = (
         <div className="col-sm-6 clearfix">
-          <h2>{opponent.props.profile.name}</h2>
+          <h2>{opponent.props.profile.name} <Components.Emoji emoji={opponent.props.profile.emoji}/></h2>
           <Components.Game words={game.wordsFor(opponentId)}
                            key="opponentGame"
                            playable={false}
                            inputValue={game.getInputValueFor(opponentId)}
                            enteredWords={game.getEnteredWordsFor(opponentId)}
-                           dual={mobile}
                            playerProgress={undefined}
-                           opponentProgress={opponentProgress} />
+                           opponentProgress={opponentProgress}
+                           player={currentUser}
+                           opponent={opponent}
+                           {...sharedGameProps} />
         </div>);
-
-      opponentName += " (aka Your Worst Nightmare)";
     }
 
     return (
       <Components.Container className={cx(classes)}>
         <h1>
-          v.s. {opponentName}
+          v.s. {opponentName} <Components.Emoji emoji={opponent.props.profile.emoji}/>
         </h1>
         <div className="row">
-          <div className="col-sm-6 clearfix">
-            {
-              !mobile
-              ? <h2 onClick={this.mockOpponent}>You</h2>
-              : null
-            }
-            <Components.Game words={game.wordsFor(currentUserId)}
-                             key="currentUserGame"
-                             playable={true}
-                             ref="current-user-input"
-                             ready={this.props.ready}
-                             onInputValueChange={this.handleInputValueChange}
-                             onSubmitWord={this.handleSubmitWord}
-                             inputValue={game.getInputValueFor(currentUserId)}
-                             enteredWords={game.getEnteredWordsFor(currentUserId)}
-                             dual={mobile}
-                             playerProgress={currentUserProgress}
-                             opponentProgress={mobile ? opponentProgress : undefined} />
-          </div>
+          {currentUserGameComponent}
           {opponentGameComponent}
         </div>
       </Components.Container>
@@ -88,9 +100,11 @@ Views.Game = React.createClass({
       }, 10);
     }
   }
+
 });
 
 Views.WaitForOpponent = React.createClass({
+
   render: function () {
     var size = this.props.mobile ? 25 : 50
       , cancelButton
@@ -101,21 +115,27 @@ Views.WaitForOpponent = React.createClass({
     lifeClasses["size-" + size] = true;
 
     cancelButton = (
-      <Components.LeaveGameButton className="btn btn-default">
+      <Components.LeaveGameButton className="btn btn-default btn-block">
         Cancel
-      </Components.LeaveGameButton>);
+      </Components.LeaveGameButton>
+    );
 
     return (
       <div>
         <Components.Container>
-          <h1>
-            Waiting for opponent
-          </h1>
-          {cancelButton}
+          <h2>Get ready to type as fast as you can!</h2>
+          <h6>Finding a worthy opponent...</h6>
         </Components.Container>
         <div className={cx(lifeClasses)}>
           <GameOfLife begin={true} size={size} />
         </div>
-      </div>);
+        <footer className="footer">
+          <Components.Container>
+            {cancelButton}
+          </Components.Container>
+        </footer>
+      </div>
+    );
   }
+
 });

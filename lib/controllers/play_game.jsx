@@ -41,6 +41,7 @@ Controllers.PlayGame = React.createClass({
       , main;
 
     if (!game) {
+      // TODO: Add a notice "Game not found, try again." and redirect home.
       main = <Views.NotFound key="not-found" />;
     }
     else if (!this.state.opponent) {
@@ -56,7 +57,7 @@ Controllers.PlayGame = React.createClass({
           <Components.Overlay className="countdown-overlay"
                               key="countdown-overlay"
                               alpha={overlayAlpha}>
-            <h2>v.s. {opponent.props.profile.name}</h2>
+            <h2>v.s. {opponent.props.profile.name} <Components.Emoji emoji={opponent.props.profile.emoji}/></h2>
             <h1>{this.state.countdown}</h1>
           </Components.Overlay>);
       }
