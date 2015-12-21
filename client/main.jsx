@@ -13,7 +13,7 @@ Meteor.startup(function () {
                  document.getElementById("main-app"));
   });
 
-  window.addEventListener("beforeunload", function (e) {
+  window.addEventListener("beforeunload", function (_error) {
     Meteor.call("leaveGame", Meteor.userId());
   });
 

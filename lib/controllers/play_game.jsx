@@ -41,6 +41,7 @@ Controllers.PlayGame = React.createClass({
       , main;
 
     if (!game) {
+      // TODO: Add a notice "Game not found, try again." and redirect home.
       main = <Views.NotFound key="not-found" />;
     }
     else if (!this.state.opponent) {

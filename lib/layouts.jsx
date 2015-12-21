@@ -1,7 +1,7 @@
 Layouts = {};
 
 Layouts.App = React.createClass({
-  mixins: [ReactMeteor.Mixin],
+  mixins: [Router.State, ReactMeteor.Mixin],
 
   getMeteorState: function () {
     Meteor.subscribe("users");
@@ -31,7 +31,7 @@ Layouts.App = React.createClass({
 
     return (
       <div id="app-container" className={cx(classes)}>
-        <Partials.Navbar/>
+        <Partials.Navbar currentPath={this.getPath()} />
         <div id="main-content">
           {content}
         </div>

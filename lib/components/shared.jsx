@@ -54,23 +54,21 @@ Components.Panel = React.createClass({
 });
 
 Components.JoinGameButton = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, Mixins.Games],
 
   render: function () {
     return (
-      <a href="#join-game" onClick={this.joinGame}
+      <a href="#join-game" onClick={this.handleClick}
                            className={cx(this.props.className)}>
         {this.props.children}
       </a>);
   },
 
-  joinGame: function (event) {
-    var self = this;
+  handleClick: function (event) {
     event.preventDefault();
-    Meteor.call("joinGame", Meteor.userId(), function (error, gameId) {
-      self.transitionTo("playGame", { gameId: gameId });
-    });
+    this.currentUserJoinGame();
   }
+
 });
 
 Components.LeaveGameButton = React.createClass({
@@ -78,13 +76,13 @@ Components.LeaveGameButton = React.createClass({
 
   render: function () {
     return (
-      <a href="#leave-game" onClick={this.leaveGame}
+      <a href="#leave-game" onClick={this.handleClick}
                             className={cx(this.props.className)}>
         {this.props.children}
       </a>);
   },
 
-  leaveGame: function (event) {
+  handleClick: function (event) {
     event.preventDefault();
     this.transitionTo("default");
 
@@ -99,6 +97,7 @@ Components.LeaveGameButton = React.createClass({
       }
     }.bind(this));
   }
+
 });
 
 Components.SignOutButton = React.createClass({
@@ -132,6 +131,7 @@ Components.SignOutButton = React.createClass({
       self.transitionTo("default");
     });
   }
+
 });
 
 Components.FacebookLogin = React.createClass({
@@ -174,5 +174,6 @@ Components.FacebookLogin = React.createClass({
       self.transitionTo("default");
     });
   }
+
 });
 

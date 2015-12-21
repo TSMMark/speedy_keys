@@ -1,4 +1,5 @@
 Views.SignIn = React.createClass({
+  mixins: [Router.Navigation, Mixins.Games],
 
   getDefaultProps: function () {
     return {
@@ -82,24 +83,28 @@ Views.SignIn = React.createClass({
       return alert("Password required");
     }
 
-    var callback = function (error) {
-      if (error) {
-        return alert(error.reason + " Incorrect password?");
-      }
+    var callback = function () {
       Meteor.user();
     }
 
     var user = { username: username };
 
+    var self = this;
     Meteor.loginWithPassword(user, password, function (error) {
-      if (error) { // Is this right? why create user on error?
+      if (error) { // If no user existed.
         Accounts.createUser({
           username: username,
           password: password,
           profile: {
             name: username
           }
-        }, callback);
+        }, function (error) {
+          if (error) {
+            return alert(error.reason + " Incorrect password?");
+          }
+          callback();
+          self.currentUserJoinGame();
+        });
         return;
       }
 
