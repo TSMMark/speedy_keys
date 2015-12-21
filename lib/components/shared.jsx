@@ -54,7 +54,7 @@ Components.Panel = React.createClass({
 });
 
 Components.JoinGameButton = React.createClass({
-  mixins: [Router.Navigation, Mixins.Games],
+  mixins: [Mixins.RoutingHelpers, Mixins.Games],
 
   render: function () {
     return (
@@ -72,7 +72,7 @@ Components.JoinGameButton = React.createClass({
 });
 
 Components.LeaveGameButton = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Mixins.RoutingHelpers],
 
   render: function () {
     return (
@@ -84,7 +84,7 @@ Components.LeaveGameButton = React.createClass({
 
   handleClick: function (event) {
     event.preventDefault();
-    this.transitionTo("default");
+    this.navigateToPath("/");
 
     // Note:
     //   We don't NEED this as long as `leaveGame` is called on
@@ -93,7 +93,7 @@ Components.LeaveGameButton = React.createClass({
     //     successful before navigating.
     Meteor.call("leaveGame", Meteor.userId(), function (error, wasSuccessful) {
       if (wasSuccessful) {
-        this.transitionTo("default");
+        this.navigateToPath("/");
       }
     }.bind(this));
   }
@@ -101,7 +101,7 @@ Components.LeaveGameButton = React.createClass({
 });
 
 Components.SignOutButton = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Mixins.RoutingHelpers],
 
   getDefaultProps: function () {
     return {};
@@ -128,14 +128,14 @@ Components.SignOutButton = React.createClass({
       Meteor._debug("Logout", error);
       if (error) throw error;
 
-      self.transitionTo("default");
+      self.navigateToPath("/");
     });
   }
 
 });
 
 Components.FacebookLogin = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Mixins.RoutingHelpers],
 
   getDefaultProps: function () {
     return {
@@ -171,7 +171,7 @@ Components.FacebookLogin = React.createClass({
     }, function (error) {
       if (error) throw error;
 
-      self.transitionTo("default");
+      self.navigateToPath("/");
     });
   }
 

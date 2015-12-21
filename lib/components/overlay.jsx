@@ -27,8 +27,8 @@ Components.Overlay = React.createClass({
   },
 
   verticallyCenter: function () {
-    var $content = $(this.refs["content"].getDOMNode())
-      , $inner = $(this.refs["inner"].getDOMNode())
+    var $content = $(this.refs["content"])
+      , $inner = $(this.refs["inner"])
       , contentHeight = $content.innerHeight()
       , innerHeight = $inner.outerHeight(true)
       , top = (contentHeight / 2) - (innerHeight / 2);

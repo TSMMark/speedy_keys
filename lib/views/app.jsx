@@ -40,7 +40,7 @@ Views.NotFound = React.createClass({
         <h2>{this.props.submessage}</h2>
         <footer className="footer">
           <Components.Container>
-            <Link to="default" className="btn btn-default btn-block">Go Back</Link>
+            <Link to="/" className="btn btn-default btn-block">Go Back</Link>
           </Components.Container>
         </footer>
       </Components.Container>
@@ -50,7 +50,7 @@ Views.NotFound = React.createClass({
 });
 
 Views.ConfigureServices = React.createClass({
-  mixins: [Router.State, Router.Navigation],
+  mixins: [ReactRouter.State, ReactRouter.Navigation],
 
   render: function () {
     return (
@@ -68,8 +68,8 @@ Views.ConfigureServices = React.createClass({
 
   handleSubmit: function (event) {
     event.preventDefault();
-    var app_id = this.refs.app_id.getDOMNode().value
-      , app_secret = this.refs.app_secret.getDOMNode().value
+    var app_id = this.refs.app_id.value
+      , app_secret = this.refs.app_secret.value
 
     ServiceConfiguration.configurations.insert({
       service: "facebook",

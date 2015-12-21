@@ -1,14 +1,40 @@
 Layouts = {};
 
 Layouts.App = React.createClass({
-  mixins: [Router.State, ReactMeteor.Mixin],
+  mixins: [ReactRouter.State, ReactMeteorData], // , ReactMeteor.Mixin
 
-  getMeteorState: function () {
-    Meteor.subscribe("users");
+  getInitialState: function() {
+    return {
+      mobile: this.isMobile()
+    };
+  },
+
+  childContextTypes: {
+    history: React.PropTypes.object,
+    mobile: React.PropTypes.bool
+  },
+
+  getChildContext: function() {
+    return {
+      history: this.props.history,
+      mobile: this.state.mobile
+    };
+  },
+
+  getMeteorData: function () {
+    const subHandles = [
+      Meteor.subscribe("users")
+    ];
+
+    const subsReady = _.all(subHandles, function (handle) {
+      return handle.ready();
+    });
+
+    // Get the current routes from React Router
+    const routes = this.props.routes;
 
     return {
       currentUser: Meteor.user(),
-      mobile: this.isMobile(),
       missingServiceConfig: missingServiceConfig()
     };
   },
@@ -19,19 +45,19 @@ Layouts.App = React.createClass({
           mobile: this.state.mobile
         };
 
-    if (this.state.currentUser) {
-      content = <RouteHandler {...this.state} />;
+    if (this.data.currentUser) {
+      content = this.props.children;
     }
-    else if (this.state.missingServiceConfig) {
-      content = <Views.ConfigureServices {...this.state}/>;
+    else if (this.data.missingServiceConfig) {
+      content = <Views.ConfigureServices/>;
     }
     else {
-      content = <Views.SignIn {...this.state} includePassword={false} />;
+      content = <Views.SignIn {...this.state} {...this.props} includePassword={false} />;
     }
 
     return (
       <div id="app-container" className={cx(classes)}>
-        <Partials.Navbar currentPath={this.getPath()} />
+        <Partials.Navbar />
         <div id="main-content">
           {content}
         </div>

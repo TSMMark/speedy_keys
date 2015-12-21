@@ -1,5 +1,9 @@
 Views.SignIn = React.createClass({
-  mixins: [Router.Navigation, Mixins.Games],
+  mixins: [Mixins.RoutingHelpers, Mixins.Games],
+
+  propTypes: {
+    history: React.PropTypes.object.isRequired
+  },
 
   getDefaultProps: function () {
     return {
@@ -72,8 +76,8 @@ Views.SignIn = React.createClass({
 
   handleSubmit: function (event) {
     event.preventDefault();
-    var username = this.refs["username"].getDOMNode().value
-      , password = this.refs["password"] ? this.refs["password"].getDOMNode().value : Math.random(9999999).toString();
+    var username = this.refs["username"].value
+      , password = this.refs["password"] ? this.refs["password"].value : Math.random(9999999).toString();
 
     if (!username) {
       return alert("Username required");

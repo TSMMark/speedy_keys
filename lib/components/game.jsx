@@ -122,7 +122,9 @@ Components.Game = React.createClass({
     return (
       <div className="game" ref="game">
         <div className="game-words-container" ref="container">
-          <ReactCSSTransitionGroup transitionName="game-word">
+          <ReactCSSTransitionGroup transitionName="game-word"
+            transitionEnterTimeout={250}
+            transitionLeaveTimeout={250}>
             {words}
           </ReactCSSTransitionGroup>
         </div>
@@ -140,8 +142,8 @@ Components.Game = React.createClass({
 
     if (!activeWordRef) return;
 
-    var $activeWord = $(activeWordRef.getDOMNode())
-      , $container = $(this.refs["container"].getDOMNode())
+    var $activeWord = $(activeWordRef)
+      , $container = $(this.refs["container"])
       , currentScrollTop = $container.scrollTop()
       , wordTop = $activeWord.position().top
       , lineHeight = $activeWord.outerHeight(true)
@@ -163,7 +165,7 @@ Components.Game = React.createClass({
     var $window = $(window)
       , $htmlBody = $("html, body")
       , currentScrollTop = $window.scrollTop()
-      , $game = $(this.refs["game"].getDOMNode())
+      , $game = $(this.refs["game"])
       , gameTop = $game.offset().top
       , gameBottom = gameTop + $game.outerHeight(true)
       , windowHeight = window.innerHeight
@@ -268,7 +270,7 @@ Components.Game = React.createClass({
   },
 
   inputNode: function () {
-    return this.refs["game-input"].getDOMNode();
+    return this.refs["game-input"];
   }
 });
 

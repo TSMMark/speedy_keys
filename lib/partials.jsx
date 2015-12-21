@@ -22,7 +22,7 @@ Partials.Navbar = React.createClass({
               </button>
             : null}
 
-            <Link to="app" className="navbar-brand">
+            <Link to="/" className="navbar-brand">
               Speedy Keys
             </Link>
           </div>

@@ -6,8 +6,6 @@
 
 insecure
 less
-nemo64:bootstrap
-jhartma:react
 accounts-facebook
 service-configuration
 jquery
@@ -26,3 +24,6 @@ ejson
 spacebars
 check
 emojione:emojione
+reactrouter:react-router
+react
+maxharris9:classnames
