@@ -1,12 +1,17 @@
 @import "shared/variables.import.scss";
 @import "shared/mixins.import.scss";
-@import "{poetic:materialize-scss}/sass/materialize.scss";
-@import "footer.import.scss";
+
+@import "{poetic:materialize-scss}/sass/components/_mixins.scss";
+@import "{poetic:materialize-scss}/sass/components/_prefixer.scss";
 
 // TRANSITION EVERYTIHNG
 * { @include transition(all 175ms ease-in-out); }
 
+@import "{poetic:materialize-scss}/sass/materialize.scss";
+@import "footer.import.scss";
+
 .btn-facebook {
+  // TODO
   // @include button-variant($btn-facebook-color; $btn-facebook-bg; $btn-facebook-border);
 }
 
@@ -51,7 +56,9 @@
 
 // BEGIN MAIN
 #main-content {
-  padding-top: $navbar-height;
+  // padding-top: $navbar-height; // needed if top navbar is fixed.
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .overlay-container {

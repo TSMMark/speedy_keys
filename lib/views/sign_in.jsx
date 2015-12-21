@@ -79,7 +79,7 @@ Views.SignIn = React.createClass({
 
         <div className="form-group">
           <input type="submit" value="Play!"
-                 className="btn btn-primary btn-lg btn-block" />
+                 className="btn btn-primary btn-large btn-block" />
         </div>
 
         <div className="form-group text-right">
