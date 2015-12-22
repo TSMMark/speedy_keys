@@ -31,18 +31,19 @@ Layouts.App = React.createClass({
   },
 
   getMeteorData: function () {
-    const subHandles = [
+    const subscriptions = [
       Meteor.subscribe("users")
     ];
 
-    const subsReady = _.all(subHandles, function (handle) {
-      return handle.ready();
+    const meteorSubscriptionsReady = _.all(subscriptions, function (subscription) {
+      return subscription.ready();
     });
 
     // Get the current routes from React Router
     const routes = this.props.routes;
 
     return {
+      meteorSubscriptionsReady: meteorSubscriptionsReady,
       currentUser: Meteor.user(),
       missingServiceConfig: missingServiceConfig()
     };
@@ -82,7 +83,10 @@ Layouts.App = React.createClass({
   render: function () {
     var content;
 
-    if (this.data.currentUser) {
+    if (!this.data.meteorSubscriptionsReady) {
+      content = <Components.Spinner/>
+    }
+    else if (this.data.currentUser) {
       content = this.props.children;
     }
     else if (this.data.missingServiceConfig) {
