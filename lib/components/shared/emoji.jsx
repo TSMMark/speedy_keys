@@ -50,7 +50,7 @@ Components.Emoji = React.createClass({
     }
 
     return (
-      <span {...this.props} className={cx(classes)} style={{ position: "relative" }}>
+      <span {...this.props} className={cx(classes)}>
         { this.renderBackdrop(this.props.zDepth) }
         <span dangerouslySetInnerHTML={{ __html: emojiImage }} />
       </span>
