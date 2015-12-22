@@ -269,8 +269,11 @@ Components.Game = React.createClass({
 
     form = (
       <div className="input-group input-group-lg">
-        <input type="text" className="form-control game-input"
-               autoCorrect="off" autoCapitalize="off"
+        <input type="text" className="game-input"
+               placeholder={canType ? "Tap here and start typing!" : null}
+               autoCorrect="off"
+               autoFill="off"
+               autoCapitalize="off"
                ref="game-input" key="game-input"
                readOnly={!canType}
                onKeyDown={typeEvent}
