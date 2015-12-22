@@ -4,13 +4,12 @@ Layouts.App = React.createClass({
   getInitialState: function() {
     var responsiveState = this.getResponsiveState();
     return _.extend({
-      mobile: responsiveState.ltMedium // mobile is DEPRECATED
+      // Nothing here yet.
     }, responsiveState);
   },
 
   childContextTypes: {
     history: React.PropTypes.object,
-    mobile: React.PropTypes.bool,
     ltSmall: React.PropTypes.bool,
     ltMedium: React.PropTypes.bool,
     ltLarge: React.PropTypes.bool,
@@ -22,7 +21,6 @@ Layouts.App = React.createClass({
   getChildContext: function() {
     return {
       history: this.props.history,
-      mobile: this.state.mobile, // mobile is DEPRECATED
       ltSmall: this.state.ltSmall, // TODO: DRY
       ltMedium: this.state.ltMedium, // TODO: DRY
       ltLarge: this.state.ltLarge, // TODO: DRY
@@ -82,10 +80,7 @@ Layouts.App = React.createClass({
   },
 
   render: function () {
-    var content
-      , classes = {
-          mobile: this.state.ltMedium
-        };
+    var content;
 
     if (this.data.currentUser) {
       content = this.props.children;
@@ -98,7 +93,7 @@ Layouts.App = React.createClass({
     }
 
     return (
-      <div id="app-container" className={cx(classes)}>
+      <div id="app-container">
         <Partials.Navbar currentUser={this.data.currentUser} />
         <div id="main-content">
           {content}

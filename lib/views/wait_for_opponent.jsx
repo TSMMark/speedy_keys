@@ -1,10 +1,15 @@
 Views.WaitForOpponent = React.createClass({
 
+  propTypes: {
+    mobile: React.PropTypes.bool.isRequired
+  },
+
   render: function () {
     var size = this.props.mobile ? 25 : 50
       , cancelButton
       , lifeClasses = {
-          "game-of-life-wrapper": true
+          "game-of-life-wrapper": true,
+          "z-depth-2": true
         };
 
     lifeClasses["size-" + size] = true;
@@ -21,9 +26,11 @@ Views.WaitForOpponent = React.createClass({
           <h2>Get ready to type as fast as you can!</h2>
           <h6>Finding a worthy opponent...</h6>
         </Components.Container>
-        <div className={cx(lifeClasses)}>
-          <GameOfLife begin={true} size={size} />
-        </div>
+        <Components.Container>
+          <div className={cx(lifeClasses)}>
+            <GameOfLife begin={true} size={size} />
+          </div>
+        </Components.Container>
         <footer className="footer">
           <Components.Container>
             {cancelButton}

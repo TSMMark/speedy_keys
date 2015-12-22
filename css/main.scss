@@ -10,6 +10,7 @@
 @import "{poetic:materialize-scss}/sass/materialize.scss";
 @import "shared/font-style-classes.import.scss";
 @import "footer.import.scss";
+@import "side-nav.import.scss";
 
 .clearfix {
   @include clearfix();
@@ -50,6 +51,7 @@ ul.vertical-buttons-list {
   margin-top: 2px;
   width: 100%;
   padding-bottom: 100%;
+  margin-bottom: 20px;
 }
 
 .game-of-life {
@@ -65,7 +67,7 @@ ul.vertical-buttons-list {
     clear: both;
 
     .cell {
-      @include transition(none);
+      @include transition(background-color 0.05s linear);
       display: block;
       position: relative;
       float: left;
@@ -183,7 +185,7 @@ ul.vertical-buttons-list {
   > h1 {
     @include text-overflow();
 
-    .mobile & {
+    @media (max-width: $small-screen) {
       font-size: $h2-fontsize;
     }
   }
@@ -236,7 +238,7 @@ ul.vertical-buttons-list {
     max-height: $line-height * 6;
     overflow: auto;
 
-    .mobile & {
+    @media (max-width: $small-screen) {
       max-height: $line-height * 3;
       overflow: hidden;
     }
@@ -294,9 +296,4 @@ ul.vertical-buttons-list {
   td.my-stats {
     font-weight: bold;
   }
-}
-
-// mobile
-@media (max-width: $small-screen) {
-
 }

@@ -1,4 +1,3 @@
-// TODO: use ReactRouter.Lifecycle
 // https://github.com/rackt/react-router/blob/latest/docs/guides/advanced/ConfirmingNavigation.md
 
 Mixins.RoutingHelpers = {

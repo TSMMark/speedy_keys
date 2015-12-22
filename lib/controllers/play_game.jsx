@@ -2,7 +2,12 @@ Controllers.PlayGame = React.createClass({
   mixins: [ReactRouter.State, ReactRouter.Navigation, ReactMeteorData],
 
   contextTypes: {
-    mobile: React.PropTypes.bool.isRequired
+    ltSmall: React.PropTypes.bool.isRequired,
+    ltMedium: React.PropTypes.bool.isRequired,
+    ltLarge: React.PropTypes.bool.isRequired,
+    gtSmall: React.PropTypes.bool.isRequired,
+    gtMedium: React.PropTypes.bool.isRequired,
+    gtLarge: React.PropTypes.bool.isRequired
   },
 
   getMeteorData: function () {
@@ -60,7 +65,7 @@ Controllers.PlayGame = React.createClass({
       main = <Views.NotFound key="not-found" />;
     }
     else if (!this.data.opponent) {
-      main = <Views.WaitForOpponent key="waiting" mobile={this.context.mobile}/>;
+      main = <Views.WaitForOpponent key="waiting" mobile={this.context.ltSmall}/>;
     }
     else {
       var player = Models.User.initRaw(currentUser)
@@ -111,7 +116,7 @@ Controllers.PlayGame = React.createClass({
         <Views.Game currentUser={player}
                     opponent={this.data.opponent}
                     game={game}
-                    mobile={this.context.mobile}
+                    mobile={this.context.ltSmall}
                     ready={this.data.countdown == 0}
                     key={"game:" + gameId} />
       );

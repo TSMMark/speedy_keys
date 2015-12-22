@@ -1,4 +1,5 @@
 Components.SignInForm = React.createClass({
+  mixins: [Mixins.RoutingHelpers, Mixins.Games],
 
   propTypes: {
     includePassword: React.PropTypes.bool

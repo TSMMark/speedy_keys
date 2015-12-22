@@ -1,5 +1,13 @@
 Views.SignIn = React.createClass({
-  mixins: [Mixins.RoutingHelpers, Mixins.Games],
+
+  contextTypes: {
+    ltSmall: React.PropTypes.bool.isRequired,
+    ltMedium: React.PropTypes.bool.isRequired,
+    ltLarge: React.PropTypes.bool.isRequired,
+    gtSmall: React.PropTypes.bool.isRequired,
+    gtMedium: React.PropTypes.bool.isRequired,
+    gtLarge: React.PropTypes.bool.isRequired
+  },
 
   propTypes: {
     includePassword: React.PropTypes.bool,
@@ -8,20 +16,21 @@ Views.SignIn = React.createClass({
 
   getDefaultProps: function () {
     return {
-      includePassword: true,
-      mobile: false
+      includePassword: true
     }
   },
 
   render: function () {
+    var ltSmall = this.context.ltSmall;
+
     return (
       <Components.Container>
-        <div className={cx("row", { "valign-wrapper": !this.props.mobile })}>
-          <div className={cx("col m6 s12", { "valign": !this.props.mobile })}>
-            { this.props.mobile? null : <h1>Speedy Keys</h1> }
+        <div className={cx("row", { "valign-wrapper": !ltSmall })}>
+          <div className={cx("col m6 s12", { "valign": !ltSmall })}>
+            { ltSmall ? null : <h1>Speedy Keys</h1> }
             <h2>Can you text faster than your friends?</h2>
           </div>
-          <div className={cx("col m6 s12", { "valign": !this.props.mobile })}>
+          <div className={cx("col m6 s12", { "valign": !ltSmall })}>
             <div className="card-panel">
               <Components.SignInForm includePassword={this.props.includePassword} />
             </div>

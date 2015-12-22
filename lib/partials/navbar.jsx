@@ -51,9 +51,11 @@ Partials.Navbar = React.createClass({
 
     return (
       <li>
-        <a>
-          Hi, {currentUser.profile.name}! <Components.Emoji emoji={currentUser.profile.emoji}/>
+        <a className="side-nav-profile">
+          <span className="side-nav-image"><Components.Emoji emoji={currentUser.profile.emoji}/></span>
+          <h5 className="side-nav-greeting">Hi, {currentUser.profile.name}!</h5>
         </a>
+        <div className="divider"></div>
       </li>
     );
   },
