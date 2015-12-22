@@ -91,22 +91,22 @@ Controllers.PlayGame = React.createClass({
                               key="winner-overlay"
                               alpha={maxTransparency}>
             <Components.Panel heading={heading}>
-              <div className="form-group">
-                <h2 className={winnerIsMe ? "text-primary" : "text-danger"}>
-                  {winner.props.profile.name} wins!
-                </h2>
-              </div>
+              <h2 className={winnerIsMe ? "green-text" : "red-text"}>
+                {winner.props.profile.name} wins!
+              </h2>
 
-              <div className="form-group">
-                <Components.GameStatsTable game={game}
-                                           currentUserId={currentUser._id} />
-              </div>
+              <Components.GameStatsTable game={game} currentUserId={currentUser._id} />
 
-              <div className="form-group">
-                <Components.JoinGameButton className="btn btn-large btn-primary">
-                  Play Again
-                </Components.JoinGameButton>
-              </div>
+              <ul className="vertical-buttons-list">
+                <li>
+                  <Components.JoinGameButton className="btn btn-large btn-block">
+                    Play Again
+                  </Components.JoinGameButton>
+                </li>
+                <li>
+                  <Link to="/" className="btn btn-block white black-text">Leave</Link>
+                </li>
+              </ul>
             </Components.Panel>
           </Components.Overlay>
         );

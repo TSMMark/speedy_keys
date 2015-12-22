@@ -38,7 +38,7 @@ Views.SignIn = React.createClass({
         </div>
 
         <footer className="footer right-align">
-          <Components.Container>A game by Mark Allen - Copyright 2015</Components.Container>
+          <Components.Container>A Game by Mark Allen - Copyright 2015</Components.Container>
         </footer>
       </Components.Container>
     );
