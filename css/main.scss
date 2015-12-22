@@ -239,7 +239,7 @@ ul.vertical-buttons-list {
     .game-input {
       text-align: center;
 
-      &:active, &:focus {
+      &:focus {
         @include placeholders() {
           color: transparent;
         }
