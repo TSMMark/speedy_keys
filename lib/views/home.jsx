@@ -16,7 +16,7 @@ Views.Home = React.createClass({
         </Components.Container>
         <footer className="footer">
           <Components.Container>
-            <Components.JoinGameButton className="btn btn-primary btn-large btn-block">
+            <Components.JoinGameButton className="btn btn-large waves-effect waves-light btn-block">
               Play
             </Components.JoinGameButton>
           </Components.Container>

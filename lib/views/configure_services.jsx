@@ -22,7 +22,7 @@ Views.ConfigureServices = React.createClass({
           <input type="text" ref="app_id" id="app_id" name="app_id" />
           <label htmlFor="app_secret">app_secret</label>
           <input type="text" ref="app_secret" id="app_secret" name="app_secret" />
-          <input type="submit" className="btn btn-default" />
+          <input type="submit" className="btn waves-effect waves-light" />
         </form>
       </Components.Container>
     );

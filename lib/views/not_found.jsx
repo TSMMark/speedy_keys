@@ -14,7 +14,7 @@ Views.NotFound = React.createClass({
         <h2>{this.props.submessage}</h2>
         <footer className="footer">
           <Components.Container>
-            <Link to="/" className="btn btn-default btn-block">Go Back</Link>
+            <Link to="/" className="btn waves-effect waves-light btn-block">Go Back</Link>
           </Components.Container>
         </footer>
       </Components.Container>

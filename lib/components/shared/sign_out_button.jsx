@@ -20,6 +20,7 @@ Components.SignOutButton = React.createClass({
   render: function () {
     var classes = {
       "btn": true,
+      "waves-effect waves-light": true,
       "white-text": true
     };
 

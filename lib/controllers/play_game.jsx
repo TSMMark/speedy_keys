@@ -99,12 +99,12 @@ Controllers.PlayGame = React.createClass({
 
               <ul className="vertical-buttons-list">
                 <li>
-                  <Components.JoinGameButton className="btn btn-large btn-block">
+                  <Components.JoinGameButton className="btn btn-large btn-block waves-effect waves-light">
                     Play Again
                   </Components.JoinGameButton>
                 </li>
                 <li>
-                  <Link to="/" className="btn btn-block white black-text">Leave</Link>
+                  <Link to="/" className="btn btn-block waves-effect white black-text">Leave</Link>
                 </li>
               </ul>
             </Components.Panel>

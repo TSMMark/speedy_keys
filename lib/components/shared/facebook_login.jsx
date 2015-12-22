@@ -25,7 +25,8 @@ Components.FacebookLogin = React.createClass({
   render: function () {
     var classes = {
       "btn": this.props.btn,
-      "btn-facebook": this.props.btn
+      "btn-facebook": this.props.btn,
+      "waves-effect waves-light": true
     };
 
     if (this.props.className) {

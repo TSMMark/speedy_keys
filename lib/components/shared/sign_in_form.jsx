@@ -77,12 +77,12 @@ Components.SignInForm = React.createClass({
 
         <ul className="vertical-buttons-list">
           <li>
-            <button type="submit" className="btn btn-large btn-block">
+            <button type="submit" className="btn btn-large btn-block waves-effect waves-light">
               Play!
             </button>
           </li>
           <li>
-            <Components.FacebookLogin btn={true} className="btn-block white black-text">
+            <Components.FacebookLogin btn={true} className="btn-block waves-effect white black-text">
               Use Facebook name
             </Components.FacebookLogin>
           </li>

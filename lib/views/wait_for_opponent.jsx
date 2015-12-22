@@ -15,7 +15,7 @@ Views.WaitForOpponent = React.createClass({
     lifeClasses["size-" + size] = true;
 
     cancelButton = (
-      <Components.LeaveGameButton className="btn btn-block white black-text">
+      <Components.LeaveGameButton className="btn btn-block waves-effect white black-text">
         Cancel
       </Components.LeaveGameButton>
     );
