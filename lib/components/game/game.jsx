@@ -40,7 +40,9 @@ Components.Game = React.createClass({
   },
 
   getInitialState: function () {
-    return {};
+    return {
+      inputValue: this.props.inputValue
+    };
   },
 
   componentDidMount: function () {
@@ -51,6 +53,12 @@ Components.Game = React.createClass({
     }
 
     this.focusInput();
+  },
+
+  componentWillReceiveProps: function (nextProps) {
+    this.setState({
+      inputValue: nextProps.inputValue
+    });
   },
 
   componentDidUpdate: function () {
@@ -129,15 +137,17 @@ Components.Game = React.createClass({
   },
 
   isPartialMatch: function () {
-    var inputValue = this.inputNode().value.trim()
+    var inputValue = this.state.inputValue
       , currentWordIndex = this.currentWordIndex()
       , currentWord = this.props.words[currentWordIndex];
+
+    if (!currentWord) return false;
 
     return isPartialMatch(currentWord, inputValue);
   },
 
   isCompleteMatch: function () {
-    var inputValue = this.inputNode().value.trim()
+    var inputValue = this.state.inputValue
       , currentWordIndex = this.currentWordIndex()
       , currentWord = this.props.words[currentWordIndex];
 
@@ -148,7 +158,7 @@ Components.Game = React.createClass({
     if (!this.props.onSubmitWord) return;
 
     var input = this.inputNode()
-      , value = input.value.trim();
+      , value = this.state.inputValue;
 
     input.value = "";
 
@@ -176,8 +186,7 @@ Components.Game = React.createClass({
   },
 
   handleKeyDown: function (event) {
-    var self = this
-      , currentWordIndex = self.currentWordIndex();
+    var currentWordIndex = this.currentWordIndex();
 
     if (!this.canType()) {
       event.preventDefault();
@@ -189,13 +198,15 @@ Components.Game = React.createClass({
     if (isStopKeyCode(event.keyCode)) {
       event.preventDefault();
       if (value) {
-        self.submitWord();
+        this.submitWord();
       }
       return;
     }
 
+    value += String.fromCharCode(event.keyCode); // Append the typed letter.
+
     if (isTypingEvent(event)) {
-      if (value === this.lastInputValue) {
+      if (value === this.state.inputValue) {
         return;
       }
 
@@ -208,35 +219,48 @@ Components.Game = React.createClass({
 
     var value = this.inputNode().value.trim();
 
-    this.lastInputValue = value;
+    this.setState({
+      inputValue: value
+    }, function () {
+      this.props.onInputValueChange(value);
+    }.bind(this));
+
     this.props.onInputValueChange(value);
   },
 
   render: function () {
-    var self = this
-      , inputValue = self.props.inputValue
-      , currentWordIndex = self.currentWordIndex()
+    var inputValue = this.state.inputValue
+      , currentWordIndex = this.currentWordIndex()
       , player = this.props.player
       , opponent = this.props.opponent
-      , words = this.props.words.map(function (word, index) {
+      , words = _.map(this.props.words, function (word, index) {
           var active = index === currentWordIndex
             , pending = index > currentWordIndex
-            , enteredWord = active ? inputValue : self.props.enteredWords[index]
+            , enteredWord = active ? inputValue : this.props.enteredWords[index]
             , fullMatch = enteredWord === word
-            , invalid = active ? !isPartialMatch(word, enteredWord) : !fullMatch
+            , isPartialMatch = this.isPartialMatch(word, enteredWord)
+            , invalid = active ? !isPartialMatch : !fullMatch
+            , correctLettersCount = active && (isPartialMatch || fullMatch) ? enteredWord.length : 0
             , classes = cx({
                 "game-word": true,
                 valid: fullMatch === true,
                 invalid: !pending && invalid,
                 active: active
-              });
+              })
+            , correctLetters
+            , neutralLetters;
+
+          correctLetters = word.slice(0, correctLettersCount);
+          neutralLetters = word.slice(correctLettersCount);
 
           return (
             <span className={classes} key={index}
                   ref={active ? "active-word" : undefined}>
-              {word}
-            </span>);
-        })
+              <span className="correct-letters">{correctLetters}</span>
+              <span className="neutral-letters">{neutralLetters}</span>
+            </span>
+          );
+        }, this)
       , canType = this.canType()
       , form
       , playerProgress = this.props.playerProgress

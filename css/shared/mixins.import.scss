@@ -1,9 +1,9 @@
 // https://atmospherejs.com/uzumaxy/sass-css3-mixins for full list of mixins
 
 @mixin box-shadow($value) {
-  -webkit-box-shadow:inset $value;
-  -moz-box-shadow:inset $value;
-  box-shadow:inset $value;
+  -webkit-box-shadow: $value;
+  -moz-box-shadow: $value;
+  box-shadow: $value;
 }
 
 @mixin text-overflow() {
