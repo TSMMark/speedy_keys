@@ -1,11 +1,12 @@
 Mixins.Games = {
-  // Mixing in Component must mixin in Router.Navigation as well.
-  // mixins: [Router.Navigation]
+  // Mixing in Component must mixin in ReactRouter.Navigation as well.
+  // mixins: [ReactRouter.Navigation]
+  // mixins: [Mixins.RoutingHelpers],
 
   currentUserJoinGame: function () {
     var self = this;
     Meteor.call("joinGame", Meteor.userId(), function (error, gameId) {
-      self.transitionTo("playGame", { gameId: gameId });
+      self.navigateToPath("/play/" + gameId);
     });
   }
 

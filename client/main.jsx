@@ -1,20 +1,30 @@
+const {
+  Router,
+  Route,
+  IndexRoute
+} = ReactRouter;
+
+// TODO: remove this commented line if ReactRouter.history.useQueries works.
+// const createHistory = ReactRouter.history.createHistory;
+const history = ReactRouter.history.useQueries(ReactRouter.history.createHistory)()
+
+const routes = (
+  <Route path="/" component={Layouts.App}>
+    <IndexRoute component={Views.Home}/>
+    <Route path="play/:gameId" component={Controllers.PlayGame}/>
+  </Route>
+);
+
+const router = (
+  <Router history={history}>
+    {routes}
+  </Router>
+);
+
 Meteor.startup(function () {
-  var routes;
-
-  routes = (
-    <Route name="app" path="/" handler={Layouts.App}>
-      <Route name="playGame" key="playGame" handler={Controllers.PlayGame}
-             path="play/:gameId" />
-      <DefaultRoute name="default" key="default" handler={Views.Home}/>
-    </Route>);
-
-  Router.run(routes, Router.HistoryLocation, function (Handler) {
-    React.render(<Handler/>,
-                 document.getElementById("main-app"));
-  });
+  ReactDOM.render(router, document.getElementById("main-app"));
 
   window.addEventListener("beforeunload", function (_error) {
     Meteor.call("leaveGame", Meteor.userId());
   });
-
 });

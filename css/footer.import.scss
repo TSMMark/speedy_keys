@@ -1,0 +1,18 @@
+@import "shared/variables.import.scss";
+
+body {
+  margin-bottom: $footer-height + $footer-top-margin + ($footer-v-padding * 2);
+}
+
+.footer {
+  box-shadow: 0 0 9px rgba(0, 0, 0, .2);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-height: $footer-height + ($footer-v-padding * 2);
+  padding-top: $footer-v-padding;
+  padding-bottom: $footer-v-padding;
+  background-color: #f5f5f5;
+}

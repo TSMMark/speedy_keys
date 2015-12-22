@@ -14,7 +14,6 @@ var beginCountdown = function (game) {
   var countdown = Models.Game.STARTING_COUNTDOWN
     , callback = Meteor.bindEnvironment(function () {
         countdown -= 1;
-        console.log("Countdown: ", countdown);
         game.setCountdownSeconds(countdown);
 
         if (countdown === 0) {

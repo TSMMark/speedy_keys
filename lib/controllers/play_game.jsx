@@ -1,18 +1,36 @@
 Controllers.PlayGame = React.createClass({
-  mixins: [Router.State, Router.Navigation, ReactMeteor.Mixin],
+  mixins: [ReactRouter.State, ReactRouter.Navigation, ReactMeteorData],
 
-  getMeteorState: function () {
+  contextTypes: {
+    ltSmall: React.PropTypes.bool.isRequired,
+    ltMedium: React.PropTypes.bool.isRequired,
+    ltLarge: React.PropTypes.bool.isRequired,
+    gtSmall: React.PropTypes.bool.isRequired,
+    gtMedium: React.PropTypes.bool.isRequired,
+    gtLarge: React.PropTypes.bool.isRequired
+  },
+
+  getMeteorData: function () {
     // This is the only fucking way I could get it to autorun:
     // TODO: Use meteor session for currentGameId
     //       Use /play/:id route for observing.
-    Session.set("gameId", this.getParams().gameId);
+    Session.set("gameId", this.props.params.gameId);
     Session.get("gameId");
 
-    Meteor.subscribe("games");
+    const subHandles = [
+      Meteor.subscribe("games")
+    ];
 
-    var gameId = this.getParams().gameId
+    const subsReady = _.all(subHandles, function (handle) {
+      return handle.ready();
+    });
+
+    // Get the current routes from React Router
+    const routes = this.props.routes;
+
+    var gameId = this.props.params.gameId
       , game = Models.Game.findById(gameId)
-      , currentUserId = this.props.currentUser._id;
+      , currentUserId = Meteor.user()._id;
 
     var countdown = game ? game.props.countdownSeconds
                          : Models.Game.STARTING_COUNTDOWN
@@ -26,17 +44,19 @@ Controllers.PlayGame = React.createClass({
   },
 
   componentWillUnmount: function () {
-    Meteor.call("leaveGame", this.props.currentUser._id);
+    if (Meteor.user()) {
+      Meteor.call("leaveGame", Meteor.user()._id);
+    }
   },
 
   render: function () {
-    var currentUser = this.props.currentUser
-      , gameId = this.state.gameId
-      , game = this.state.game
+    var currentUser = Meteor.user()
+      , gameId = this.data.gameId
+      , game = this.data.game
       , maxCount = Models.Game.STARTING_COUNTDOWN
       , maxTransparency = 0.7
       , rate = maxTransparency / maxCount
-      , overlayAlpha = 1 - ((maxCount - this.state.countdown) * rate)
+      , overlayAlpha = 1 - ((maxCount - this.data.countdown) * rate)
       , overlay
       , main;
 
@@ -44,22 +64,22 @@ Controllers.PlayGame = React.createClass({
       // TODO: Add a notice "Game not found, try again." and redirect home.
       main = <Views.NotFound key="not-found" />;
     }
-    else if (!this.state.opponent) {
-      main = <Views.WaitForOpponent key="waiting"
-                                    mobile={this.props.mobile} />;
+    else if (!this.data.opponent) {
+      main = <Views.WaitForOpponent key="waiting" mobile={this.context.ltSmall}/>;
     }
     else {
       var player = Models.User.initRaw(currentUser)
-        , opponent = this.state.opponent;
+        , opponent = this.data.opponent;
 
-      if (this.state.countdown > 0) {
+      if (this.data.countdown > 0) {
         overlay = (
           <Components.Overlay className="countdown-overlay"
                               key="countdown-overlay"
                               alpha={overlayAlpha}>
             <h2>v.s. {opponent.props.profile.name} <Components.Emoji emoji={opponent.props.profile.emoji}/></h2>
-            <h1>{this.state.countdown}</h1>
-          </Components.Overlay>);
+            <h1>{this.data.countdown}</h1>
+          </Components.Overlay>
+        );
       }
       else if (game.props.winnerId) {
         var winnerIsMe = game.props.winnerId === currentUser._id
@@ -79,37 +99,40 @@ Controllers.PlayGame = React.createClass({
 
               <div className="form-group">
                 <Components.GameStatsTable game={game}
-                                           currentUserId={this.props.currentUser._id} />
+                                           currentUserId={currentUser._id} />
               </div>
 
               <div className="form-group">
-                <Components.JoinGameButton className="btn btn-lg btn-primary">
+                <Components.JoinGameButton className="btn btn-large btn-primary">
                   Play Again
                 </Components.JoinGameButton>
               </div>
             </Components.Panel>
-          </Components.Overlay>);
+          </Components.Overlay>
+        );
       }
 
       main = (
         <Views.Game currentUser={player}
-                    opponent={this.state.opponent}
+                    opponent={this.data.opponent}
                     game={game}
-                    mobile={this.props.mobile}
-                    ready={this.state.countdown == 0}
-                    key={"game:" + gameId} />);
+                    mobile={this.context.ltSmall}
+                    ready={this.data.countdown == 0}
+                    key={"game:" + gameId} />
+      );
     }
 
     return (
       <div>
         {main}
-        <TimeoutTransitionGroup transitionName="overlay"
-                                enterTimeout={500}
-                                leaveTimeout={0}
-                                transitionEnter={true}
-                                transitionLeave={false}>
+        <ReactCSSTransitionGroup transitionName="overlay"
+                                 transitionEnterTimeout={500}
+                                 transitionLeaveTimeout={0}
+                                 transitionEnter={true}
+                                 transitionLeave={false}>
           {overlay}
-        </TimeoutTransitionGroup>
-      </div>);
+        </ReactCSSTransitionGroup>
+      </div>
+    );
   }
 });

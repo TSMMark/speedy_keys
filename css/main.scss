@@ -1,13 +1,51 @@
-@import "custom.bootstrap.import.less";
-@import "mixins.import.less";
-@import "footer.import.less";
-@import "jumbotron.import.less";
+@import "{poetic:materialize-scss}/sass/components/_prefixer.scss";
+@import "{poetic:materialize-scss}/sass/components/_mixins.scss";
+@import "{poetic:materialize-scss}/sass/components/_color.scss";
+
+@import "shared/variables.import.scss";
+@import "shared/mixins.import.scss";
+
+@import "{poetic:materialize-scss}/sass/components/_variables.scss";
 
 // TRANSITION EVERYTIHNG
-* { .transition(all 175ms ease-in-out); }
+* { @include transition(all 175ms ease-in-out); }
+
+@import "{poetic:materialize-scss}/sass/materialize.scss";
+@import "shared/font-style-classes.import.scss";
+@import "footer.import.scss";
+@import "side-nav.import.scss";
+
+.clearfix {
+  @include clearfix();
+}
 
 .btn-facebook {
-  .button-variant(@btn-facebook-color; @btn-facebook-bg; @btn-facebook-border);
+  // TODO
+  // @include button-variant($btn-facebook-color; $btn-facebook-bg; $btn-facebook-border);
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.input-field {
+  > h3 {
+    margin-top: 0;
+  }
+}
+
+.side-nav {
+  > .container {
+    margin-top: 10%;
+  }
+}
+
+ul.vertical-buttons-list {
+  > li {
+    margin-bottom: $card-padding / 2;
+  }
 }
 
 // GAME OF LIFE
@@ -16,6 +54,7 @@
   margin-top: 2px;
   width: 100%;
   padding-bottom: 100%;
+  margin-bottom: 20px;
 }
 
 .game-of-life {
@@ -25,13 +64,13 @@
   cursor: pointer;
 
   .cell-row {
-    .clearfix();
+    @include clearfix();
     position: relative;
     display: block;
     clear: both;
 
     .cell {
-      .transition(none);
+      @include transition(background-color 0.05s linear);
       display: block;
       position: relative;
       float: left;
@@ -51,7 +90,9 @@
 
 // BEGIN MAIN
 #main-content {
-  padding-top: @navbar-height;
+  // padding-top: $navbar-height; // needed if top navbar is fixed.
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .overlay-container {
@@ -80,27 +121,27 @@
   }
 
   &.overlay-enter {
-    .transition(none);
+    @include transition(none);
     opacity: 0.01;
 
     .overlay-content {
-      .transition(none);
-      .scale(0);
+      @include transition(none);
+      @include scale(0);
     }
 
     &.overlay-enter-active {
-      .transition(all 0.5s cubic-bezier(.37,.12,0,1.46));
+      @include transition(all 0.5s cubic-bezier(.37,.12,0,1.46));
       opacity: 1;
 
       .overlay-content {
-        .transition(all 0.5s cubic-bezier(.37,.12,0,1.46));
-        .scale(1);
+        @include transition(all 0.5s cubic-bezier(.37,.12,0,1.46));
+        @include scale(1);
       }
     }
   }
 
   &.overlay-leave {
-    .transition(none);
+    @include transition(none);
     display: none;
   }
 }
@@ -132,86 +173,53 @@
 
 .countdown-overlay,
 .winner-overlay {
-  .transition(background 1s linear);
+  @include transition(background 1s linear);
 
   .overlay-content {
     .container {
-      .make-md-column(6);
-      .make-md-column-offset(3);
+      @extend .col;
+      @extend .m6;
+      @extend .push-m3;
     }
   }
 }
 
 .game-container {
   > h1 {
-    .text-overflow();
+    @include text-overflow();
 
-    .mobile & {
-      font-size: @font-size-h2;
+    @media (max-width: $small-screen) {
+      font-size: $h2-fontsize;
     }
+  }
+
+  .game-match-title-header,
+  .game-player-name-header {
+    white-space: nowrap;
   }
 }
 
 // PROGRESS BARS
-.progress {
+.players-progress {
   position: relative;
 
   .player-progress,
   .opponent-progress {
-  }
-
-  .player-progress {
-    // Flip horizontal so the stripes face right.
-    .scaleX(-1);
-  }
-
-  .opponent-progress {
+    display: block;
+    position: relative;
+    font-size: 18px;
+    height: 24px;
   }
 
   .player-icon-container,
   .opponent-icon-container {
     display: block;
-    .full-absolute();
+    @include full-absolute();
     text-align: center;
 
     .emoji-wrapper {
       position: absolute;
-      .transition(~"left .6s ease, right .6s ease");
-    }
-  }
-
-  .player-icon-container {
-    left: @line-height-computed;
-
-    .emoji-wrapper {
-      margin-left: -@line-height-computed;
-    }
-  }
-
-  .opponent-icon-container {
-    right: @line-height-computed;
-
-    .emoji-wrapper {
-      margin-right: -@line-height-computed;
-    }
-  }
-
-  &.dual-progress {
-    .center-indicator {
-      border-right: 1px solid @input-border;
-      position: absolute;
-      left: 50%;
-      right: 50%;
-      top: 0;
-      bottom: 0;
-    }
-
-    .player-icon-container {
-      right: 50%;
-    }
-
-    .opponent-icon-container {
-      left: 50%;
+      @include transition((left .6s ease, right .6s ease));
     }
   }
 }
@@ -226,20 +234,20 @@
   }
 
   .game-words-container {
-    @line-height: 42px;
+    $line-height: 42px;
 
-    .clearfix();
-    .box-shadow(inset 1px 2px 2px @well-border);
+    @include clearfix();
+    @include box-shadow(inset 1px 2px 2px $input-border-color);
     padding: 3px;
     position: relative;
     font-size: 18px;
-    border-top: 1px solid @well-border;
+    border-top: 1px solid $input-border-color;
 
-    max-height: @line-height * 6;
+    max-height: $line-height * 6;
     overflow: auto;
 
-    .mobile & {
-      max-height: @line-height * 3;
+    @media (max-width: $small-screen) {
+      max-height: $line-height * 3;
       overflow: hidden;
     }
 
@@ -248,34 +256,34 @@
       padding: 0 0.3ex;
       margin-right: 0.3ex;
       margin-bottom: 0.9em;
-      color: @gray;
+      color: color("grey", "darken-1");
       border: 1px solid transparent;
       border-radius: 3px;
 
       &.valid {
-        color: @brand-success;
+        color: color("green", "base");
       }
 
       &.invalid {
-        color: @brand-danger;
+        color: color("red", "darken-1");
       }
 
       &.active {
-        color: @text-color;
-        border-color: @text-color;
+        color: color("grey", "darken-2");
+        border-color: color("grey", "lighten-2");
 
         &.valid {
-          color: @brand-success;
+          color: color("green", "base");
         }
 
         &.invalid {
-          color: @brand-warning;
+          color: color("amber", "darken-1");
         }
       }
 
       &.game-word-enter {
         opacity: 0.01;
-        .transition(opacity 250ms ease-in);
+        @include transition(opacity 250ms ease-in);
 
         &.game-word-enter-active {
           opacity: 1;
@@ -289,16 +297,11 @@
   td,
   th {
     &.winner {
-      background-color: @state-success-bg;
+      background-color: color("green", "darken-2");
     }
   }
 
   td.my-stats {
     font-weight: bold;
   }
-}
-
-// mobile
-@media (max-width: @screen-sm-max) {
-
 }
