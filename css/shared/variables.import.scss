@@ -1,7 +1,23 @@
 $btn-facebook-color:  #fff;
 $btn-facebook-bg:     #3b5998;
-$btn-facebook-border: darken(#3b5998, 5%);
+$btn-facebook-border: shade(#3b5998, 5%);
 
 $footer-height: 60px;
 $footer-top-margin: 20px;
 $footer-v-padding: 20px;
+
+// Materialize colors:
+
+$secondary-color: color("deep-orange", "darken-2");
+$primary-color: color("blue-grey", "lighten-1");
+
+// $primary-color: color("deep-orange", "darken-2");
+// $primary-color-light: color("deep-orange", "lighten-2");
+// $primary-color-dark: color("deep-orange", "darken-4");
+
+// $secondary-color: color("blue-grey", "lighten-1");
+
+$success-color: color("green", "base");
+$error-color: color("red", "base");
+
+$link-color: color("light-blue", "darken-1");

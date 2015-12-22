@@ -17,11 +17,11 @@ Components.SignInForm = React.createClass({
       , password = this.refs["password"] ? this.refs["password"].value : Math.random(9999999).toString();
 
     if (!username) {
-      return alert("Username required");
+      return alert("Tap the name field and make something up!");
     }
 
     if (!password) {
-      return alert("Password required");
+      return alert("Please enter a password first.");
     }
 
     var callback = function () {

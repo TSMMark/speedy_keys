@@ -1,8 +1,11 @@
+@import "{poetic:materialize-scss}/sass/components/_prefixer.scss";
+@import "{poetic:materialize-scss}/sass/components/_mixins.scss";
+@import "{poetic:materialize-scss}/sass/components/_color.scss";
+
 @import "shared/variables.import.scss";
 @import "shared/mixins.import.scss";
 
-@import "{poetic:materialize-scss}/sass/components/_mixins.scss";
-@import "{poetic:materialize-scss}/sass/components/_prefixer.scss";
+@import "{poetic:materialize-scss}/sass/components/_variables.scss";
 
 // TRANSITION EVERYTIHNG
 * { @include transition(all 175ms ease-in-out); }
@@ -188,6 +191,11 @@ ul.vertical-buttons-list {
     @media (max-width: $small-screen) {
       font-size: $h2-fontsize;
     }
+  }
+
+  .game-match-title-header,
+  .game-player-name-header {
+    white-space: nowrap;
   }
 }
 
