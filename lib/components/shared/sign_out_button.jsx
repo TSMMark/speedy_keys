@@ -20,12 +20,11 @@ Components.SignOutButton = React.createClass({
   render: function () {
     var classes = {
       "btn": true,
-      "btn-default": true
+      "white-text": true
     };
 
     return (
-      <a onClick={this.signOut}
-              className={cx(classes)}>
+      <a onClick={this.signOut} className={cx(classes)}>
         <span className="fa fa-power-off"></span> Sign Out
       </a>
     );

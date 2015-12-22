@@ -1,21 +1,34 @@
 Layouts.App = React.createClass({
-  mixins: [ReactRouter.State, ReactMeteorData],
+  mixins: [ReactRouter.RouteContext, ReactRouter.State, ReactMeteorData],
 
   getInitialState: function() {
-    return {
-      mobile: this.isMobile()
-    };
+    var responsiveState = this.getResponsiveState();
+    return _.extend({
+      mobile: responsiveState.ltMedium // mobile is DEPRECATED
+    }, responsiveState);
   },
 
   childContextTypes: {
     history: React.PropTypes.object,
-    mobile: React.PropTypes.bool
+    mobile: React.PropTypes.bool,
+    ltSmall: React.PropTypes.bool,
+    ltMedium: React.PropTypes.bool,
+    ltLarge: React.PropTypes.bool,
+    gtSmall: React.PropTypes.bool,
+    gtMedium: React.PropTypes.bool,
+    gtLarge: React.PropTypes.bool
   },
 
   getChildContext: function() {
     return {
       history: this.props.history,
-      mobile: this.state.mobile
+      mobile: this.state.mobile, // mobile is DEPRECATED
+      ltSmall: this.state.ltSmall, // TODO: DRY
+      ltMedium: this.state.ltMedium, // TODO: DRY
+      ltLarge: this.state.ltLarge, // TODO: DRY
+      gtSmall: this.state.gtSmall, // TODO: DRY
+      gtMedium: this.state.gtMedium, // TODO: DRY
+      gtLarge: this.state.gtLarge // TODO: DRY
     };
   },
 
@@ -45,24 +58,33 @@ Layouts.App = React.createClass({
     $(window).off("resize.layout");
   },
 
-  isMobile: function () {
+  // TODO: Mixin this?
+  getResponsiveState: function () {
     var width = $(window).width()
-      , cuttoff = 601;
+    var widthMap = {
+      Small: 600,
+      Medium: 992,
+      Large: 1200
+    };
 
-    return width < cuttoff;
+    return (
+      _.reduce(widthMap, function (state, cutoff, screenName) {
+        state["lt" + screenName] = width <= cutoff;
+        state["gt" + screenName] = width > cutoff;
+        return state;
+      }, {})
+    );
   },
 
   handleResize: function () {
-    // TODO: include window innerHeight and innerWidth in state
-    this.setState({
-      mobile: this.isMobile()
-    })
+    // TODO: include window innerHeight and innerWidth in state?
+    this.setState(this.getResponsiveState());
   },
 
   render: function () {
     var content
       , classes = {
-          mobile: this.state.mobile
+          mobile: this.state.ltMedium
         };
 
     if (this.data.currentUser) {
@@ -77,7 +99,7 @@ Layouts.App = React.createClass({
 
     return (
       <div id="app-container" className={cx(classes)}>
-        <Partials.Navbar />
+        <Partials.Navbar currentUser={this.data.currentUser} />
         <div id="main-content">
           {content}
         </div>

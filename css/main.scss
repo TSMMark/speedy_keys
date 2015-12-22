@@ -8,6 +8,7 @@
 * { @include transition(all 175ms ease-in-out); }
 
 @import "{poetic:materialize-scss}/sass/materialize.scss";
+@import "shared/font-style-classes.import.scss";
 @import "footer.import.scss";
 
 .clearfix {
@@ -22,6 +23,19 @@
 .btn-block {
   display: block;
   width: 100%;
+  overflow: hidden;
+}
+
+.input-field {
+  > h3 {
+    margin-top: 0;
+  }
+}
+
+.side-nav {
+  > .container {
+    margin-top: 10%;
+  }
 }
 
 ul.vertical-buttons-list {
