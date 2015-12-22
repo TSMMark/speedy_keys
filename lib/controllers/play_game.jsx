@@ -17,12 +17,13 @@ Controllers.PlayGame = React.createClass({
     Session.set("gameId", this.props.params.gameId);
     Session.get("gameId");
 
-    const subHandles = [
+    const subscriptions = [
       Meteor.subscribe("games")
     ];
 
-    const subsReady = _.all(subHandles, function (handle) {
-      return handle.ready();
+    // TODO: do this everywhere Meteor.subscribe is used.
+    const meteorSubscriptionsReady = _.all(subscriptions, function (subscription) {
+      return subscription.ready();
     });
 
     // Get the current routes from React Router
@@ -36,6 +37,7 @@ Controllers.PlayGame = React.createClass({
                          : Models.Game.STARTING_COUNTDOWN
 
     return {
+      meteorSubscriptionsReady: meteorSubscriptionsReady,
       gameId: gameId,
       game: game,
       opponent: game && game.opponentOf(currentUserId),
@@ -60,7 +62,10 @@ Controllers.PlayGame = React.createClass({
       , overlay
       , main;
 
-    if (!game) {
+    if (!this.data.meteorSubscriptionsReady) {
+      main = <Components.Spinner/>;
+    }
+    else if (!game) {
       // TODO: Add a notice "Game not found, try again." and redirect home.
       main = <Views.NotFound key="not-found" />;
     }

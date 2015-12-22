@@ -23,12 +23,10 @@ Partials.Navbar = React.createClass({
   },
 
   hideNavCollapseButton: function() {
-    console.log("hideNavCollapseButton");
     $(this.refs["button-collapse"]).sideNav("hide");
   },
 
   initNavCollapseButton: function() {
-    console.log("initNavCollapseButton");
     // http://materializecss.com/navbar.html#mobile-collapse
     // https://github.com/Dogfalo/materialize/blob/master/js/sideNav.js#L305
     $(this.refs["button-collapse"]).sideNav("init", {

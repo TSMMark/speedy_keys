@@ -42,6 +42,14 @@
   }
 }
 
+.fill-height-or-more > * {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
 ul.vertical-buttons-list {
   > li {
     margin-bottom: $card-padding / 2;
@@ -257,33 +265,41 @@ ul.vertical-buttons-list {
       padding: 0 0.3ex;
       margin-right: 0.3ex;
       margin-bottom: 0.9em;
-      color: color("grey", "darken-2");
+
+      .neutral-letters {
+        @include transition(color 50ms linear);
+        color: color("grey", "darken-2");
+      }
 
       &.valid {
-        color: color("green", "darken-1");
+        .neutral-letters {
+          color: color("green", "darken-1");
+        }
       }
 
       &.invalid {
-        color: color("red", "darken-2");
+        .neutral-letters {
+          color: color("red", "darken-2");
+        }
       }
 
       &.active {
         @extend .z-depth-1;
-
-        .neutral-letters {
-          color: color("grey", "darken-2");
-        }
 
         .correct-letters {
           color: color("green", "darken-1");
         }
 
         &.valid {
-          color: color("green", "darken-1");
+          .neutral-letters {
+            color: color("green", "darken-1");
+          }
         }
 
         &.invalid {
-          color: color("amber", "darken-1");
+          .neutral-letters {
+            color: color("amber", "darken-1");
+          }
         }
       }
 
