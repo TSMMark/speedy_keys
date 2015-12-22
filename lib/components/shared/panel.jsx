@@ -1,40 +1,41 @@
 Components.Panel = React.createClass({
 
+  propTypes: {
+    className: React.PropTypes.string,
+    bodyClassName: React.PropTypes.string
+  },
+
   getDefaultProps: function () {
     return {
-      className: {
-        "panel-default": true
-      },
-      bodyClassName: {}
+      className: "",
+      bodyClassName: ""
     }
   },
 
   render: function () {
     var heading
       , classes = {
-          "panel": true
+          "card": true
         }
       , bodyClasses = {
-          "panel-body": true
+          "card-content": true
         };
 
-    classes[cx(this.props.className)] = true;
-    bodyClasses[cx(this.props.bodyClassName)] = true;
+    classes[this.props.className] = true;
+    bodyClasses[this.props.bodyClassName] = true;
 
     if (this.props.heading) {
       heading = (
-        <div className="panel-heading">
-          <h3 className="panel-title">
-            {this.props.heading}
-          </h3>
-        </div>
+        <span className="card-title">
+          {this.props.heading}
+        </span>
       );
     }
 
     return (
       <div className={cx(classes)}>
-        {heading}
         <div className={cx(bodyClasses)}>
+          {heading}
           {this.props.children}
         </div>
       </div>
