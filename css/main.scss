@@ -100,7 +100,7 @@ ul.vertical-buttons-list {
 #main-content {
   // padding-top: $navbar-height; // needed if top navbar is fixed.
   max-width: 100%;
-  overflow: hidden;
+  // overflow: hidden; // This was here but it was squishing its contents to half size on desktop for some reason.
 }
 
 .overlay-container {
