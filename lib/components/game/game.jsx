@@ -203,15 +203,22 @@ Components.Game = React.createClass({
       return;
     }
 
-    value += String.fromCharCode(event.keyCode); // Append the typed letter.
-
-    if (isTypingEvent(event)) {
-      if (value === this.state.inputValue) {
-        return;
-      }
-
-      setTimeout(this.handleInputValueChange, 0);
+    if (!isTypingEvent(event)) {
+      return;
     }
+
+    var typedChar = String.fromCharCode(event.keyCode);
+
+    typedChar = event.shiftKey ? typedChar.toUpperCase() : typedChar.toLowerCase(); // Lowercase unless shift key down.
+    value += typedChar;
+
+    console.log("handleKeyDown", value, event.shiftKey);
+
+    if (value === this.state.inputValue) {
+      return;
+    }
+
+    setTimeout(this.handleInputValueChange, 0);
   },
 
   handleInputValueChange: function () {
