@@ -1,5 +1,14 @@
 Partials.Navbar = React.createClass({
 
+  contextTypes: {
+    ltSmall: React.PropTypes.bool.isRequired,
+    ltMedium: React.PropTypes.bool.isRequired,
+    ltLarge: React.PropTypes.bool.isRequired,
+    gtSmall: React.PropTypes.bool.isRequired,
+    gtMedium: React.PropTypes.bool.isRequired,
+    gtLarge: React.PropTypes.bool.isRequired
+  },
+
   componentDidMount: function() {
     this.initNavCollapseButton();
   },
@@ -47,15 +56,29 @@ Partials.Navbar = React.createClass({
   renderItemGreeting: function () {
     var currentUser = this.props.currentUser;
 
-    return (
-      <li>
-        <a className="side-nav-profile">
-          <span className="side-nav-image"><Components.Emoji emoji={currentUser.profile.emoji}/></span>
-          <h5 className="side-nav-greeting">Hi, {currentUser.profile.name}!</h5>
-        </a>
-        <div className="divider"></div>
-      </li>
-    );
+    if (this.context.ltSmall) {
+      return (
+        <li>
+          <a className="side-nav-profile">
+            <span className="side-nav-image"><Components.Emoji emoji={currentUser.profile.emoji}/></span>
+            <h5 className="side-nav-greeting">Hi, {currentUser.profile.name}!</h5>
+          </a>
+          <div className="divider"></div>
+        </li>
+      );
+    }
+    else {
+      return (
+        <li>
+          <a>
+            <span>Hi, {currentUser.profile.name}!</span>
+            {" "}
+            <Components.Emoji emoji={currentUser.profile.emoji} />
+          </a>
+        </li>
+      );
+    }
+
   },
 
   renderItemSignOutButton: function () {
