@@ -212,8 +212,6 @@ Components.Game = React.createClass({
     typedChar = event.shiftKey ? typedChar.toUpperCase() : typedChar.toLowerCase(); // Lowercase unless shift key down.
     value += typedChar;
 
-    console.log("handleKeyDown", value, event.shiftKey);
-
     if (value === this.state.inputValue) {
       return;
     }
