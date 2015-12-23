@@ -78,7 +78,7 @@ ul.vertical-buttons-list {
     clear: both;
 
     .cell {
-      @include transition(background-color 0.05s linear);
+      @include transition(none);
       display: block;
       position: relative;
       float: left;
@@ -239,7 +239,7 @@ ul.vertical-buttons-list {
     .game-input {
       text-align: center;
 
-      &:focus {
+      &:active, &:focus {
         @include placeholders() {
           color: transparent;
         }
