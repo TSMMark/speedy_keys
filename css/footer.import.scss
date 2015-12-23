@@ -14,5 +14,6 @@ body {
   max-height: $footer-height + ($footer-v-padding * 2);
   padding-top: $footer-v-padding;
   padding-bottom: $footer-v-padding;
+  z-index: 800;
   background-color: #f5f5f5;
 }
