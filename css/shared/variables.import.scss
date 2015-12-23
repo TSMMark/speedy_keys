@@ -11,13 +11,9 @@ $footer-v-padding: 20px;
 $secondary-color: color("deep-orange", "darken-2");
 $primary-color: color("blue-grey", "lighten-1");
 
-// $primary-color: color("deep-orange", "darken-2");
-// $primary-color-light: color("deep-orange", "lighten-2");
-// $primary-color-dark: color("deep-orange", "darken-4");
-
-// $secondary-color: color("blue-grey", "lighten-1");
-
 $success-color: color("green", "base");
 $error-color: color("red", "base");
 
 $link-color: color("light-blue", "darken-1");
+
+$input-focus-color: $primary-color;
