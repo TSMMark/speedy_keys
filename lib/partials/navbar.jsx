@@ -56,7 +56,7 @@ Partials.Navbar = React.createClass({
   renderItemGreeting: function () {
     var currentUser = this.props.currentUser;
 
-    if (this.context.ltSmall) {
+    if (this.context.ltMedium) {
       return (
         <li>
           <a className="side-nav-profile">
