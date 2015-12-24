@@ -185,7 +185,16 @@ Components.Game = React.createClass({
     return this.refs["game-input"];
   },
 
+  // For debugging iphone
+  handleKeyPress: function (event) {
+    this.handleKeyEvent(event, "keyPress");
+  },
+
   handleKeyDown: function (event) {
+    this.handleKeyEvent(event, "keyDown");
+  },
+
+  handleKeyEvent: function (event, eventType) {
     var currentWordIndex = this.currentWordIndex();
 
     if (!this.canType()) {
@@ -195,7 +204,8 @@ Components.Game = React.createClass({
 
     var value = this.inputNode().value.trim();
 
-    if (isStopKeyCode(event.keyCode)) {
+
+    if (isStopKeyCode(event.charCode)) {
       event.preventDefault();
       if (value) {
         this.submitWord();
@@ -207,7 +217,7 @@ Components.Game = React.createClass({
       return;
     }
 
-    var typedChar = String.fromCharCode(event.keyCode);
+    var typedChar = String.fromCharCode(event.charCode);
 
     typedChar = event.shiftKey ? typedChar.toUpperCase() : typedChar.toLowerCase(); // Lowercase unless shift key down.
     value += typedChar;
@@ -269,8 +279,7 @@ Components.Game = React.createClass({
       , canType = this.canType()
       , form
       , playerProgress = this.props.playerProgress
-      , opponentProgress = this.props.opponentProgress
-      , typeEvent = canType ? this.handleKeyDown : undefined;
+      , opponentProgress = this.props.opponentProgress;
 
     form = (
       <div className="input-group input-group-lg">
@@ -281,7 +290,8 @@ Components.Game = React.createClass({
                autoCapitalize="off"
                ref="game-input" key="game-input"
                readOnly={!canType}
-               onKeyDown={typeEvent}
+               onKeyDown={canType ? this.handleKeyDown : undefined}
+               onKeyPress={canType ? this.handleKeyPress : undefined}
                onFocus={canType ? this.scrollScreen : undefined}
                defaultValue={canType ? this.props.inputValue : undefined}
                value={!canType ? this.props.inputValue : undefined} />
