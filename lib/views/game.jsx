@@ -17,8 +17,10 @@ Views.Game = React.createClass({
   },
 
   handleInputValueChange: function (value) {
-    var currentUserId = this.props.currentUser.props._id;
-    this.props.game.setInputValueFor(currentUserId, value);
+    // Too much websocket traffic if we send each word.
+    // Maintain typing-word state for the current user in the component itself instead.
+    // var currentUserId = this.props.currentUser.props._id;
+    // this.props.game.setInputValueFor(currentUserId, value);
   },
 
   handleSubmitWord: function (value) {
