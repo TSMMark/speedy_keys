@@ -89,9 +89,6 @@ Layouts.App = React.createClass({
     else if (this.data.currentUser) {
       content = this.props.children;
     }
-    else if (this.data.missingServiceConfig) {
-      content = <Views.ConfigureServices/>;
-    }
     else {
       content = <Views.SignIn {...this.state} {...this.props} includePassword={false} />;
     }

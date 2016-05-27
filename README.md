@@ -6,11 +6,10 @@ A speed-typing game built with Meteor JS + React JS.
 Development
 -----------
 
-Clone the repo.
-
-Start the meteor server:
 ```
-$ meteor
+$ git clone https://github.com/TSMMark/speedy_keys
+$ cd speedy_keys
+$ meteor run --settings settings.json
 ```
 
 Production
@@ -40,8 +39,6 @@ For your `settings.json` on heroku run this command:
 heroku config:add METEOR_SETTINGS="$(cat settings.json)"
 
 Visit the page in your browser.
-
-Enter your Facebook App credentials.
 
 Enjoy.
 
