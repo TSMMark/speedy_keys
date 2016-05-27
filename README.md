@@ -1,4 +1,4 @@
-Speedy Keys \[[play]()\]
+Speedy Keys \[[play](https://speedykeys.herokuapp.com)\]
 ===========
 
 A speed-typing game built with Meteor JS + React JS.
